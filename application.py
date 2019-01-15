@@ -54,6 +54,8 @@ def login():
         elif not request.form.get("password"):
             return apology("must provide password")
 
+        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
+
         # ensure username exists and password is correct
         if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
             return apology("invalid username and/or password")
