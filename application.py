@@ -112,10 +112,10 @@ def register():
         if not result:
             return apology("Username already exists", 400)
 
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
+        print(result)
 
         # remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = result
 
         return redirect(url_for("index"))
 
@@ -129,7 +129,6 @@ def register():
 def feed():
     """feed van de gebruiker"""
     if request.method == "GET":
-
         db.execute()
 
         return render_template("feed.html")
