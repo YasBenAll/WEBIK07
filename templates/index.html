@@ -9,28 +9,6 @@
 
     <!--<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">-->
     <h4>Dashboard</h4>
-      <p>Table of all your stocks</p>
-    <table class="table">
-        <thead>
-          <tr>
-            <th>Your stocks</th>
-            <th>Amount</th>
-            <th>Current price</th>
-            <th>Total value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in data %}
-          <tr>
-            <td>{{item.stock}}</td>
-            <td>{{item.total_amount}}</td>
-            <td>{{dd[item.stock]["price"] | usd}}</td>
-            <td>{{(dd[item.stock]["price"]*item.total_amount) | usd}}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <p>Your total balance: {{money | usd}}</p>
-      <p>Your grand total: {{grand_total | usd}}</p>
+
 
 {% endblock %}
