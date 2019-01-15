@@ -49,12 +49,9 @@ Waarschijnlijk maken we nog helpers.py aan voor een dynamische webpagina van fee
 
 
 ### 3 databases:
-Users
-Alle gebruikers in deze database inclusief uniek id per gebruiker -> gebruiker-id en settings
-Fotos
-Alle fotos in de database inclusief uniek id per foto -> foto-id
-History
-Hier wordt de activiteit van de gebruiker bijgehouden. Wanneer een foto door een gebruiker is gezien zal het gebruikers-id samen met het foto-id in deze tabel geplaatst worden. In de derde kolom zal dan een code voor de reactie staan (0 voor dislike, 1 voor like, 9 voor ongepast))
+- Users: Alle gebruikers in deze database inclusief uniek id per gebruiker -> gebruiker-id en settings
+- Fotos: Alle fotos in de database inclusief uniek id per foto -> foto-id
+- History: Hier wordt de activiteit van de gebruiker bijgehouden. Wanneer een foto door een gebruiker is gezien zal het gebruikers-id samen met het foto-id in deze tabel geplaatst worden. In de derde kolom zal dan een code voor de reactie staan (0 voor dislike, 1 voor like, 9 voor ongepast))
 
 
 ### Plugins en frameworks:
