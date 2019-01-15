@@ -81,29 +81,6 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route("/quote", methods=["GET", "POST"])
-@login_required
-def quote():
-    """Get stock quote."""
-
-    if request.method == "GET":
-        return render_template("quote.html")
-
-    if request.method == "POST":
-
-        if not request.form.get("symbol"):
-            return apology("must provide stock symbol")
-
-        # lookup the data for the symbol
-        aandeel = lookup(request.form.get("symbol"))
-
-        # check if the symbol exists in the database
-        if aandeel == None:
-            return apology("symbol does not exist")
-
-        return render_template("quoted.html", data=aandeel)
-
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user."""
@@ -128,8 +105,6 @@ def register():
         user = db.execute("INSERT INTO users (username, hash) VALUES(:username, :hash)",
                           username=request.form.get("username"), hash=pwd_context.hash(request.form.get("password")))
 
-        print(user)
-
         # check if the username already exists
         if not user:
             return apology("username already exists", 400)
@@ -142,70 +117,6 @@ def register():
     else:
         return render_template("register.html")
 
-
-@app.route("/sell", methods=["GET", "POST"])
-@login_required
-def sell():
-    """Sell shares of stock."""
-
-    if request.method == "POST":
-
-        if not request.form.get("shares"):
-            return apology("must provide amount")
-
-        # select the given symbol and with the total amount of stocks the user has of that symbol
-        data = db.execute("SELECT stock, SUM(amount) as total_amount FROM sales WHERE username = :user_id and stock = :aandeel GROUP BY stock HAVING total_amount > 0",
-                          user_id=session["user_id"], aandeel=request.form.get("symbol"))
-
-        # check if the user can sell his shares
-        if int(request.form.get("shares")) > data[0]["total_amount"]:
-            return apology("you do not have enough shares")
-
-        # lookup the current stock price
-        aandeel = lookup(request.form.get("symbol"))
-
-        number = -int(request.form.get("shares"))
-
-        # calculate how much the users owes
-        sell = (aandeel["price"])*(int(request.form.get("shares")))
-
-        # add cash to the user's cash
-        db.execute("UPDATE users SET cash = cash + :price WHERE id = :id", id=session["user_id"], price=sell)
-
-        # add the sell to the database
-        db.execute("INSERT INTO sales (username, stock, amount, price) VALUES(:id, :symbol, :number, :price)",
-                   symbol=aandeel["symbol"], number=number, price=usd(sell), id=session["user_id"])
-
-        return redirect(url_for("index"))
-
-    if request.method == "GET":
-
-        # select which stocks the user has
-        data = db.execute(
-            "SELECT stock, SUM(amount) as total_amount FROM sales WHERE username = :user_id GROUP BY stock HAVING total_amount > 0", user_id=session["user_id"])
-
-        return render_template("sell.html", data=data)
-
-
-@app.route("/top_up", methods=["GET", "POST"])
-@login_required
-def top_up():
-    """Get stock quote."""
-
-    if request.method == "GET":
-        return render_template("top_up.html")
-
-    if request.method == "POST":
-
-        if not request.form.get("cash"):
-            return apology("must provide cash")
-
-        money = request.form.get("cash")
-
-        # update the users's cash
-        db.execute("UPDATE users SET cash = cash + :money WHERE id = :id", id=session["user_id"], money=money)
-
-        return redirect(url_for("index"))
 
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
