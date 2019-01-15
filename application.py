@@ -128,16 +128,15 @@ def register():
 @login_required
 def feed():
     """feed van de gebruiker"""
-
     if request.method == "GET":
         return render_template("feed.html")
 
     else:
         return redirect(url_for("index"))
 
-
-
-# @login_required
+@app.route('/upload', methods=["GET", "POST"])
 def upload():
-    return render_template("upload.html")
-
+    if request.method == 'POST':
+        add_photo = db.execute("INSERT INTO pictures(id, file, description, themes) VALUES(:id, :file, :description, :themes)", id = 0, file = request.form.get(file), description = 0, themes = 0 )
+        return 'file uploaded successfully'
+    return render_template('upload.html')
