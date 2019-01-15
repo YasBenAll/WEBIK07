@@ -61,7 +61,7 @@ Jinja
 Giphy
 
 
-### Voor de foto’s zie deze link.
+### Voor de foto’s: "foto's technisch ontwerp".
 
 Git pull
 git add bestandnaam.py
