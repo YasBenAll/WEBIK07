@@ -5,6 +5,7 @@ from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 
 from helpers import *
+from upload import *
 
 # configure application
 app = Flask(__name__)
@@ -33,81 +34,7 @@ db = SQL("sqlite:///finance.db")
 @login_required
 def index():
     """Give dashboard of user."""
-
-    dd = dict()
-    total = 0
-
-    # select user's cash and which stocks at which amount
-    cash = db.execute("SELECT cash FROM users WHERE id = :user_id", user_id=session["user_id"])
-    data = db.execute(
-        "SELECT stock, SUM(amount) as total_amount FROM sales WHERE username = :user_id GROUP BY stock HAVING total_amount > 0", user_id=session["user_id"])
-
-    # make dictionary with stocks at what amount and calculate the total value of that stock
-    for item in data:
-        dd[item["stock"]] = lookup(item["stock"])
-        total += dd[item["stock"]]["price"]*item["total_amount"]
-
-    money = cash[0]['cash']
-    grand_total = money+total
-
-    return render_template("index.html", data=data, dd=dd, money=money, grand_total=grand_total)
-
-
-@app.route("/buy", methods=["GET", "POST"])
-@login_required
-def buy():
-    """Buy shares of stock."""
-
-    if request.method == "GET":
-        return render_template("buy.html")
-
-    if request.method == "POST":
-        if not request.form.get("symbol"):
-            return apology("must provide stock symbol")
-
-        if not request.form.get("shares"):
-            return apology("must provide amount")
-
-        # check if the given number is an integer
-        try:
-            if int(request.form.get("shares")) < 0:
-                return apology("number must be greater than 0")
-        except:
-            return apology("number must be an integer")
-
-        aandeel = lookup(request.form.get("symbol"))
-
-        if aandeel == None:
-            return apology("symbol does not exist")
-
-        cash = db.execute("SELECT cash FROM users WHERE id = :id", id=session["user_id"])
-
-        # check if the user has enough cash to buy the stock(s)
-        if float(cash[0]["cash"]) - (int(request.form.get("shares"))*float(aandeel["price"])) < 0.0:
-            return apology("not enough money")
-
-        number = int(request.form.get("shares"))
-        price = number*aandeel["price"]
-
-        # make a new row into the table sales
-        db.execute("INSERT INTO sales (username, stock, amount, price) VALUES(:id, :symbol, :number, :price)",
-                   symbol=aandeel["symbol"], number=number, price=usd(price), id=session["user_id"])
-
-        # subtract the price from user's cash
-        db.execute("UPDATE users SET cash = cash - :price WHERE id = :id", id=session["user_id"], price=price)
-
-        return redirect(url_for("index"))
-
-
-@app.route("/history")
-@login_required
-def history():
-    """Show history of transactions."""
-
-    # select all the data we need from sales
-    history = db.execute("SELECT stock, amount, time, price FROM sales WHERE username = :user_id ", user_id=session["user_id"])
-
-    return render_template("history.html", history=history)
+    return render_template("index.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -127,9 +54,6 @@ def login():
         # ensure password was submitted
         elif not request.form.get("password"):
             return apology("must provide password")
-
-        # query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
 
         # ensure username exists and password is correct
         if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
@@ -282,3 +206,9 @@ def top_up():
         db.execute("UPDATE users SET cash = cash + :money WHERE id = :id", id=session["user_id"], money=money)
 
         return redirect(url_for("index"))
+
+@app.route("/upload", methods=["GET", "POST"])
+@login_required
+def upload_file():
+    if request.method == "POST":
+        upload()
