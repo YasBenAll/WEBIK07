@@ -285,7 +285,6 @@ def top_up():
         return redirect(url_for("index"))
 
 @app.route("/upload", methods=["GET", "POST"])
-@login_required
-def upload_file():
-    if request.method == "POST":
-        upload()
+# @login_required
+def upload():
+    return render_template("upload.html")
