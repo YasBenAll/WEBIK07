@@ -118,13 +118,6 @@ def register():
         return render_template("register.html")
 
 
-@app.route("/upload", methods=["GET", "POST"])
-@login_required
-def upload_file():
-    if request.method == "POST":
-        upload()
-
-
 
 @app.route("/feed", methods=["GET", "POST"])
 @login_required
@@ -139,5 +132,7 @@ def feed():
 
 
 
-
+# @login_required
+def upload():
+    return render_template("upload.html")
 
