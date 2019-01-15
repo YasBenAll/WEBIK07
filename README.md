@@ -63,9 +63,5 @@ Giphy
 
 ### Voor de foto’s: "foto's technisch ontwerp".
 
-Git pull
-git add bestandnaam.py
-git commit -m "Wat je hebt gedaan"
-git push origin master
 
 
