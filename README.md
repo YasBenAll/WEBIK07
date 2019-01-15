@@ -1,6 +1,6 @@
-## Technisch ontwerp
+# Technisch ontwerp
 
-# Controller: application.py
+### Controller: application.py
 
 /register
 GET:     register.html
@@ -36,7 +36,7 @@ Selecteerd alle fotos uit History die de user heeft geliket en zet deze op de pa
 /settings
 GET: settings.html
 POST: update de users database met zijn nieuwe settings
-# Views: html-pagina’s
+### Views: html-pagina’s
 1.      Register.html
 2.      Login.html
 3.      Feed.html
@@ -44,11 +44,11 @@ POST: update de users database met zijn nieuwe settings
 5.      Likelist.html
 6.      Settings.html
 
-# Models/helpers, helpers.py:
+### Models/helpers, helpers.py:
 Waarschijnlijk maken we nog helpers.py aan voor een dynamische webpagina van feed
 
 
-# 3 databases:
+### 3 databases:
 Users
 Alle gebruikers in deze database inclusief uniek id per gebruiker -> gebruiker-id en settings
 Fotos
@@ -57,14 +57,14 @@ History
 Hier wordt de activiteit van de gebruiker bijgehouden. Wanneer een foto door een gebruiker is gezien zal het gebruikers-id samen met het foto-id in deze tabel geplaatst worden. In de derde kolom zal dan een code voor de reactie staan (0 voor dislike, 1 voor like, 9 voor ongepast))
 
 
-# Plugins en frameworks:
+### Plugins en frameworks:
 Flask
 Bootstrap
 Jinja
 Giphy
 
 
-# Voor de foto’s zie deze link.
+### Voor de foto’s zie deze link.
 
 Git pull
 git add bestandnaam.py
