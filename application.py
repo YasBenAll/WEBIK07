@@ -123,3 +123,21 @@ def register():
 def upload_file():
     if request.method == "POST":
         upload()
+
+
+
+@app.route("/feed", methods=["GET", "POST"])
+@login_required
+def feed():
+    """feed van de gebruiker"""
+
+    if request.method == "GET":
+        return render_template("feed.html")
+
+    else:
+        return redirect(url_for("index"))
+
+
+
+
+
