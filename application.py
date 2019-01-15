@@ -5,6 +5,7 @@ from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 
 from helpers import *
+from upload import *
 
 # configure application
 app = Flask(__name__)
@@ -33,24 +34,7 @@ db = SQL("sqlite:///finance.db")
 @login_required
 def index():
     """Give dashboard of user."""
-
-    dd = dict()
-    total = 0
-
-    # select user's cash and which stocks at which amount
-    cash = db.execute("SELECT cash FROM users WHERE id = :user_id", user_id=session["user_id"])
-    data = db.execute(
-        "SELECT stock, SUM(amount) as total_amount FROM sales WHERE username = :user_id GROUP BY stock HAVING total_amount > 0", user_id=session["user_id"])
-
-    # make dictionary with stocks at what amount and calculate the total value of that stock
-    for item in data:
-        dd[item["stock"]] = lookup(item["stock"])
-        total += dd[item["stock"]]["price"]*item["total_amount"]
-
-    money = cash[0]['cash']
-    grand_total = money+total
-
-    return render_template("index.html", data=data, dd=dd, money=money, grand_total=grand_total)
+    return render_template("index.html")
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -282,3 +266,9 @@ def top_up():
         db.execute("UPDATE users SET cash = cash + :money WHERE id = :id", id=session["user_id"], money=money)
 
         return redirect(url_for("index"))
+
+@app.route("/upload", methods=["GET", "POST"])
+@login_required
+def upload_file():
+    if request.method == "POST":
+        upload()
