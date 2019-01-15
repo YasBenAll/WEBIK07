@@ -5,6 +5,7 @@ from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 
 from helpers import *
+from upload import *
 
 # configure application
 app = Flask(__name__)
@@ -265,3 +266,9 @@ def top_up():
         db.execute("UPDATE users SET cash = cash + :money WHERE id = :id", id=session["user_id"], money=money)
 
         return redirect(url_for("index"))
+
+@app.route("/upload", methods=["GET", "POST"])
+@login_required
+def upload_file():
+    if request.method == "POST":
+        upload()
