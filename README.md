@@ -1,30 +1,67 @@
-## Projectvoorstel groep 7
-Namen: Kevin van Dijk, Annelie Groeneveld, Yassin Ben Allal, Sebastiaan Berting
-# Samenvatting
-Als project willen wij een website gaan maken onder het thema Photo Sharing. Ons idee is het maken van een foto-applicatie waarbij de feed wordt gezien als een stapel foto’s (denk aan Tinder). De gebruiker krijgt bij elke foto de mogelijkheid om naar links te swipen (niet leuk) of naar rechts te swipen (wel leuk). Als de gebruiker de foto geliked heeft, dan komt deze foto terecht in de gebruik zijn “likelist”. Indien er een foto naar boven geswiped wordt, dan kan deze gedeeld worden met een vriend. Wanneer er een foto in de feed verschijnt van een verkeerd thema dan kan de gebruiker ervoor kiezen om deze als “ongepast voor mijn feed” op te geven.
-Via deze manier van de feed bekijken zorgen we voor een zeer actieve *user experience*, de gebruiker moet bij elke foto beslissen of deze leuk, niet leuk, of ongepast is.
-# Schetsen
-* Homepage
+# Technisch ontwerp
 
-* Eigen account
+### Controller: application.py
 
-* Feed
-* Likelist
-* Instellingen voor eigen account
+/register
+GET:     register.html
+POST:    invoer om te registreren op onze site. Nagaan of gebruiker al in database staat, en valide gegevens heeft ingevoerd. Indien alles juist is dan wordt de gebruiker toegevoegd aan de database.
 
-#Features
-   * Aanpassen welk thema je volgt
-   * Vrienden zoeken
-   * Foto’s markeren als ongepast
-# MVP
-   * likelist
-   * login
-   * mijn foto’s
-   * mijn vrienden
-   * registreren
-   * foto’s toevoegen
-# Afhankelijkheden
-   * **Hulpbronnen**: API Giphy: https://developers.giphy.com/docs/
-   * **Externe componenten**: Bootstrap
-   * **Vergelijkbare websites**: Tinder, Instagram, Pinterest, Imgur
-   * **Moeilijkste delen**: Feed sorteren op random, zonder dat het al eerder is langsgekomen
+/login
+GET:    login.html
+POST: Pagina om in te loggen op de website. Hierbij moet een gebruikersnaam en wachtwoord ingevoerd worden.  Wanneer gebruiker nog geen account heeft kan deze klikken op de registreer knop en wordt de gebruiker redirect naar /register.
+
+/logout
+GET:    logout.html
+POST:    Wanneer er op logout wordt geklikt zal de gebruiker uitgelogd worden door middel van session clear().
+
+/friends
+Friends.html
+Geeft een tabel met alle vrienden die je volgt en hun like score
+
+/
+redirect naar feed (login required)
+
+/feed
+GET: feed.html een random foto uit de database die de gebruiker nog niet heeft gezien door te checken in history.
+POST: foto wordt geplaatst in history met username en gemarkeerd of deze hem heeft geliket, disliket of als ongepast.
+
+/upload
+GET: upload.html
+POST: foto die de gebruiker heeft geupload wordt in de database van alle foto’s geplaatst.
+
+/likelist
+Likelist.html
+Selecteerd alle fotos uit History die de user heeft geliket en zet deze op de pagina
+
+/settings
+GET: settings.html
+POST: update de users database met zijn nieuwe settings
+### Views: html-pagina’s
+1.      Register.html
+2.      Login.html
+3.      Feed.html
+4.      Upload.html
+5.      Likelist.html
+6.      Settings.html
+
+### Models/helpers, helpers.py:
+Waarschijnlijk maken we nog helpers.py aan voor een dynamische webpagina van feed
+
+
+### 3 databases:
+- Users: Alle gebruikers in deze database inclusief uniek id per gebruiker -> gebruiker-id en settings
+- Fotos: Alle fotos in de database inclusief uniek id per foto -> foto-id
+- History: Hier wordt de activiteit van de gebruiker bijgehouden. Wanneer een foto door een gebruiker is gezien zal het gebruikers-id samen met het foto-id in deze tabel geplaatst worden. In de derde kolom zal dan een code voor de reactie staan (0 voor dislike, 1 voor like, 9 voor ongepast))
+
+
+### Plugins en frameworks:
+Flask
+Bootstrap
+Jinja
+Giphy
+
+
+### Voor de foto’s: "foto's technisch ontwerp".
+
+
+

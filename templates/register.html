@@ -17,7 +17,14 @@
                 <input class="form-control" name="confirmation" placeholder="Password confirmation" type="password"/>
             </div>
             <div class="form-group">
-                <button class="btn btn-default" type="submit"> Register </button>
+                <button class="btn btn-default" type="submit"> Join the stack </button>
+            </div>
+        </fieldset>
+    </form>
+     <form action="{{ url_for('login') }}" method="get">
+        <fieldset>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Ik behoor al tot de stack!</button>
             </div>
         </fieldset>
     </form>
