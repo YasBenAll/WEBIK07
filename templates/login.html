@@ -16,8 +16,12 @@
             <div class="form-group">
                 <button class="btn btn-default" type="submit">Log In</button>
             </div>
+        </fieldset>
+    </form>
+    <form action="{{ url_for('register') }}" method="get">
+        <fieldset>
             <div class="form-group">
-                <button class="btn btn-default" type="button" onclick="alert('Hello world!')">Ik heb nog geen account</a></button>
+                <button class="btn btn-default" type="submit">Ik behoor nog niet tot de stack!</button>
             </div>
         </fieldset>
     </form>
