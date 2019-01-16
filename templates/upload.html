@@ -1,3 +1,4 @@
+
 {% extends "layout.html" %}
 
 {% block title %}
@@ -5,17 +6,11 @@
 {% endblock %}
 
 {% block main %}
-    <form action="{{ url_for('upload') }}" method="post">
-        <fieldset>
-            <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="file" placeholder="File" type="text"/>
-            </div>
-            <div class="form-group">
-                <input class="form-control" name="description" placeholder="Voeg omschrijving toe" type="description"/>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit">Log In</button>
-            </div>
-        </fieldset>
+    <h4>Upload a picture to the stack</h4>
+    <form method="post" enctype="multipart/form-data" action="{{url_for('upload')}}">
+        <input type="description" placeholder="description" name="description" id="description">
+        <br/>
+        <input type="file" name="photo" class="button" id="choosefile" required>
+        <input type="submit" class="button" id="uploadbutton">
     </form>
 {% endblock %}

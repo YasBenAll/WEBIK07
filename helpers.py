@@ -1,9 +1,10 @@
+from cs50 import SQL
 import csv
 import urllib.request
 
 from flask import redirect, render_template, request, session
 from functools import wraps
-
+db = SQL("sqlite:///likestack.db")
 
 def apology(message, code=400):
     """Renders message as an apology to user."""
@@ -112,3 +113,7 @@ def lookup(symbol):
 def usd(value):
     """Formats value as USD."""
     return f"${value:,.2f}"
+
+def upload_photo(filename, description, theme_id):
+    # store the picture into the database
+    return db.execute("INSERT INTO pictures(id, filename, description, theme_id) VALUES(:id, :filename, :description, :theme_id)", id = session["user_id"] , filename = filename, description = description, theme_id = theme_id)

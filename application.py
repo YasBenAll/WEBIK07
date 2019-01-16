@@ -3,9 +3,9 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 from helpers import *
-from upload import *
 
 # configure application
 app = Flask(__name__)
@@ -136,9 +136,23 @@ def feed():
     else:
         return redirect(url_for("index"))
 
-@app.route('/upload', methods=["GET", "POST"])
+@app.route("/upload", methods=["GET", "POST"])
+@login_required
 def upload():
-    if request.method == 'POST':
-        add_photo = db.execute("INSERT INTO pictures(id, file, description, themes) VALUES(:id, :file, :description, :themes)", id = 0, file = request.form.get(file), description = 0, themes = 0 )
-        return 'file uploaded successfully'
+
+    # declare photos as an image uploadset
+    photos = UploadSet('photos', IMAGES)
+
+    # declare folder where photos will be upload to
+    app.config['UPLOADED_PHOTOS_DEST'] = 'pictures'
+    configure_uploads(app, photos)
+
+    if request.method == 'POST' and 'photo' in request.files:
+        filename= photos.save(request.files['photo'])
+        description = request.form.get("description")
+        if not description:
+            description = ""
+        theme_id = 0
+        upload_photo(filename, description, theme_id)
+
     return render_template('upload.html')
