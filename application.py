@@ -104,11 +104,14 @@ def register():
         elif request.form.get("password") != request.form.get("confirmation"):
             return apology("passwords must be the same")
 
+        elif not request.form.get("question"):
+            return apology("please answer the security question")
+
         # encrypt password
         hash = pwd_context.hash(request.form.get("password"))
 
         # inserting the user into the database
-        result = db.execute("INSERT INTO users (username, hash) VALUES(:username, :hash)", username=request.form.get("username"), hash = hash)
+        result = db.execute("INSERT INTO users (username, hash, question) VALUES(:username, :hash, :question)", username=request.form.get("username"), hash=hash, question=request.form.get("question"))
 
         # check if the username already exists
         if not result:
