@@ -186,18 +186,35 @@ def forgot():
 @login_required
 def feed():
     """feed van de gebruiker"""
+
     if request.method == "GET":
 
-        db.execute()
+        marked = 0
+        seen_list = list()
+
         amount = db.execute("SELECT COUNT(id) FROM pictures")
+        history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
+
+        print(history_list)
+
+        for item in history_list:
+            seen_list.append(item['photo_id'])
 
         print(amount[0]['COUNT(id)'])
 
-        print(random.randrange(1, int(amount[0]['COUNT(id)'])+1))
+        rand = random.randrange(1, int(amount[0]['COUNT(id)'])+1)
 
-        picture = db.execute("SELECT filename, description FROM pictures WHERE id = :id", id=random.randrange(1, int(amount[0]['COUNT(id)'])+1))
+        print(rand)
 
-        return render_template("feed.html", picture= picture[0]['filename'], description = picture[0]['description'])
+        while rand not in seen_list:
+            rand = random.randrange(1, int(amount[0]['COUNT(id)'])+1)
+
+        picture = db.execute("SELECT filename, description FROM pictures WHERE id = :id", id=rand)
+
+        db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
+                   user_id=session["user_id"], photo_id=rand, marked=marked)
+
+        return render_template("feed.html", picture="\\pictures\\"+picture[0]['filename'], description=picture[0]['description'])
 
     else:
         return redirect(url_for("index"))
