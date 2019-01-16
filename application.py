@@ -212,6 +212,15 @@ def feed():
 
         picture = db.execute("SELECT filename, description FROM pictures WHERE id = :id", id=rand)
 
+        if request.form.get("like"):
+            marked = 1
+
+        if request.form.get("dislike"):
+            marked = 2
+
+        if request.form.get("ongepast"):
+            marked = 3
+
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=rand, marked=marked)
 
