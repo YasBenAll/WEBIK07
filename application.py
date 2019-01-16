@@ -162,3 +162,11 @@ def upload():
         upload_photo(filename, description, theme_id)
 
     return render_template('upload.html')
+
+@app.route("/mijn_fotos", methods=["GET", "POST"])
+@login_required
+def mijn_fotos():
+    data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id = session["user_id"])
+    for item in data:
+        print(item)
+    return render_template("mijn_fotos.html")
