@@ -116,4 +116,4 @@ def usd(value):
 
 def upload_photo(filename, description, theme_id):
     # store the picture into the database
-    return db.execute("INSERT INTO pictures(id, filename, description, theme_id) VALUES(:id, :filename, :description, :theme_id)", id = session["user_id"] , filename = filename, description = description, theme_id = theme_id)
+    return db.execute("INSERT INTO pictures(user_id, filename, description, theme_id) VALUES(:user_id, :filename, :description, :theme_id)", user_id = session["user_id"] , filename = filename, description = description, theme_id = theme_id)

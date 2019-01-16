@@ -129,6 +129,9 @@ def register():
 def feed():
     """feed van de gebruiker"""
     if request.method == "GET":
+
+
+
         db.execute()
 
         return render_template("feed.html")
