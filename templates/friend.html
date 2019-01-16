@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Friend
+{% endblock %}
+
+{% block main %}
+    <form method="post" enctype="multipart/form-data" action="{{url_for('friend')}}">
+        <input type="name" placeholder="name" name="name" id="name">
+        <br/>
+        <input type="submit" class="button" id="uploadbutton">
+    </form>
+{% endblock %}

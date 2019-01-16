@@ -188,6 +188,7 @@ def feed():
     """feed van de gebruiker"""
     if request.method == "GET":
 
+        db.execute()
         amount = db.execute("SELECT COUNT(id) FROM pictures")
 
         print(amount[0]['COUNT(id)'])
@@ -221,6 +222,14 @@ def upload():
         upload_photo(filename, description, theme_id)
 
     return render_template('upload.html')
+
+
+@app.route("/friend", methods=["GET", "POST"])
+@login_required
+def friend():
+    if request.method == 'POST':
+        db.execute("UPDATE users SET following = :following + following WHERE id=:id", following = 1, id=session["user_id"])
+    return render_template('friend.html')
 
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
