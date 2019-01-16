@@ -45,12 +45,12 @@
                                     </a>
 
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Likelist</a>
-                                        <a class="dropdown-item" href="#">Mijn foto's</a>
-                                        <a class="dropdown-item" href="#">Vrienden</a>
-                                        <a class="dropdown-item" href="#">Upload</a>
+                                        <li><a href="{{ url_for('upload') }}">Likelist</a></li>
+                                        <li><a href="{{ url_for('upload') }}">Mijn foto's</a></li>
+                                        <li><a href="{{ url_for('upload') }}">Vrienden</a></li>
+                                        <li><a href="{{ url_for('upload') }}">Upload</a></li>
                                         <div class="dropdown-divider"></div>
-                                        <a class=" <li><a href="{{ url_for('logout') }}">Log Out</a></li>"
+                                         <li><a href="{{ url_for('logout') }}">Log Out</a></li>
                                     </div>
                                 </div>
 
