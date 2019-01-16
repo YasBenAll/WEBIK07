@@ -88,7 +88,57 @@ def register():
 
     session.clear()
 
+    # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
+
+        # ensure username was submitted
+        if not request.form.get("username"):
+            return apology("must provide username")
+
+        # ensure password was submitted
+        elif not request.form.get("password"):
+            return apology("must provide password")
+
+        # ensure password confirmation was submitted
+        elif not request.form.get("confirmation"):
+            return apology("must provide password confirmation")
+
+        # check if password and password confirmation are the same
+        elif request.form.get("password") != request.form.get("confirmation"):
+            return apology("passwords must be the same")
+
+        # ensure answer was submitted
+        elif not request.form.get("question"):
+            return apology("please answer the security question")
+
+        # encrypt password
+        hash = pwd_context.hash(request.form.get("password"))
+
+        # inserting the user into the database
+        result = db.execute("INSERT INTO users (username, hash, question) VALUES(:username, :hash, :question)", username=request.form.get("username"), hash=hash, question=request.form.get("question"))
+
+        # error when username already exists
+        if not result:
+            return apology("Username already exists")
+
+        # query database for username
+        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
+
+        # remember which user has logged in
+        session["user_id"] = rows[0]["id"]
+
+        return redirect(url_for("index"))
+
+    else:
+        return render_template("register.html")
+
+@app.route("/forgot", methods=["GET", "POST"])
+def forgot():
+    """ change user password """
+
+    session.clear()
+
+    if request.method == 'POST':
 
         if not request.form.get("username"):
             return apology("must provide username")
@@ -97,7 +147,7 @@ def register():
             return apology("must provide password")
 
         elif not request.form.get("confirmation"):
-            return apology("must provide password")
+            return apology("must provide password confirmation")
 
         elif request.form.get("password") != request.form.get("confirmation"):
             return apology("passwords must be the same")
@@ -108,24 +158,27 @@ def register():
         # encrypt password
         hash = pwd_context.hash(request.form.get("password"))
 
-        # inserting the user into the database
-        result = db.execute("INSERT INTO users (username, hash, question) VALUES(:username, :hash, :question)", username=request.form.get("username"), hash=hash, question=request.form.get("question"))
+        # check if username and security question match
+        username = request.form.get("username")
+        security_question = request.form.get("question")
+        users = db.execute("SELECT * FROM users WHERE username = :username", username=username)
+        username_from_database = users[0]["username"]
+        security_question_from_database = users[0]["question"]
 
-        # check if the username already exists
-        if not result:
-            return apology("Username already exists", 400)
+        if username == username_from_database and security_question == security_question_from_database:
 
-        print(result)
+            # update the password
+            db.execute("UPDATE users SET hash=:hash WHERE username=:username", hash=hash, username=username_from_database)
 
-        # remember which user has logged in
-        session["user_id"] = result
+            # remember which user has logged in
+            session["user_id"] = users[0]["id"]
+            return redirect(url_for("index"))
 
-        return redirect(url_for("index"))
+        else:
+            return apology("Username and answer don't match")
 
     else:
-        return render_template("register.html")
-
-
+        return render_template("forgot.html")
 
 @app.route("/feed", methods=["GET", "POST"])
 @login_required
