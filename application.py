@@ -143,7 +143,7 @@ def feed():
 
         picture = db.execute("SELECT filename FROM pictures WHERE id = :id", id=random.randrange(1, int(amount[0]['COUNT(id)'])+1))
 
-        return render_template("feed.html", picture=pictures/picture[0]['filename'])
+        return render_template("feed.html", picture= "\\pictures\\" + picture[0]['filename'])
 
     else:
         return redirect(url_for("index"))
