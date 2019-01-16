@@ -246,7 +246,7 @@ def upload():
 def friend():
     if request.method == 'POST':
         followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
-        followlist = list(followdb[0]["following"])
+        followlist = json.loads(followdb[0]["following"])
         followlist.append(request.form.get("name"))
         followjson = json.dumps(followlist)
         db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
