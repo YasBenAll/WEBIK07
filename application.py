@@ -5,6 +5,8 @@ from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 
+import random
+
 from helpers import *
 
 # configure application
@@ -130,11 +132,15 @@ def feed():
     """feed van de gebruiker"""
     if request.method == "GET":
 
+        amount = db.execute("SELECT COUNT(id) FROM pictures")
 
+        print(amount[0]['COUNT(id)'])
 
-        db.execute()
+        print(random.randrange(1, int(amount[0]['COUNT(id)'])+1))
 
-        return render_template("feed.html")
+        picture = db.execute("SELECT filename FROM pictures WHERE id = :id", id=random.randrange(1, int(amount[0]['COUNT(id)'])+1))
+
+        return render_template("feed.html", picture=pictures/picture[0]['filename'])
 
     else:
         return redirect(url_for("index"))
