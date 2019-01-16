@@ -130,8 +130,6 @@ def feed():
     """feed van de gebruiker"""
     if request.method == "GET":
 
-
-
         db.execute()
 
         return render_template("feed.html")
@@ -159,3 +157,11 @@ def upload():
         upload_photo(filename, description, theme_id)
 
     return render_template('upload.html')
+
+@app.route("/friend", methods=["GET", "POST"])
+@login_required
+def friend():
+    if request.method == 'POST':
+        db.execute("SELECT following FROM users WHERE following = :following", following = [])
+
+    return render_template('friend.html')
