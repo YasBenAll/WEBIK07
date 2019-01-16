@@ -4,6 +4,7 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_uploads import UploadSet, configure_uploads, IMAGES
+import json
 
 import random
 
@@ -223,18 +224,23 @@ def upload():
 
     return render_template('upload.html')
 
-
 @app.route("/friend", methods=["GET", "POST"])
 @login_required
 def friend():
     if request.method == 'POST':
-        db.execute("UPDATE users SET following = :following + following WHERE id=:id", following = 1, id=session["user_id"])
+        followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
+        followlist = list(followdb[0]["following"])
+        followlist.append(request.form.get("name"))
+        followjson = json.dumps(followlist)
+        db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
     return render_template('friend.html')
 
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
 def mijn_fotos():
+
     data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id = session["user_id"])
     for item in data:
         print(item)
     return render_template("mijn_fotos.html")
+
