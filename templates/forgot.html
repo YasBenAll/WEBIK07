@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Forgot password
+{% endblock %}
+
+{% block main %}
+    <form action="{{ url_for('forgot') }}" method="post">
+        <fieldset>
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="password" placeholder="New password" type="password"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="confirmation" placeholder="Password confirmation" type="password"/>
+            </div>
+            <p>
+                <h4> Security question</h4>
+                What was your place of birth?
+            </p>
+            <div class="form-group">
+                <input class="form-control" name="question" placeholder="Answer" type="text"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit"> Change password </button>
+            </div>
+        </fieldset>
+    </form>
+     <form action="{{ url_for('login') }}" method="get">
+        <fieldset>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Terug naar login pagina</button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
