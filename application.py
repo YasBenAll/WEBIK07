@@ -261,9 +261,10 @@ def upload():
     if request.method == 'POST':
         if 'photo' in request.files:
             filename= photos.save(request.files['photo'])
-        else:
+        elif request.form.get("giphy"):
+            keyword = request.form.get("giphy")
             # Download the file from `url` and save it locally under `file_name`:
-            data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=hamburger&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
+            data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
             url = data["data"][0]['images']['downsized']['url']
             filename = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
             urllib.request.urlretrieve(url, filename)
