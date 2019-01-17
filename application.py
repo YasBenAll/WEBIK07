@@ -4,6 +4,7 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_uploads import UploadSet, configure_uploads, IMAGES
+import json
 
 import random
 
@@ -186,17 +187,44 @@ def forgot():
 @login_required
 def feed():
     """feed van de gebruiker"""
+
     if request.method == "GET":
 
+        marked = 0
+        seen_list = list()
+
         amount = db.execute("SELECT COUNT(id) FROM pictures")
+        history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
+
+        print(history_list)
+
+        for item in history_list:
+            seen_list.append(item['photo_id'])
 
         print(amount[0]['COUNT(id)'])
 
-        print(random.randrange(1, int(amount[0]['COUNT(id)'])+1))
+        rand = random.randrange(1, int(amount[0]['COUNT(id)'])+1)
 
-        picture = db.execute("SELECT filename FROM pictures WHERE id = :id", id=random.randrange(1, int(amount[0]['COUNT(id)'])+1))
+        print(rand)
 
-        return render_template("feed.html", picture=pictures/picture[0]['filename'])
+        while rand not in seen_list:
+            rand = random.randrange(1, int(amount[0]['COUNT(id)'])+1)
+
+        picture = db.execute("SELECT filename, description FROM pictures WHERE id = :id", id=rand)
+
+        if request.form.get("like"):
+            marked = 1
+
+        if request.form.get("dislike"):
+            marked = 2
+
+        if request.form.get("ongepast"):
+            marked = 3
+
+        db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
+                   user_id=session["user_id"], photo_id=rand, marked=marked)
+
+        return render_template("feed.html", picture="\\pictures\\"+picture[0]['filename'], description=picture[0]['description'])
 
     else:
         return redirect(url_for("index"))
@@ -222,10 +250,23 @@ def upload():
 
     return render_template('upload.html')
 
+@app.route("/friend", methods=["GET", "POST"])
+@login_required
+def friend():
+    if request.method == 'POST':
+        followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
+        followlist = json.loads(followdb[0]["following"])
+        followlist.append(request.form.get("name"))
+        followjson = json.dumps(followlist)
+        db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
+    return render_template('friend.html')
+
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
 def mijn_fotos():
+
     data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id = session["user_id"])
     for item in data:
         print(item["filename"])
     return render_template("mijn_fotos.html", filename = item["filename"])
+
