@@ -133,7 +133,7 @@ def register():
         # remember which user has logged in
         session["user_id"] = rows[0]["id"]
 
-        return redirect(url_for("index"))
+        return redirect(url_for("feed"))
 
     else:
         return render_template("register.html")
