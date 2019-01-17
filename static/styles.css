@@ -53,3 +53,32 @@ main td
     text-align: left;
 }
 
+/* Add Zoom Animation */
+.animate
+{
+ -webkit-animation: animatezoom 0.6s;
+ animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom
+{
+ from {-webkit-transform: scale(0)}
+ to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom
+{
+ from {transform: scale(0)}
+ to {transform: scale(1)}
+}
+
+.kevin
+{
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+.form-group
+{
+    margin-bottom: 5px;
+}
