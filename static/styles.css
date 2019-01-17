@@ -1,7 +1,6 @@
 body, html
 {
     background: url("/static/achtergrond1.jpg");
-    background-size: 100%;
     background-repeat: no-repeat;
     background-color: #29303a;
 }
@@ -81,4 +80,27 @@ main td
 .form-group
 {
     margin-bottom: 5px;
+}
+
+#regel
+{
+    width: 450px;
+}
+
+#wrapper
+{
+    width: 450px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+#eerste_blok
+{
+    width: 150px;
+    float:left;
+    text-align: left;
+    margin-left: 30px;
+}
+#tweede_blok
+{
+    overflow: hidden;
 }
