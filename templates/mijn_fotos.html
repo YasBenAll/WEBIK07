@@ -5,25 +5,10 @@
 {% endblock %}
 
 {% block main %}
-
-    <form action="{{ url_for('mijn_fotos') }}" method="post">
-        <fieldset>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in data %}
-                    <tr>
-                        <td> <img src="{{ url_for('download_file', filename=item.filename) }}"WIDTH="140" HEIGHT="100">
-</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </fieldset>
-    </form>
+    <div>
+        <h1>Mijn foto's</h1>
+                {% for item in data %}
+                    <img src="{{ url_for('download_file', filename=item.filename) }}"WIDTH="140" HEIGHT=auto>
+                {% endfor %}
+    </div>
 {% endblock %}
