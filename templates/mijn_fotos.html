@@ -7,15 +7,20 @@
 {% block main %}
     <form action="{{ url_for('mijn_fotos') }}" method="post">
         <fieldset>
-            <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Stock symbol" type="text"/>
-            </div>
-            <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="shares" placeholder="Amount" type="number"/>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit">Buy</button>
-            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> Mijn foto's </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td>{{item.filename}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </fieldset>
     </form>
 {% endblock %}

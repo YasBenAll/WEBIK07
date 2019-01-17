@@ -264,11 +264,11 @@ def friend():
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
 def mijn_fotos():
-
+    filenames = dict()
     data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id = session["user_id"])
     for item in data:
         print(item["filename"])
-    return render_template("mijn_fotos.html", filename = item["filename"])
+    return render_template("mijn_fotos.html", filename = item["filename"], data = data)
 
 @app.route('/pictures/<path:filename>')
 def download_file(filename):
