@@ -4,7 +4,7 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_uploads import UploadSet, configure_uploads, IMAGES
-import json
+import urllib,json
 import os
 
 MEDIA_FOLDER = os.path.join(os.getcwd(), 'pictures')
@@ -258,8 +258,15 @@ def upload():
     app.config['UPLOADED_PHOTOS_DEST'] = 'pictures'
     configure_uploads(app, photos)
 
-    if request.method == 'POST' and 'photo' in request.files:
-        filename= photos.save(request.files['photo'])
+    if request.method == 'POST':
+        if 'photo' in request.files:
+            filename= photos.save(request.files['photo'])
+        else:
+            # Download the file from `url` and save it locally under `file_name`:
+            data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=hamburger&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
+            url = data["data"][0]['images']['downsized']['url']
+            filename = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
+            urllib.request.urlretrieve(url, filename)
         description = request.form.get("description")
         if not description:
             description = ""
@@ -271,6 +278,7 @@ def upload():
 @app.route("/friend", methods=["GET", "POST"])
 @login_required
 def friend():
+    # add someone to user's followlist
     if request.method == 'POST':
         followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
         followlist = json.loads(followdb[0]["following"])

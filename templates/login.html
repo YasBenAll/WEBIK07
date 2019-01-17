@@ -5,31 +5,37 @@
 {% endblock %}
 
 {% block main %}
+    <div id="regel">
+        <div class="kevin blue"><h2>The stack is waiting for you!</h2></div>
+    </div>
     <form action="{{ url_for('login') }}" method="post">
         <fieldset>
-            <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"/>
+            <div id="wrapper">
+                <div id="eerste_blok">
+                    Gebruikersnaam
+                </div>
+                <div id="tweede_blok">
+                    <div class="form-group"><input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"/></div>
+                </div>
+                <div id="eerste_blok">
+                    Wachtwoord
+                </div>
+                <div id="tweede_blok">
+                    <div class="form-group"><input class="form-control animate" name="password" placeholder="Password" type="password"/></div>
+                </div>
             </div>
-            <div class="form-group">
-                <input class="form-control" name="password" placeholder="Password" type="password"/>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit">Start Stacking</button>
-            </div>
-        </fieldset>
-    </form>
-    <form action="{{ url_for('register') }}" method="get">
-        <fieldset>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit">Ik behoor nog niet tot de stack!</button>
-            </div>
-        </fieldset>
-    </form>
-    <form action="{{ url_for('forgot') }}" method="get">
-        <fieldset>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit">Ik ben mijn wachtwoord vergeten..</button>
+            <div id="regel">
+                <div class="form-group animate">
+                    <button class="btn btn-default animate" type="submit">Start Stacking</button>
+                </div>
             </div>
         </fieldset>
     </form>
+    <div id="regel" class="animate">
+        <a href="{{ url_for('register') }}">Ik behoor nog niet tot de stack</a>
+    </div>
+    <div id="regel" class="animate">
+        <a href="{{ url_for('forgot') }}">Wachtwoord vergeten</a>
+    </div>
+
 {% endblock %}
