@@ -14,17 +14,16 @@
     <form action="{{ url_for('feed') }}" method="post">
         <fieldset>
 
-                <input class="btn btn-default" type="button" value="Like" name="like"/>
+                <input name="like" value="Like" type="submit">
+                <input name="dislike" value="Dislike" type="submit">
+                <input name="ongepast" value="Ongepast" type="submit">
 
-                <input class="btn btn-default" type="button" value="Dislike" name="dislike"/>
 
-                <input class="btn btn-default" type="button" value="Ongepast" name="ongepast"/>
+                <input type="submit" name="submit_button" value="Volgen">
 
-                <input class="btn btn-default" type="button" value="Volgen" name="volgen"/>
-
-            <div class="form-group">
-                <button class="btn btn-default" type="volgende">Volgende</button>
-            </div>
+            <!--<div class="form-group">-->
+            <!--    <button class="btn btn-default" type="volgende">Volgende</button>-->
+            <!--</div>-->
         </fieldset>
     </form>
     </p>
