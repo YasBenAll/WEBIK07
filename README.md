@@ -56,6 +56,7 @@ Waarschijnlijk maken we nog helpers.py aan voor een dynamische webpagina van fee
 
 ### Plugins en frameworks:
 Flask
+Flask-uploads
 Bootstrap
 Jinja
 Giphy
