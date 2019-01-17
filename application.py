@@ -4,7 +4,7 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_uploads import UploadSet, configure_uploads, IMAGES
-import json
+import urllib,json
 import os
 
 MEDIA_FOLDER = os.path.join(os.getcwd(), 'pictures')
@@ -191,9 +191,12 @@ def forgot():
 def feed():
     """feed van de gebruiker"""
 
+    ud = 0
+    fd = 0
+    marked = 0
+
     if request.method == "GET":
 
-        marked = 0
         seen_list = list()
 
         amount = db.execute("SELECT COUNT(id) FROM pictures")
@@ -207,27 +210,42 @@ def feed():
         print(amount[0]['COUNT(id)'])
 
         rand = random.randrange(1, int(amount[0]['COUNT(id)'])+1)
-
         print(rand)
 
-        picture = db.execute("SELECT filename, description FROM pictures WHERE id = :id", id=rand)
+        picture = db.execute("SELECT filename, description, user_id FROM pictures WHERE id = :id", id=rand)
 
-        if request.form.get("like"):
+        fd = rand
+        ud = picture[0]['user_id']
+
+        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=picture[0]['user_id'])
+
+    if request.method == "POST":
+
+        if request.form.get("like") == "Like":
             marked = 1
 
-        if request.form.get("dislike"):
+        if request.form.get("dislike") == "Dislike":
             marked = 2
 
-        if request.form.get("ongepast"):
+        if request.form.get("ongepast") == "Ongepast":
             marked = 3
 
+        print(marked)
+
+        if request.form.get("volgen") == "Volgen":
+            followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
+            followlist = json.loads(followdb[0]["following"])
+            followlist.append(ud)
+            followjson = json.dumps(followlist)
+            db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
+
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
-                   user_id=session["user_id"], photo_id=rand, marked=marked)
+                   user_id=session["user_id"], photo_id=fd, marked=marked)
 
-        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'])
+        fd = 0
+        ud = 0
 
-    else:
-        return redirect(url_for("index"))
+        return redirect(url_for("feed"))
 
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
@@ -240,8 +258,16 @@ def upload():
     app.config['UPLOADED_PHOTOS_DEST'] = 'pictures'
     configure_uploads(app, photos)
 
-    if request.method == 'POST' and 'photo' in request.files:
-        filename= photos.save(request.files['photo'])
+    if request.method == 'POST':
+        if 'photo' in request.files:
+            filename= photos.save(request.files['photo'])
+        elif request.form.get("giphy"):
+            keyword = request.form.get("giphy")
+            # Download the file from `url` and save it locally under `file_name`:
+            data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
+            url = data["data"][0]['images']['downsized']['url']
+            filename = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
+            urllib.request.urlretrieve(url, filename)
         description = request.form.get("description")
         if not description:
             description = ""
@@ -253,6 +279,7 @@ def upload():
 @app.route("/friend", methods=["GET", "POST"])
 @login_required
 def friend():
+    # add someone to user's followlist
     if request.method == 'POST':
         followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
         followlist = json.loads(followdb[0]["following"])

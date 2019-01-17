@@ -1,6 +1,6 @@
 from cs50 import SQL
 import csv
-import urllib.request
+import urllib.request, json
 
 from flask import redirect, render_template, request, session
 from functools import wraps
@@ -117,3 +117,10 @@ def usd(value):
 def upload_photo(filename, description, theme_id):
     # store the picture into the database
     return db.execute("INSERT INTO pictures(user_id, filename, description, theme_id) VALUES(:user_id, :filename, :description, :theme_id)", user_id = session["user_id"] , filename = filename, description = description, theme_id = theme_id)
+
+def add_friend():
+    pass
+
+def giphy():
+    data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=hamburger&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
+    return data["data"][0]['images']['downsized']['url']
