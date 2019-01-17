@@ -227,5 +227,5 @@ def upload():
 def mijn_fotos():
     data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id = session["user_id"])
     for item in data:
-        print(item)
-    return render_template("mijn_fotos.html")
+        print(item["filename"])
+    return render_template("mijn_fotos.html", filename = item["filename"])
