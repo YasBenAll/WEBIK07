@@ -221,18 +221,18 @@ def feed():
 
     if request.method == "POST":
 
-        if request.form.get("like") == "Like":
+        if request.form.get("like"):
             marked = 1
 
-        if request.form.get("dislike") == "Dislike":
+        if request.form.get("dislike"):
             marked = 2
 
-        if request.form.get("ongepast") == "Ongepast":
+        if request.form.get("ongepast"):
             marked = 3
 
         print(marked)
 
-        if request.form.get("volgen") == "Volgen":
+        if request.form.get("submit") == "Volgen":
             followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
             followlist = json.loads(followdb[0]["following"])
             followlist.append(ud)
@@ -241,9 +241,6 @@ def feed():
 
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=fd, marked=marked)
-
-        fd = 0
-        ud = 0
 
         return redirect(url_for("feed"))
 
