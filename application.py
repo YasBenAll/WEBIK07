@@ -70,7 +70,7 @@ def login():
         session["user_id"] = rows[0]["id"]
 
         # redirect user to home page
-        return redirect(url_for("index"))
+        return redirect(url_for("feed"))
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
@@ -223,6 +223,7 @@ def feed():
 
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=rand, marked=marked)
+
         return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'])
 
     else:
