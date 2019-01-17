@@ -8,18 +8,25 @@
 
     <img src="{{ url_for('download_file', filename=picture) }}", alt="{{description}}">
 
+    <p>{{user_id}}</p>
+
     <p>
     <form action="{{ url_for('feed') }}" method="post">
         <fieldset>
-
             <div class="form-group">
-                <button class="btn btn-default" type="like">Like</button>
+                <input class="btn btn-default" type="button" value="Like" name="like"/>
             </div>
             <div class="form-group">
-                <button class="btn btn-default" type="dislike">Dislike</button>
+                <input class="btn btn-default" type="button" value="Dislike" name="dislike"/>
             </div>
             <div class="form-group">
-                <button class="btn btn-default" type="ongepast">Ongepast</button>
+                <input class="btn btn-default" type="button" value="Ongepast" name="ongepast"/>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-default" type="button" value="Volgen" name="volgen"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="volgende">Volgende</button>
             </div>
         </fieldset>
     </form>
