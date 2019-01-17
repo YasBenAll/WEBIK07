@@ -1,11 +1,13 @@
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import Flask, flash, redirect, render_template, request, session, url_for, send_from_directory
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 import urllib,json
+import os
 
+MEDIA_FOLDER = os.path.join(os.getcwd(), 'pictures')
 
 import random
 
@@ -68,7 +70,7 @@ def login():
         session["user_id"] = rows[0]["id"]
 
         # redirect user to home page
-        return redirect(url_for("index"))
+        return redirect(url_for("feed"))
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
@@ -131,7 +133,7 @@ def register():
         # remember which user has logged in
         session["user_id"] = rows[0]["id"]
 
-        return redirect(url_for("index"))
+        return redirect(url_for("feed"))
 
     else:
         return render_template("register.html")
@@ -208,9 +210,6 @@ def feed():
 
         print(rand)
 
-        while rand not in seen_list:
-            rand = random.randrange(1, int(amount[0]['COUNT(id)'])+1)
-
         picture = db.execute("SELECT filename, description FROM pictures WHERE id = :id", id=rand)
 
         if request.form.get("like"):
@@ -225,7 +224,7 @@ def feed():
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=rand, marked=marked)
 
-        return render_template("feed.html", picture="\\pictures\\"+picture[0]['filename'], description=picture[0]['description'])
+        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'])
 
     else:
         return redirect(url_for("index"))
@@ -273,8 +272,12 @@ def friend():
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
 def mijn_fotos():
-
+    filenames = dict()
     data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id = session["user_id"])
     for item in data:
-        print(item)
-    return render_template("mijn_fotos.html")
+        print(item["filename"])
+    return render_template("mijn_fotos.html", filename = item["filename"], data = data)
+
+@app.route('/pictures/<path:filename>')
+def download_file(filename):
+    return send_from_directory(MEDIA_FOLDER, filename, as_attachment=True)

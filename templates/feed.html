@@ -6,7 +6,7 @@
 
 {% block main %}
 
-    <img src="{{picture}}">
+    <img src="{{ url_for('download_file', filename=picture) }}", alt="{{description}}">
 
     <p>
     <form action="{{ url_for('feed') }}" method="post">
