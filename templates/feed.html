@@ -6,6 +6,19 @@
 
 {% block main %}
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+        $(function() {
+          $('a#user_id').bind('click', function() {
+            $.getJSON('/background_process',
+                function(user_id) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+    </script>
+
     <img src="{{ url_for('download_file', filename=picture) }}", alt="{{description}}">
 
     <p>{{user_id}}</p>
@@ -18,8 +31,7 @@
                 <input name="dislike" value="Dislike" type="submit">
                 <input name="ongepast" value="Ongepast" type="submit">
 
-
-                <input type="submit" name="submit_button" value="Volgen">
+                <a href=# id={{user_id}}><button class='btn btn-default'>Volgen</button></a>
 
             <!--<div class="form-group">-->
             <!--    <button class="btn btn-default" type="volgende">Volgende</button>-->
