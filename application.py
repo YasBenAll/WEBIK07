@@ -198,22 +198,17 @@ def feed():
     if request.method == "GET":
 
         seen_list = list()
-
         amount = db.execute("SELECT COUNT(id) FROM pictures")
         history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
-
         print(history_list)
 
         for item in history_list:
             seen_list.append(item['photo_id'])
 
         print(amount[0]['COUNT(id)'])
-
         rand = random.randrange(1, int(amount[0]['COUNT(id)'])+1)
         print(rand)
-
         picture = db.execute("SELECT filename, description, user_id FROM pictures WHERE id = :id", id=rand)
-
         fd = rand
         ud = picture[0]['user_id']
 
@@ -223,10 +218,8 @@ def feed():
 
         if request.form.get("like"):
             marked = 1
-
         if request.form.get("dislike"):
             marked = 2
-
         if request.form.get("ongepast"):
             marked = 3
 
