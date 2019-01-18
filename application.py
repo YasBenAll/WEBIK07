@@ -232,13 +232,6 @@ def feed():
 
         print(marked)
 
-        if request.form.get("submit") == "Volgen":
-            followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
-            followlist = json.loads(followdb[0]["following"])
-            followlist.append(ud)
-            followjson = json.dumps(followlist)
-            db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
-
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=fd, marked=marked)
 
@@ -297,3 +290,12 @@ def mijn_fotos():
 @app.route('/pictures/<path:filename>')
 def download_file(filename):
     return send_from_directory(MEDIA_FOLDER, filename, as_attachment=True)
+
+@app.route('/background_process')
+def background_process(user_id):
+    followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
+    followlist = json.loads(followdb[0]["following"])
+    followlist.append(user_id)
+    followjson = json.dumps(followlist)
+    db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
+    return True
