@@ -292,3 +292,13 @@ def background_process(user_id):
     followjson = json.dumps(followlist)
     db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
     return True
+
+@app.route("/likelist", methods=["GET", "POST"])
+@login_required
+def likelist():
+    filenames = dict()
+    datas = db.execute("SELECT photo_id, marked FROM history WHERE user_id = :user_id", user_id = session["user_id"])
+    for item in datas:
+        if item["marked"] == 1:
+            liked_foto = item["photo_id"]
+    return render_template("likelist.html", liked_foto = liked_foto, datas = datas)
