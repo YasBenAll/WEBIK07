@@ -40,7 +40,7 @@ db = SQL("sqlite:///likestack.db")
 @login_required
 def index():
     """Give dashboard of user."""
-    return render_template("index.html")
+    return redirect(url_for("feed"))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -198,22 +198,17 @@ def feed():
     if request.method == "GET":
 
         seen_list = list()
-
         amount = db.execute("SELECT COUNT(id) FROM pictures")
         history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
-
         print(history_list)
 
         for item in history_list:
             seen_list.append(item['photo_id'])
 
         print(amount[0]['COUNT(id)'])
-
         rand = random.randrange(1, int(amount[0]['COUNT(id)'])+1)
         print(rand)
-
         picture = db.execute("SELECT filename, description, user_id FROM pictures WHERE id = :id", id=rand)
-
         fd = rand
         ud = picture[0]['user_id']
 
@@ -221,29 +216,17 @@ def feed():
 
     if request.method == "POST":
 
-        if request.form.get("like") == "Like":
+        if request.form.get("like"):
             marked = 1
-
-        if request.form.get("dislike") == "Dislike":
+        if request.form.get("dislike"):
             marked = 2
-
-        if request.form.get("ongepast") == "Ongepast":
+        if request.form.get("ongepast"):
             marked = 3
 
         print(marked)
 
-        if request.form.get("volgen") == "Volgen":
-            followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
-            followlist = json.loads(followdb[0]["following"])
-            followlist.append(ud)
-            followjson = json.dumps(followlist)
-            db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
-
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=fd, marked=marked)
-
-        fd = 0
-        ud = 0
 
         return redirect(url_for("feed"))
 
@@ -266,7 +249,7 @@ def upload():
             # Download the file from `url` and save it locally under `file_name`:
             data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
             url = data["data"][0]['images']['downsized']['url']
-            filename = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
+            filename = data["data"][0]["title"].replace(" ", "") + ".gif"
             urllib.request.urlretrieve(url, filename)
         description = request.form.get("description")
         if not description:
@@ -297,6 +280,25 @@ def mijn_fotos():
         print(item["filename"])
     return render_template("mijn_fotos.html", filename = item["filename"], data = data)
 
-@app.route('/pictures/<path:filename>')
+@app.route('/<path:filename>')
 def download_file(filename):
     return send_from_directory(MEDIA_FOLDER, filename, as_attachment=True)
+
+@app.route('/background_process')
+def background_process(user_id):
+    followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
+    followlist = json.loads(followdb[0]["following"])
+    followlist.append(user_id)
+    followjson = json.dumps(followlist)
+    db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
+    return True
+
+@app.route("/likelist", methods=["GET", "POST"])
+@login_required
+def likelist():
+    filenames = dict()
+    datas = db.execute("SELECT photo_id, marked FROM history WHERE user_id = :user_id", user_id = session["user_id"])
+    for item in datas:
+        if item["marked"] == 1:
+            liked_foto = item["photo_id"]
+    return render_template("likelist.html", liked_foto = liked_foto, datas = datas)
