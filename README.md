@@ -3,7 +3,7 @@
 ### Controller: application.py
 
 /register
-GET:     register.html
+GET:     register.html<br/>
 POST:    invoer om te registreren op onze site. Nagaan of gebruiker al in database staat, en valide gegevens heeft ingevoerd. Indien alles juist is dan wordt de gebruiker toegevoegd aan de database.
 
 /login
