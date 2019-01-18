@@ -3,7 +3,7 @@
 ### Controller: application.py
 
 /register
-GET:     register.html<br/>
+GET:     register.html
 POST:    invoer om te registreren op onze site. Nagaan of gebruiker al in database staat, en valide gegevens heeft ingevoerd. Indien alles juist is dan wordt de gebruiker toegevoegd aan de database.
 
 /login
@@ -63,6 +63,17 @@ Giphy
 
 
 ### Voor de foto’s: "foto's technisch ontwerp".
+![feed](fotos_technisch_ontwerp/feed3.png)
+![likelist](fotos_technisch_ontwerp/likelist2.png)
+![loginpage](fotos_technisch_ontwerp/loginpage.png)
+![menu](fotos_technisch_ontwerp/menu2.png)
+![mijnaccount](fotos_technisch_ontwerp/mijnaccount.png)
+![mijnfotos](fotos_technisch_ontwerp/mijnfotos2.png)
+![rankings](fotos_technisch_ontwerp/rankings2.png)
+![register](fotos_technisch_ontwerp/register.png)
+![themas](fotos_technisch_ontwerp/themas2.png)
+![upload](fotos_technisch_ontwerp/upload.png)
+![vrienden](fotos_technisch_ontwerp/vrienden2.png)
 
 
 
