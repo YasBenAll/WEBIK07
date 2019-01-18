@@ -40,7 +40,7 @@ db = SQL("sqlite:///likestack.db")
 @login_required
 def index():
     """Give dashboard of user."""
-    return render_template("index.html")
+    return redirect(url_for("feed"))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -249,7 +249,7 @@ def upload():
             # Download the file from `url` and save it locally under `file_name`:
             data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
             url = data["data"][0]['images']['downsized']['url']
-            filename = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
+            filename = data["data"][0]["title"].replace(" ", "") + ".gif"
             urllib.request.urlretrieve(url, filename)
         description = request.form.get("description")
         if not description:
@@ -280,7 +280,7 @@ def mijn_fotos():
         print(item["filename"])
     return render_template("mijn_fotos.html", filename = item["filename"], data = data)
 
-@app.route('/pictures/<path:filename>')
+@app.route('/<path:filename>')
 def download_file(filename):
     return send_from_directory(MEDIA_FOLDER, filename, as_attachment=True)
 
