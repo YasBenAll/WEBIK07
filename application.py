@@ -198,21 +198,24 @@ def feed():
     if request.method == "GET":
 
         seen_list = list()
-        amount = db.execute("SELECT COUNT(id) FROM pictures")
+        amount = db.execute("SELECT id FROM pictures")
+        print(amount)
         history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
         print(history_list)
 
         for item in history_list:
             seen_list.append(item['photo_id'])
 
-        print(amount[0]['COUNT(id)'])
-        rand = random.randrange(1, int(amount[0]['COUNT(id)'])+1)
-        print(rand)
-        picture = db.execute("SELECT filename, description, user_id FROM pictures WHERE id = :id", id=rand)
+        print(amount[0]['id'])
+        rand = random.choice(amount)
+        print("right rand =", rand['id'])
+        # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
+
+        picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
         fd = rand
         ud = picture[0]['user_id']
 
-        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=picture[0]['user_id'])
+        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=picture[0]['user_id'], photo_id=picture[0]['id'])
 
     if request.method == "POST":
 

@@ -62,7 +62,18 @@ Jinja
 Giphy
 
 
-### Voor de foto’s: "foto's technisch ontwerp".
+### Schetsen foor technisch ontwerp
+![feed](fotos_technisch_ontwerp/feed3.png)
+![likelist](fotos_technisch_ontwerp/likelist2.png)
+![loginpage](fotos_technisch_ontwerp/loginpage.png)
+![menu](fotos_technisch_ontwerp/menu2.png)
+![mijnaccount](fotos_technisch_ontwerp/mijnaccount.png)
+![mijnfotos](fotos_technisch_ontwerp/mijnfotos2.png)
+![rankings](fotos_technisch_ontwerp/rankings2.png)
+![register](fotos_technisch_ontwerp/register.png)
+![themas](fotos_technisch_ontwerp/themas2.png)
+![upload](fotos_technisch_ontwerp/upload.png)
+![vrienden](fotos_technisch_ontwerp/vrienden2.png)
 
 
 
