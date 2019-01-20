@@ -212,10 +212,11 @@ def feed():
         # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
 
         picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
+        username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
         fd = rand
         ud = picture[0]['user_id']
 
-        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=picture[0]['user_id'], photo_id=picture[0]['id'])
+        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=username[0]['username'])
 
     if request.method == "POST":
 
