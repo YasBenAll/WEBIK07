@@ -6,18 +6,7 @@
 {% endblock %}
 
 {% block main %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type=text/javascript>
-        $(function() {
-          $('a#user_id').bind('click', function() {
-            $.getJSON('/background_process',
-                function(user_id) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-    </script>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
