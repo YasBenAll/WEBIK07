@@ -191,23 +191,22 @@ def forgot():
 def feed():
     """feed van de gebruiker"""
 
+    seen_list = list()
+    amount = db.execute("SELECT id FROM pictures")
+    print(amount)
+    history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
+    print(history_list)
+
+    for item in history_list:
+        seen_list.append(item['photo_id'])
+
+    print(amount[0]['id'])
+    rand = random.choice(amount)
+    print("right rand =", rand['id'])
+    # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
+    picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
+
     if request.method == "GET":
-
-        seen_list = list()
-        amount = db.execute("SELECT id FROM pictures")
-        print(amount)
-        history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
-        print(history_list)
-
-        for item in history_list:
-            seen_list.append(item['photo_id'])
-
-        print(amount[0]['id'])
-        rand = random.choice(amount)
-        print("right rand =", rand['id'])
-        # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
-
-        picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
         username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
         session["photo_id"] = rand['id']
         print(session["photo_id"])
@@ -224,11 +223,19 @@ def feed():
             marked = 2
         if request.form.get("ongepast"):
             marked = 3
-
         print(marked)
+        if request.form.get("volg"):
+            followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
+            picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=picture[0]["id"])
+            followlist = json.loads(followdb[0]["following"])
+            if picturedb[0]["user_id"] not in followlist:
+                followlist.append(picturedb[0]["user_id"])
+            print("user id =",picturedb[0]["user_id"])
+            followjson = json.dumps(followlist)
+            db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
 
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
-                   user_id=session["user_id"], photo_id=session["photo_id"], marked=marked)
+                      user_id=session["user_id"], photo_id=session["photo_id"], marked=marked)
 
         return redirect(url_for("feed"))
 
