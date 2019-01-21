@@ -1,5 +1,5 @@
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session, url_for, send_from_directory
+from flask import Flask, flash, redirect, render_template, request, session, url_for, send_from_directory, g
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
@@ -191,10 +191,6 @@ def forgot():
 def feed():
     """feed van de gebruiker"""
 
-    ud = 0
-    fd = 0
-    marked = 0
-
     if request.method == "GET":
 
         seen_list = list()
@@ -212,12 +208,15 @@ def feed():
         # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
 
         picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
-        fd = rand
-        ud = picture[0]['user_id']
+        username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
+        session["photo_id"] = rand['id']
+        print(session["photo_id"])
 
-        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=picture[0]['user_id'], photo_id=picture[0]['id'])
+        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=username[0]['username'])
 
     if request.method == "POST":
+
+        marked = 0
 
         if request.form.get("like"):
             marked = 1
@@ -229,7 +228,7 @@ def feed():
         print(marked)
 
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
-                   user_id=session["user_id"], photo_id=fd, marked=marked)
+                   user_id=session["user_id"], photo_id=session["photo_id"], marked=marked)
 
         return redirect(url_for("feed"))
 

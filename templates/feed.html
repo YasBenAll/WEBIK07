@@ -2,41 +2,38 @@
 
 {% block title %}
     Feed
-    <script src="mario.js"></script>
 
 {% endblock %}
 
 {% block main %}
-    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
-    <!--<script type=text/javascript>-->
-    <!--    $(function() {-->
-    <!--      $('a#user_id').bind('click', function() {-->
-    <!--        $.getJSON('/background_process',-->
-    <!--            function(user_id) {-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+        $(function() {
+          $('a#user_id').bind('click', function() {
+            $.getJSON('/background_process',
+                function(user_id) {
               //do nothing
-    <!--        });-->
-    <!--        return false;-->
-    <!--      });-->
-    <!--    });-->
-    <!--</script>-->
-
-
+            });
+            return false;
+          });
+        });
+    </script>
 
     <img src="{{ url_for('download_file', filename=picture) }}", alt="{{description}}">
 
     <p>{{description}}</p>
-    <p>photo_id:{{photo_id}}</p>
-    <p>user:{{user_id}}</p>
+
+    <p>van: {{user_id}}</p>
 
     <p>
     <form action="{{ url_for('feed') }}" method="post">
         <fieldset>
 
-                <input name="like" value="Like" type="submit">
-                <input name="dislike" value="Dislike" type="submit">
-                <input name="ongepast" value="Ongepast" type="submit">
+                <input name="like" value="Like" type="submit" class='btn btn-default'>
+                <input name="dislike" value="Dislike" type="submit" class='btn btn-default'>
+                <input name="ongepast" value="Ongepast" type="submit" class='btn btn-default'>
 
-                <a href=# id={{user_id}}><button class='btn btn-default'>Volgen</button></a>
+
 
             <!--<div class="form-group">-->
             <!--    <button class="btn btn-default" type="volgende">Volgende</button>-->
