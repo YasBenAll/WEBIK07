@@ -7,9 +7,8 @@
 {% block main %}
     <div>
         <h1>Likelist</h1>
-                {% for item in data %}
-                    {{ liked_foto }}
-                    <img src="{{ url_for('download_file', liked_foto=item.liked_foto) }}"WIDTH="140" HEIGHT=auto>
-                {% endfor %}
+            {% for item in likelist %}
+                <img src="{{ url_for('download_file', filename=item) }}"WIDTH="140" HEIGHT=auto>
+            {% endfor %}
     </div>
 {% endblock %}
