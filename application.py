@@ -296,12 +296,20 @@ def background_process(user_id):
     db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
     return True
 
-@app.route("/likelist", methods=["GET", "POST"])
+@app.route("/likelist")
 @login_required
 def likelist():
-    filenames = dict()
-    datas = db.execute("SELECT photo_id, marked FROM history WHERE user_id = :user_id", user_id = session["user_id"])
+
+    datas = db.execute("SELECT photo_id, marked FROM history WHERE user_id = :user_id", user_id=session["user_id"])
+
+    likelist = list()
+
     for item in datas:
         if item["marked"] == 1:
-            liked_foto = item["photo_id"]
-    return render_template("likelist.html", liked_foto = liked_foto, datas = datas)
+            liked_foto = db.execute("SELECT filename FROM pictures WHERE id = :photo_id", photo_id =item["photo_id"])
+            likelist.append(liked_foto[0]['filename'])
+
+    print(likelist)
+
+
+    return render_template("likelist.html", likelist=likelist)
