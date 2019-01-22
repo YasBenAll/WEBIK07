@@ -46,15 +46,16 @@
     </script>
 
     <div id="content">
-    <img src="{{ url_for('download_file', filename=picture) }}", alt="{{description}}", id="img1">
-
+        <button id="dislike" class="btn btn-default" >Dislike</button>
+        <img src="{{ url_for('download_file', filename=picture) }}", alt="{{description}}", id="img1">
+        <button id="like" class="btn btn-default" >Like</button>
     <p>{{description}}</p>
 
     <p>van: {{user_id}}</p>
     </div>
     <p>
-    <button id="like" class="btn btn-default" >Like</button>
-    <button id="dislike" class="btn btn-default" >Dislike</button>
+
+
     <button id="ongepast" class="btn btn-default" >Ongepast</button>
     <!--<form action="{{ url_for('feed') }}" method="post">-->
 
