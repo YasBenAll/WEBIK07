@@ -105,3 +105,21 @@ main td
 {
     overflow: hidden;
 }
+#dislike
+{
+    float: left;
+}
+.left
+{
+    float: left;
+    margin: 0.5em 1em 1em 0;
+    border: 1px
+    solid #999;
+    clear: left;
+
+}
+#img1
+{
+    max-width:550 px
+    height: auto;
+}
