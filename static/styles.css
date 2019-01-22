@@ -110,20 +110,36 @@ main td
 #dislike
 {
     float: left;
+    margin-top: 400px;
+}
+#like
+{
+    float: right;
+    margin-top: 400px;
 }
 .left
 {
     float: left;
-    margin: 0.5em 1em 1em 0;
+    margin: 0.5em 1em 0em 1em;
     border: 1px
     solid #999;
     clear: left;
 
 }
-#img1
+.right
+{
+    float: right;
+    margin: 1em 1em 1em 0;
+    border: 1px
+    solid #999;
+    clear: right;
+}
+#content
 {
     max-width:550px;
     height: auto;
+    margin-left: 300px;
+    margin-right: 300px;
 }
 
 
