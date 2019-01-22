@@ -195,23 +195,17 @@ def feed():
 
         seen_list = list()
         amount = db.execute("SELECT id FROM pictures")
-        print(amount)
         history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
-        print(history_list)
 
         for item in history_list:
             seen_list.append(item['photo_id'])
 
-        print(amount[0]['id'])
         rand = random.choice(amount)
-        print("right rand =", rand['id'])
         # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
 
         picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
         username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
         session["photo_id"] = rand['id']
-        print(session["photo_id"])
-
         return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=username[0]['username'])
 
     if request.method == "POST":
@@ -230,7 +224,7 @@ def feed():
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=session["photo_id"], marked=marked)
 
-        return redirect(url_for("feed"))
+        return redirect(url_for("feedcontent"))
 
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
@@ -299,12 +293,13 @@ def background_process(user_id):
 @app.route("/likelist", methods=["GET", "POST"])
 @login_required
 def likelist():
-    filenames = dict()
     datas = db.execute("SELECT photo_id, marked FROM history WHERE user_id = :user_id", user_id = session["user_id"])
+    likelist = list()
     for item in datas:
         if item["marked"] == 1:
-            liked_foto = item["photo_id"]
-    return render_template("likelist.html", liked_foto = liked_foto, datas = datas)
+            liked_foto = db.execute("SELECT filename FROM pictures WHERE id = :photo_id", photo_id = item["photo_id"])
+            likelist.append(liked_foto[0]['filename'])
+    return render_template("likelist.html", likelist = likelist)
 
 @app.route("/feedcontent", methods=["GET", "POST"])
 @login_required
@@ -315,21 +310,15 @@ def feedcontent():
 
         seen_list = list()
         amount = db.execute("SELECT id FROM pictures")
-        print(amount)
         history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
-        print(history_list)
 
         for item in history_list:
             seen_list.append(item['photo_id'])
-
-        print(amount[0]['id'])
         rand = random.choice(amount)
-        print("right rand =", rand['id'])
         # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
 
         picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
         username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
         session["photo_id"] = rand['id']
-        print(session["photo_id"])
 
         return render_template("feedcontent.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=username[0]['username'])

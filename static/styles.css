@@ -106,7 +106,6 @@ main td
     overflow: hidden;
 }
 
-
 #message
 {
   display:none;
@@ -136,3 +135,4 @@ main td
   position: relative;
   left: -35px;
 }
+
