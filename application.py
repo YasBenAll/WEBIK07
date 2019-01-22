@@ -206,6 +206,7 @@ def feed():
         picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
         username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
         session["photo_id"] = rand['id']
+        session["picture_user_id"] = picture[0]["user_id"]
         return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=username[0]['username'])
 
     if request.method == "POST":
@@ -218,6 +219,16 @@ def feed():
             marked = 2
         if request.json == 'ongepast':
             marked = 3
+        if request.json== 'volg':
+            followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
+            picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=picture[0]["id"])
+            followlist = json.loads(followdb[0]["following"])
+            if picturedb[0]["user_id"] not in followlist:
+                followlist.append(session["picture_user_id"])
+            print(picturedb[0]["user_id"])
+            followjson = json.dumps(followlist)
+            db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
+
 
         print(marked)
 
