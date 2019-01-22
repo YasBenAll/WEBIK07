@@ -219,9 +219,9 @@ def feed():
             marked = 2
         if request.json == 'ongepast':
             marked = 3
-        if request.json== 'volg':
+        if request.json == 'volg':
             followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
-            picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=picture[0]["id"])
+            picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=session["picture_user_id"])
             followlist = json.loads(followdb[0]["following"])
             if picturedb[0]["user_id"] not in followlist:
                 followlist.append(session["picture_user_id"])
