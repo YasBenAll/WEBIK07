@@ -105,3 +105,34 @@ main td
 {
     overflow: hidden;
 }
+
+
+#message
+{
+  display:none;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+/* green color for password check*/
+.valid
+{
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+}
+
+/* red color for password check*/
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+}
