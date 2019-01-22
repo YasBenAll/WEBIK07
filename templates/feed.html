@@ -42,11 +42,21 @@
                     $("#content").html(picture);
                 });
             });
+            $("#volg").on("click", function(){
+                $.ajax({type : "POST",
+                    url : "{{ url_for('feed') }}",
+                    data: JSON.stringify("volg"),
+                    contentType: 'application/json;charset=UTF-8',
+                });
+                $.get("/feedcontent", function(picture) {
+                    $("#content").html(picture);
+                });
+            });
         });
     </script>
     <div>
         <a class="left" href="#" role="button" id="dislike" aria-haspopup="true" aria-expanded="false">
-                                        <img src="https://img.icons8.com/material/24/000000/circled-left.png"width="200" height="200" >
+        <img src="https://img.icons8.com/material/24/000000/circled-left.png"width="200" height="200" >
         </a>
     </div>
     <div id="content">
@@ -64,6 +74,8 @@
 
 
     <button id="ongepast" class="btn btn-default" >Ongepast</button>
+    <button id="volg" class="btn btn-default" >Volgen</button>
+
     <!--<form action="{{ url_for('feed') }}" method="post">-->
 
         <!--<fieldset>
