@@ -117,6 +117,12 @@ def register():
         elif not request.form.get("question"):
             return apology("please answer the security question")
 
+        ingevoerd_wachtwoord = request.form.get("password")
+        print(ingevoerd_wachtwoord)
+
+        if not (any(x.isupper() for x in ingevoerd_wachtwoord) and any(x.islower() for x in ingevoerd_wachtwoord) and any(x.isdigit() for x in ingevoerd_wachtwoord) and len(ingevoerd_wachtwoord) >= 8):
+            return apology("please check the password syntax")
+
         # encrypt password
         hash = pwd_context.hash(request.form.get("password"))
 
@@ -320,21 +326,23 @@ def likelist():
 def feedcontent():
     """feed van de gebruiker"""
 
-    seen_list = list()
-    amount = db.execute("SELECT id FROM pictures")
-    history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
+    if request.method == "GET":
 
-    for item in history_list:
-        seen_list.append(item['photo_id'])
+        seen_list = list()
+        amount = db.execute("SELECT id FROM pictures")
+        history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
 
-    rand = random.choice(amount)
-    # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
+        for item in history_list:
+            seen_list.append(item['photo_id'])
 
-    picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
-    username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
-    session["photo_id"] = rand['id']
-    session["picture_user_id"] = picture[0]["user_id"]
+        rand = random.choice(amount)
+        # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
 
-    print("dit is feedcontent")
+        picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
+        username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
+        session["photo_id"] = rand['id']
+        session["picture_user_id"] = picture[0]["user_id"]
 
-    return render_template("feedcontent.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=username[0]['username'])
+        print("dit is feedcontent")
+
+        return render_template("feedcontent.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=username[0]['username'])
