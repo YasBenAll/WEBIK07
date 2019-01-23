@@ -276,9 +276,9 @@ def upload():
             filename = data["data"][0]["title"].replace(" ", "") + ".gif"
             session["filename_giph"] = filename
             return render_template('upload.html', urldata = urldata)
-        if request.json == 'giphy_image_choose':
-            pass
-
+        # if request.json[1] == 'giphy_image_choose':
+            print(request.json)
+            print("222222222222222222222222222222222222222222222")
     else:
         return render_template('upload.html')
 
@@ -370,3 +370,8 @@ def feedcontent():
 @app.route("/giphy_choose", methods=["GET", "POST"])
 def giphy_choose():
     return render_template("giphychoice.html")
+
+@app.route('/postmethod', methods = ['POST'])
+def get_post_javascript_data():
+    jsdata = request.form['javascript_data']
+    return redirect(url_for("upload"))

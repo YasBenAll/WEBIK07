@@ -12,7 +12,7 @@
         $("#giphy_image_choose").on("click", function(){
             $.ajax({type : "POST",
                 url : "{{ url_for('upload') }}",
-                data: JSON.stringify("giphy_image_choose"),
+                data: JSON.stringify(giphyReturn),
                 contentType: 'application/json;charset=UTF-8',
             });
             // $.get("/feedcontent", function(picture) {
@@ -21,10 +21,10 @@
         });
     });
 
-    function giphyReturn() {
-      var source =
-    }
-
+    function giphyReturn(img, id) {
+        var javascript_data: img,
+        var id = "giphy_image_choose"
+};
     </script>
     <script>
     var giphyInput = document.getElementById("giphy");
@@ -39,20 +39,19 @@
       document.getElementById("message").style.display = "none";
     };
 
-
     function myFunction() {
       document.getElementById("demo").innerHTML = "Hello JavaScript!";
     }
 
-    function light(sw) {
-      var pic;
-      if (sw == 0) {
-        pic =  JSON.parse('{{urldata}}')[0];
-      } else {
-        pic = JSON.parse('{{urldata}}')[1];
-      }
-      document.getElementById('myImage').src = pic;
-    }
+    // function light(sw) {
+    //   var pic;
+    //   if (sw == 0) {
+    //     pic =  JSON.parse('{{urldata}}')[0];
+    //   } else {
+    //     pic = JSON.parse('{{urldata}}')[1];
+    //   }
+    //   document.getElementById('myImage').src = pic;
+    // }
 
     </script>
 
@@ -74,12 +73,12 @@
     <div>
     {% for i in urldata %}
         <!--<span onclick=someFunction({{ i |safe }});>{{ i }}</span>-->
-        <img src={{ i }} id = "giphy_image_choose" onclick="giphyReturn(this)">
+        <img src={{ i }} id = "giphy_image_choose" onclick="giphyReturn(i.src, id)">
 
     {% endfor %}
     </div>
 
-    <img id="myImage" src={{urldata}} width="100" height="180">
+    <!--<img id="myImage" src={{urldata}} width="100" height="180">-->
 
 
     <p>
