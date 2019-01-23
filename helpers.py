@@ -62,5 +62,6 @@ def feedgenerator():
     username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
     session["photo_id"] = rand['id']
     session["picture_user_id"] = picture[0]["user_id"]
-
-    return picture, username
+    session["filename"] = picture[0]['filename']
+    session["description"] = picture[0]['description']
+    session["username_picture"] = username[0]['username']
