@@ -27,9 +27,10 @@
                     Bevestig wachtwoord
                 </div>
                 <div id="tweede_blok">
-                    <div class="form-group"><input class="form-control animate" name="confirmation" placeholder="Password confirmation" type="password" required/></div>
+                    <div class="form-group"><input class="form-control animate" name="confirmation" id="confir" placeholder="Password confirmation" type="password" onkeyup='check();' required/></div>
                 </div>
             </div>
+            <span id="confirmation_message"></span>
             <div id="regel">
                 <p>
                     <h4> Security question</h4>
@@ -116,6 +117,17 @@
         length.classList.add("invalid");
       }
      };
+
+    var check = function() {
+          if (document.getElementById('psw').value ==
+              document.getElementById('confir').value) {
+              document.getElementById('confirmation_message').style.color = 'green';
+              document.getElementById('confirmation_message').innerHTML = '<b>Wachtwoorden komen overeen!</b>';
+          } else {
+          		document.getElementById('confirmation_message').style.color = 'red';
+              document.getElementById('confirmation_message').innerHTML = '<b>Wachtwoorden komen niet overeen!</b>';
+          }
+      };
     </script>
 
 {% endblock %}

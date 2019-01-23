@@ -103,24 +103,23 @@ main td
 }
 #tweede_blok
 {
-    overflow: hidden;
+    overflow: visible;
 }
 
 
 #dislike
 {
     float: left;
-    margin-top: 400px;
+
 }
 #like
 {
     float: right;
-    margin-top: 400px;
+
 }
 .left
 {
     float: left;
-    margin: 0.5em 1em 0em 1em;
     border: 1px
     solid #999;
     clear: left;
@@ -129,7 +128,6 @@ main td
 .right
 {
     float: right;
-    margin: 1em 1em 1em 0;
     border: 1px
     solid #999;
     clear: right;
@@ -172,4 +170,24 @@ main td
   position: relative;
   left: -35px;
 }
-
+#wrapper_feed
+{
+    width: 80%;
+    overflow: hidden;
+    padding-left: 10%;
+}
+#blok_dislike
+{
+    width: 100px;
+    float:left;
+    text-align: left;
+}
+#blok_feed
+{
+    overflow: hidden;
+}
+#blok_like
+{
+    width: 100px;
+    float:right;
+}

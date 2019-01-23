@@ -21,15 +21,16 @@
                     Wachtwoord
                 </div>
                 <div id="tweede_blok">
-                    <div class="form-group"><input class="form-control animate" name="password" id="psw" placeholder="Password" type="password" pattern="([A-Z1+])([a-z+1])([0-9+1])" required/></div>
+                    <div class="form-group"><input class="form-control animate" name="password" id="psw" placeholder="Password" type="password" required/></div>
                 </div>
                 <div id="eerste_blok">
                     Bevestig wachtwoord
                 </div>
                 <div id="tweede_blok">
-                    <div class="form-group"><input class="form-control animate" name="confirmation" placeholder="Password confirmation" type="password" required/></div>
+                    <div class="form-group"><input class="form-control animate" name="confirmation" id="confir" placeholder="Password confirmation" type="password" onkeyup='check();' required/></div>
                 </div>
             </div>
+            <span id="confirmation_message"></span>
             <div id="regel">
                 <p>
                     <h4> Security question</h4>
@@ -60,6 +61,7 @@
 
     <script>
     var myInput = document.getElementById("psw");
+    var myConfirmation = document.getElementById("confir");
     var letter = document.getElementById("letter");
     var capital = document.getElementById("capital");
     var number = document.getElementById("number");
@@ -68,7 +70,7 @@
     // When the user clicks on the password field, show the message box
     myInput.onfocus = function() {
       document.getElementById("message").style.display = "block";
-    }
+    };
 
     // When the user clicks outside of the password field, hide the message box
     myInput.onblur = function() {
@@ -77,45 +79,59 @@
 
     // When the user starts to type something inside the password field
     myInput.onkeyup = function() {
-      // Validate lowercase letters
-      var lowerCaseLetters = /[a-z]/g;
-      if(myInput.value.match(lowerCaseLetters)) {
+
+        // Validate lowercase letters
+        var lowerCaseLetters = /[a-z]/g;
+        if(myInput.value.match(lowerCaseLetters)) {
         letter.classList.remove("invalid");
         letter.classList.add("valid");
-      } else {
+        } else {
         letter.classList.remove("valid");
         letter.classList.add("invalid");
-      }
+        }
 
-      // Validate capital letters
-      var upperCaseLetters = /[A-Z]/g;
-      if(myInput.value.match(upperCaseLetters)) {
+        // Validate capital letters
+        var upperCaseLetters = /[A-Z]/g;
+        if(myInput.value.match(upperCaseLetters)) {
         capital.classList.remove("invalid");
         capital.classList.add("valid");
-      } else {
+        } else {
         capital.classList.remove("valid");
         capital.classList.add("invalid");
-      }
+        }
 
-      // Validate numbers
-      var numbers = /[0-9]/g;
-      if(myInput.value.match(numbers)) {
+        // Validate numbers
+        var numbers = /[0-9]/g;
+        if(myInput.value.match(numbers)) {
         number.classList.remove("invalid");
         number.classList.add("valid");
-      } else {
+        } else {
         number.classList.remove("valid");
         number.classList.add("invalid");
-      }
+        }
 
-      // Validate length
-      if(myInput.value.length >= 8) {
+        // Validate length
+        if(myInput.value.length >= 8) {
         length.classList.remove("invalid");
         length.classList.add("valid");
-      } else {
+        } else {
         length.classList.remove("valid");
         length.classList.add("invalid");
-      }
+        }
      };
+
+    // check if password and confirmation are the same
+     var check = function() {
+          if (document.getElementById('psw').value ==
+              document.getElementById('confir').value) {
+              document.getElementById('confirmation_message').style.color = 'green';
+              document.getElementById('confirmation_message').innerHTML = '<b>Wachtwoorden komen overeen!</b>';
+          } else {
+          		document.getElementById('confirmation_message').style.color = 'red';
+              document.getElementById('confirmation_message').innerHTML = '<b>Wachtwoorden komen niet overeen!</b>';
+          }
+      };
     </script>
+
 
 {% endblock %}
