@@ -1,6 +1,7 @@
 from cs50 import SQL
 import csv
 import urllib.request, json
+import random
 
 from flask import redirect, render_template, request, session
 from functools import wraps
@@ -35,85 +36,6 @@ def login_required(f):
     return decorated_function
 
 
-def lookup(symbol):
-    """Look up quote for symbol."""
-
-    # reject symbol if it starts with caret
-    if symbol.startswith("^"):
-        return None
-
-    # reject symbol if it contains comma
-    if "," in symbol:
-        return None
-
-    # query Yahoo for quote
-    # http://stackoverflow.com/a/21351911
-    try:
-
-        # GET CSV
-        url = f"http://download.finance.yahoo.com/d/quotes.csv?f=snl1&s={symbol}"
-        webpage = urllib.request.urlopen(url)
-
-        # read CSV
-        datareader = csv.reader(webpage.read().decode("utf-8").splitlines())
-
-        # parse first row
-        row = next(datareader)
-
-        # ensure stock exists
-        try:
-            price = float(row[2])
-        except:
-            return None
-
-        # return stock's name (as a str), price (as a float), and (uppercased) symbol (as a str)
-        return {
-            "name": row[1],
-            "price": price,
-            "symbol": row[0].upper()
-        }
-
-    except:
-        pass
-
-    # query Alpha Vantage for quote instead
-    # https://www.alphavantage.co/documentation/
-    try:
-
-        # GET CSV
-        url = f"https://www.alphavantage.co/query?apikey=NAJXWIA8D6VN6A3K&datatype=csv&function=TIME_SERIES_INTRADAY&interval=1min&symbol={symbol}"
-        webpage = urllib.request.urlopen(url)
-
-        # parse CSV
-        datareader = csv.reader(webpage.read().decode("utf-8").splitlines())
-
-        # ignore first row
-        next(datareader)
-
-        # parse second row
-        row = next(datareader)
-
-        # ensure stock exists
-        try:
-            price = float(row[4])
-        except:
-            return None
-
-        # return stock's name (as a str), price (as a float), and (uppercased) symbol (as a str)
-        return {
-            "name": symbol.upper(), # for backward compatibility with Yahoo
-            "price": price,
-            "symbol": symbol.upper()
-        }
-
-    except:
-        return None
-
-
-def usd(value):
-    """Formats value as USD."""
-    return f"${value:,.2f}"
-
 def upload_photo(filename, description, theme_id):
     # store the picture into the database
     return db.execute("INSERT INTO pictures(user_id, filename, description, theme_id) VALUES(:user_id, :filename, :description, :theme_id)", user_id = session["user_id"] , filename = filename, description = description, theme_id = theme_id)
@@ -124,3 +46,22 @@ def add_friend():
 def giphy():
     data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=hamburger&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
     return data["data"][0]['images']['downsized']['url']
+
+def feedgenerator():
+    seen_list = list()
+    amount = db.execute("SELECT id FROM pictures")
+    history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
+
+    for item in history_list:
+        seen_list.append(item['photo_id'])
+
+    rand = random.choice(amount)
+    # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
+
+    picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
+    username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
+    session["photo_id"] = rand['id']
+    session["picture_user_id"] = picture[0]["user_id"]
+    session["filename"] = picture[0]['filename']
+    session["description"] = picture[0]['description']
+    session["username_picture"] = username[0]['username']
