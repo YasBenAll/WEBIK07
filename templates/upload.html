@@ -6,15 +6,88 @@
 {% endblock %}
 
 {% block main %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+        $("#giphy_image_choose").on("click", function(){
+            $.ajax({type : "POST",
+                url : "{{ url_for('upload') }}",
+                data: JSON.stringify("giphy_image_choose"),
+                contentType: 'application/json;charset=UTF-8',
+            });
+            // $.get("/feedcontent", function(picture) {
+            //     $("#content").html(picture);
+            // });
+        });
+    });
+
+    function giphyReturn() {
+      var source =
+    }
+
+    </script>
+    <script>
+    var giphyInput = document.getElementById("giphy");
+
+    // When the user clicks on the password field, show the message box
+    giphyInput.onfocus = function() {
+        document.getElementById("message").style.display = "block";
+    };
+
+    // When the user clicks outside of the password field, hide the message box
+    giphyInput.onblur = function() {
+      document.getElementById("message").style.display = "none";
+    };
+
+
+    function myFunction() {
+      document.getElementById("demo").innerHTML = "Hello JavaScript!";
+    }
+
+    function light(sw) {
+      var pic;
+      if (sw == 0) {
+        pic =  JSON.parse('{{urldata}}')[0];
+      } else {
+        pic = JSON.parse('{{urldata}}')[1];
+      }
+      document.getElementById('myImage').src = pic;
+    }
+
+    </script>
+
+
     <h4>Upload a picture to the stack</h4>
     <form method="post" enctype="multipart/form-data" action="{{url_for('upload')}}">
         <input type="description" placeholder="description" name="description" id="description">
         <br/>
         <input type="file" name="photo" class="button" id="choosefile">
 
-        <input type="description" placeholder="gif keyword" name="giphy" id="description">
-        <br/>
-
         <input type="submit" class="button" id="uploadbutton">
+        <input type="description" placeholder="gif keyword" name="giphy" id="giphy">
+        <br/>
+        <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
     </form>
+
+
+
+    <div>
+    {% for i in urldata %}
+        <!--<span onclick=someFunction({{ i |safe }});>{{ i }}</span>-->
+        <img src={{ i }} id = "giphy_image_choose" onclick="giphyReturn(this)">
+
+    {% endfor %}
+    </div>
+
+    <img id="myImage" src={{urldata}} width="100" height="180">
+
+
+    <p>
+    <button type="button" onclick="light(1)">Light On</button>
+    <button type="button" onclick="light(0)">Light Off</button>
+    </p>
+
+
+
+
 {% endblock %}
