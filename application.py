@@ -118,7 +118,6 @@ def register():
             return apology("please answer the security question")
 
         ingevoerd_wachtwoord = request.form.get("password")
-        print(ingevoerd_wachtwoord)
 
         if not (any(x.isupper() for x in ingevoerd_wachtwoord) and any(x.islower() for x in ingevoerd_wachtwoord) and any(x.isdigit() for x in ingevoerd_wachtwoord) and len(ingevoerd_wachtwoord) >= 8):
             return apology("please check the password syntax")
@@ -166,6 +165,11 @@ def forgot():
 
         elif not request.form.get("question"):
             return apology("please answer the security question")
+
+        ingevoerd_wachtwoord = request.form.get("password")
+
+        if not (any(x.isupper() for x in ingevoerd_wachtwoord) and any(x.islower() for x in ingevoerd_wachtwoord) and any(x.isdigit() for x in ingevoerd_wachtwoord) and len(ingevoerd_wachtwoord) >= 8):
+            return apology("please check the password syntax")
 
         # encrypt password
         hash = pwd_context.hash(request.form.get("password"))
