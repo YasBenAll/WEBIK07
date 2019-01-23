@@ -192,28 +192,13 @@ def feed():
     """feed van de gebruiker"""
 
     if request.method == "GET":
-
-        seen_list = list()
-        amount = db.execute("SELECT id FROM pictures")
-        history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
-
-        for item in history_list:
-            seen_list.append(item['photo_id'])
-
-        rand = random.choice(amount)
-        # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
-
-        picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
-        username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
-        session["photo_id"] = rand['id']
-        session["picture_user_id"] = picture[0]["user_id"]
-
+        feedgenerator()
+        print(session["filename"])
         print("dit is feed")
 
-        return render_template("feed.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=username[0]['username'])
+        return render_template("feed.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
 
     if request.method == "POST":
-
         marked = 0
 
         if request.json == 'like':
@@ -320,21 +305,8 @@ def likelist():
 def feedcontent():
     """feed van de gebruiker"""
 
-    seen_list = list()
-    amount = db.execute("SELECT id FROM pictures")
-    history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
-
-    for item in history_list:
-        seen_list.append(item['photo_id'])
-
-    rand = random.choice(amount)
-    # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
-
-    picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
-    username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
-    session["photo_id"] = rand['id']
-    session["picture_user_id"] = picture[0]["user_id"]
-
+    feedgenerator()
+    print(session["filename"])
     print("dit is feedcontent")
 
-    return render_template("feedcontent.html", picture=picture[0]['filename'], description=picture[0]['description'], user_id=username[0]['username'])
+    return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
