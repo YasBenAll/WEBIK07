@@ -33,7 +33,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="{{ url_for('index') }}"><span class="blue">LikeStack</span></a>
+                        <a class="navbar-brand" href="{{ url_for('index') }}"><img src="{{ url_for('download_file', filename='logo.png') }}"WIDTH="auto" HEIGHT=38px></a>
                     </div>
                     <div class="collapse navbar-collapse" id="navbar">
                         {% if session.user_id %}

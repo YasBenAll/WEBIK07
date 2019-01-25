@@ -48,20 +48,28 @@ def giphy():
     return data["data"][0]['images']['downsized']['url']
 
 def feedgenerator():
-    seen_list = list()
+    seendb = db.execute("SELECT seen_list from users WHERE id=:id", id=session["user_id"])
+    seenlist = json.loads(seendb[0]["seen_list"])
+    print("seendb=", seendb)
+    print("seenlist=", seenlist)
+    seenset = set(seenlist)
+    set_all = set()
     amount = db.execute("SELECT id FROM pictures")
-    history_list = db.execute("SELECT photo_id FROM history WHERE user_id = :user_id", user_id=session["user_id"])
-
-    for item in history_list:
-        seen_list.append(item['photo_id'])
-
-    rand = random.choice(amount)
-    # rand = random.randrange(1, int(amount[0]['id'])+1) - Werkt niet aangezien sommige foto's uit de database verwijderd zijn.
-
-    picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand['id'])
-    username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
-    session["photo_id"] = rand['id']
-    session["picture_user_id"] = picture[0]["user_id"]
-    session["filename"] = picture[0]['filename']
-    session["description"] = picture[0]['description']
-    session["username_picture"] = username[0]['username']
+    for item in amount:
+        set_all.add(item['id'])
+    notseen = set()
+    notseen = set_all - seenset
+    print("notseen= ", notseen)
+    if notseen == set():
+        return False
+    else:
+        notseenlist = list(notseen)
+        rand = random.choice(notseenlist)
+        picture = db.execute("SELECT filename, description, user_id, id FROM pictures WHERE id = :id", id=rand)
+        username = db.execute("SELECT username FROM users WHERE id = :id", id=picture[0]['user_id'])
+        session["photo_id"] = rand
+        session["picture_user_id"] = picture[0]["user_id"]
+        session["filename"] = picture[0]['filename']
+        session["description"] = picture[0]['description']
+        session["username_picture"] = username[0]['username']
+        return True
