@@ -1,0 +1,51 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    sendgiphy
+{% endblock %}
+
+{% block main %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+function myFunction(giphname) {
+    var test = { name: giphname, id: "send_giphy" }
+
+    document.getElementById("demo").innerHTML = test['name'];
+
+        $(document).ready(function(){
+        $("#send_giphy").on("click", function(){
+            $.ajax({type : "POST",
+                url : "{{ url_for('sendgiphy') }}",
+                data: JSON.stringify(test),
+                contentType: 'application/json;charset=UTF-8',
+            });
+        });
+    });
+}
+</script>
+
+
+
+
+    <h4>Upload a picture to the stack</h4>
+        <p id="demo"></p>
+    <form method="post" enctype="multipart/form-data" action="{{url_for('upload')}}">
+        <input type="submit" class="button" id="uploadbutton">
+        <input type="description" placeholder="gif keyword" name="giphy" id="giphy">
+        <br/>
+        <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
+    </form>
+
+
+
+    <div>
+    {% for i in urldata %}
+
+        <img src={{ i }} id = "send_giphy" name = {{ i }} onclick ="myFunction(name, id)" >
+    {% endfor %}
+
+    <!--<img src={{ url }} onclick ="myFunction()">-->
+
+
+{% endblock %}

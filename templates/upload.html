@@ -8,24 +8,22 @@
 {% block main %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
-        $("#giphy_image_choose").on("click", function(){
-            $.ajax({type : "POST",
-                url : "{{ url_for('upload') }}",
-                data: JSON.stringify(giphyReturn),
-                contentType: 'application/json;charset=UTF-8',
-            });
-            // $.get("/feedcontent", function(picture) {
-            //     $("#content").html(picture);
-            // });
-        });
-    });
+    function myFunction(giphname) {
+        var test = { name: giphname, id: "send_giphy" }
 
-    function giphyReturn(img, id) {
-        var javascript_data: img,
-        var id = "giphy_image_choose"
-};
+        document.getElementById("demo").innerHTML = test['name'];
+            $(document).ready(function(){
+            $("#send_giphy").on("click", function(){
+                $.ajax({type : "POST",
+                    url : "{{ url_for('upload') }}",
+                    data: JSON.stringify(test),
+                    contentType: 'application/json;charset=UTF-8',
+                });
+            });
+        });
+    }
     </script>
+
     <script>
     var giphyInput = document.getElementById("giphy");
 
@@ -38,25 +36,11 @@
     giphyInput.onblur = function() {
       document.getElementById("message").style.display = "none";
     };
-
-    function myFunction() {
-      document.getElementById("demo").innerHTML = "Hello JavaScript!";
-    }
-
-    // function light(sw) {
-    //   var pic;
-    //   if (sw == 0) {
-    //     pic =  JSON.parse('{{urldata}}')[0];
-    //   } else {
-    //     pic = JSON.parse('{{urldata}}')[1];
-    //   }
-    //   document.getElementById('myImage').src = pic;
-    // }
-
     </script>
 
 
     <h4>Upload a picture to the stack</h4>
+        <p id="demo"></p>
     <form method="post" enctype="multipart/form-data" action="{{url_for('upload')}}">
         <input type="description" placeholder="description" name="description" id="description">
         <br/>
@@ -71,22 +55,11 @@
 
 
     <div>
+
     {% for i in urldata %}
-        <!--<span onclick=someFunction({{ i |safe }});>{{ i }}</span>-->
-        <img src={{ i }} id = "giphy_image_choose" onclick="giphyReturn(i.src, id)">
-
+        <img src={{ i }} id = "send_giphy" name = {{ i }} onclick ="myFunction(name, id)" >
     {% endfor %}
+
     </div>
-
-    <!--<img id="myImage" src={{urldata}} width="100" height="180">-->
-
-
-    <p>
-    <button type="button" onclick="light(1)">Light On</button>
-    <button type="button" onclick="light(0)">Light Off</button>
-    </p>
-
-
-
 
 {% endblock %}
