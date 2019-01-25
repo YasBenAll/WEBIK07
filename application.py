@@ -269,6 +269,7 @@ def upload():
             return redirect(url_for("feed"))
 
         if request.form.get("giphy"):
+            print("request.form.get giphy")
             keyword = request.form.get("giphy")
             # Download the file from `url` and save it locally under `file_name`:
             data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
@@ -281,6 +282,7 @@ def upload():
             return render_template('upload.html', urldata = urldata)
 
         if request.json['id'] == "send_giphy":
+            print("send_giphy")
             print(request.json['id'])
             url = request.json['name']
             filename = url.replace("https://","").replace("/","")
@@ -292,10 +294,10 @@ def upload():
                 description = ""
             theme_id = 0
             upload_photo(filename, description, theme_id)
-
-            return render_template('upload.html', urldata = urldata)
-
+            print("uploaded!")
+            return redirect(url_for("feed"))
     else:
+        print("111111111111111111111111111111111111")
         return render_template('upload.html')
 
     # if urldata == list():
@@ -371,13 +373,3 @@ def feedcontent():
         print("dit is feedcontent")
 
         return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
-
-
-@app.route("/giphy_choose", methods=["GET", "POST"])
-def giphy_choose():
-    return render_template("giphychoice.html")
-
-@app.route('/postmethod', methods = ['POST'])
-def get_post_javascript_data():
-    jsdata = request.form['javascript_data']
-    return redirect(url_for("upload"))
