@@ -381,37 +381,3 @@ def giphy_choose():
 def get_post_javascript_data():
     jsdata = request.form['javascript_data']
     return redirect(url_for("upload"))
-
-@app.route("/sendgiphy", methods=["GET", "POST"])
-@login_required
-def sendgiphy():
-
-    data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=rock&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
-    url = data["data"][0]['images']['downsized']['url']
-    urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
-
-    # declare photos as an image uploadset
-    photos = UploadSet('photos', IMAGES)
-
-    # declare folder where photos will be uploaded to
-    app.config['UPLOADED_PHOTOS_DEST'] = 'pictures'
-    configure_uploads(app, photos)
-
-    if request.method == 'POST':
-        if request.json['id'] == "send_giphy":
-            print(request.json['id'])
-            url = request.json['name']
-            filename = url.replace("https://","").replace("/","")
-            directory = "pictures/" + filename
-            urllib.request.urlretrieve(url, directory)
-
-            description = request.form.get("description")
-            if not description:
-                description = ""
-            theme_id = 0
-            upload_photo(filename, description, theme_id)
-
-            return render_template('sendgiphy.html', urldata = urldata)
-    else:
-        print("else")
-        return render_template('sendgiphy.html', urldata = urldata, url = url)
