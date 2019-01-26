@@ -11,33 +11,16 @@
     function myFunction(giphname) {
         var test = { name: giphname, id: "send_giphy" }
 
-        document.getElementById("demo").innerHTML = test['name'];
-            $(document).ready(function(){
-            $("#send_giphy").on("click", function(){
-                $.ajax({type : "POST",
-                    url : "{{ url_for('upload') }}",
-                    data: JSON.stringify(test),
-                    contentType: 'application/json;charset=UTF-8',
-                });
-            });
+        $.ajax({type : "POST",
+            url : "{{ url_for('upload') }}",
+            data: JSON.stringify(test),
+            contentType: 'application/json;charset=UTF-8'
         });
+
+
+        window.location.replace("https://ide50-sp00p.legacy.cs50.io:8080/feed")
     }
     </script>
-
-    <script>
-    var giphyInput = document.getElementById("giphy");
-
-    // When the user clicks on the password field, show the message box
-    giphyInput.onfocus = function() {
-        document.getElementById("message").style.display = "block";
-    };
-
-    // When the user clicks outside of the password field, hide the message box
-    giphyInput.onblur = function() {
-      document.getElementById("message").style.display = "none";
-    };
-    </script>
-
 
     <h4>Upload a picture to the stack</h4>
         <p id="demo"></p>
