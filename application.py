@@ -45,18 +45,17 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """Log user in."""
+    """
+    Log user in.
+    """
 
     # forget any user_id
     session.clear()
 
-    # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        # ensure username was submitted
+        # ensure user input is correct
         if not request.form.get("username"):
             return apology("must provide username")
-
-        # ensure password was submitted
         elif not request.form.get("password"):
             return apology("must provide password")
 
@@ -364,7 +363,7 @@ def feedcontent():
     """feed van de gebruiker"""
 
     if feedgenerator() == False:
-            return apology("je bent door de stack heen")
+        return apology("je bent door de stack heen")
 
     else:
         print(session["filename"])
