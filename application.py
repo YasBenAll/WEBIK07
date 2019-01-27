@@ -198,7 +198,6 @@ def forgot():
 @app.route("/feed", methods=["GET", "POST"])
 @login_required
 def feed():
-    """feed van de gebruiker"""
 
     if request.method == "GET":
         if feedgenerator() == False:
