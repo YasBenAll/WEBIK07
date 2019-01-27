@@ -258,7 +258,8 @@ def upload():
 
     if request.method == 'POST':
         if 'photo' in request.files:
-            print("00000000000000000000000000000000000000000")
+            print("if photo in request.files")
+
             filename= photos.save(request.files['photo'])
             description = request.form.get("description")
             if not description:
@@ -268,27 +269,22 @@ def upload():
             return redirect(url_for("feed"))
 
         if request.form.get("giphy"):
-            print("55555555555555555555555555555")
+            print("request.form.get(giphy)")
+
             session["giphdescription"] = request.form.get("description")
             keyword = request.form.get("giphy")
             # Download the file from `url` and save it locally under `file_name`:
             data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
             url = data["data"][0]['images']['downsized']['url']
             urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
-            # directory = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
-            # filename = data["data"][0]["title"].replace(" ", "") + ".gif"
-            # session["filename_giph"] = filename
             return render_template('upload.html', urldata = urldata, url = url)
 
         if request.json['id'] == "send_giphy":
-            print("send_giphy")
-            print("999999999999999999999999999999999")
-            print(request.json['description'])
-            url = request.json['name']
+            print("if request.json[id] == send giphy")
+
             filename = url.replace("https://","").replace("/","")
             directory = "pictures/" + filename
             urllib.request.urlretrieve(url, directory)
-
             description = session["giphdescription"]
             if not description:
                 description = ""
@@ -297,25 +293,9 @@ def upload():
             print("uploaded!")
             return redirect(url_for("upload"))
 
-
     else:
-        print("111111111111111111111111111111111111")
+        print("else render_template")
         return render_template('upload.html')
-
-    # if urldata == list():
-    #     urldata = ["test", "foo", "bar"]
-
-# TEST
-
-    # data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + "mario" +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
-    # url = data["data"][0]['images']['downsized']['url']
-    # urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
-    # directory = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
-    # urllib.request.urlretrieve(url, directory)
-    # filename = data["data"][0]["title"].replace(" ", "") + ".gif"
-
-# TEST
-
 
 @app.route("/friend", methods=["GET", "POST"])
 @login_required

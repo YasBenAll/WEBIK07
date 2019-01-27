@@ -191,3 +191,7 @@ main td
     width: 100px;
     float:right;
 }
+
+input[type=file] {
+    margin: 0 auto;
+}
