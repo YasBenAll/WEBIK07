@@ -257,9 +257,10 @@ def upload():
     configure_uploads(app, photos)
 
     if request.method == 'POST':
+
+        # upload een foto of gif met beschrijving naar de site
         if 'photo' in request.files:
             print("if photo in request.files")
-
             filename= photos.save(request.files['photo'])
             description = request.form.get("description")
             if not description:
@@ -267,10 +268,8 @@ def upload():
             theme_id = 0
             upload_photo(filename, description, theme_id)
             return redirect(url_for("feed"))
-
         if request.form.get("giphy"):
             print("request.form.get(giphy)")
-
             session["giphdescription"] = request.form.get("description")
             keyword = request.form.get("giphy")
             # Download the file from `url` and save it locally under `file_name`:
@@ -278,10 +277,8 @@ def upload():
             url = data["data"][0]['images']['downsized']['url']
             urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
             return render_template('upload.html', urldata = urldata, url = url)
-
         if request.json['id'] == "send_giphy":
             print("if request.json[id] == send giphy")
-
             filename = url.replace("https://","").replace("/","")
             directory = "pictures/" + filename
             urllib.request.urlretrieve(url, directory)
