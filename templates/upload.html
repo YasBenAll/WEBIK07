@@ -7,60 +7,25 @@
 
 {% block main %}
 
-<script>
-function getImgSize(imgSrc) {
-    var newImg = new Image();
-
-    newImg.onload = function() {
-      var height = newImg.height;
-      var width = newImg.width;
-      alert ('The image size is '+width+'*'+height);
-    }
-
-    newImg.src = imgSrc; // this must be done AFTER setting onload
-}
-
-
-
-function getMeta(url){
-    var img = new Image();
-    img.addEventListener("load", function(){
-        var num = 15;
-        return 13..tostring(8)
-    });
-    img.src = url;
-}
-
-function bigImg(x, name) {
-  x.style.height = "64px";
-  x.style.width = "64px";
-}
-
-function normalImg(x, name) {
-
-  x.style.width = getMeta(name)[0][0];
-  x.style.height = getMeta(name)[0][1];
-    getMeta(name)[1]
-}
-</script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-    function myFunction(giphname) {
-        var test = { name: giphname, id: "send_giphy" }
+    function bigImg(img) {
+      img.style.height = 1.5*img.naturalHeight.toString() + "px";
+      img.style.width = 1.5*img.naturalWidth.toString() + "px";
+    }
 
+    function normalImg(img) {
+      img.style.height = img.naturalHeight.toString() + "px";
+      img.style.width = img.naturalWidth.toString() + "px";
+    }
+
+    function sendData(giphname) {
+        var giphData = { name: giphname, id: "send_giphy" }
         $.ajax({type : "POST",
             url : "{{ url_for('upload') }}",
-            data: JSON.stringify(test),
+            data: JSON.stringify(giphData),
             contentType: 'application/json;charset=UTF-8'
         });
-
-        $(name).css({
-        'background-color': 'red',
-        'color': 'white',
-        'font-size': '44px'
-    });
-
         window.location.replace(" {{ url_for('feed') }}")
     }
     </script>
@@ -78,18 +43,9 @@ function normalImg(x, name) {
         <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
     </form>
 
-
-
-    <div>
-
     {% for i in urldata %}
-            <img src={{ i }} id = "send_giphy" name = {{ i }} onmouseover="bigImg(this, name)" onmouseout="normalImg(this, name)" onclick ="myFunction(name, id)" >
-          </div>
-        </div>
+            <img src={{ i }} id = "send_giphy" onmouseover="bigImg(this)" onmouseout="normalImg(this)" onclick ="sendData(src, id)" >
+            <br>
     {% endfor %}
-
-
-
-
 
 {% endblock %}
