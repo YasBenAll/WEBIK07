@@ -6,6 +6,44 @@
 {% endblock %}
 
 {% block main %}
+
+<script>
+function getImgSize(imgSrc) {
+    var newImg = new Image();
+
+    newImg.onload = function() {
+      var height = newImg.height;
+      var width = newImg.width;
+      alert ('The image size is '+width+'*'+height);
+    }
+
+    newImg.src = imgSrc; // this must be done AFTER setting onload
+}
+
+
+
+function getMeta(url){
+    var img = new Image();
+    img.addEventListener("load", function(){
+        var num = 15;
+        return 13..tostring(8)
+    });
+    img.src = url;
+}
+
+function bigImg(x, name) {
+  x.style.height = "64px";
+  x.style.width = "64px";
+}
+
+function normalImg(x, name) {
+
+  x.style.width = getMeta(name)[0][0];
+  x.style.height = getMeta(name)[0][1];
+    getMeta(name)[1]
+}
+</script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
     function myFunction(giphname) {
@@ -16,6 +54,12 @@
             data: JSON.stringify(test),
             contentType: 'application/json;charset=UTF-8'
         });
+
+        $(name).css({
+        'background-color': 'red',
+        'color': 'white',
+        'font-size': '44px'
+    });
 
         window.location.replace(" {{ url_for('feed') }}")
     }
@@ -39,9 +83,13 @@
     <div>
 
     {% for i in urldata %}
-        <img src={{ i }} id = "send_giphy" name = {{ i }} onclick ="myFunction(name, id)" >
+            <img src={{ i }} id = "send_giphy" name = {{ i }} onmouseover="bigImg(this, name)" onmouseout="normalImg(this, name)" onclick ="myFunction(name, id)" >
+          </div>
+        </div>
     {% endfor %}
 
-    </div>
+
+
+
 
 {% endblock %}
