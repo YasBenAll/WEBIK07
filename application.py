@@ -278,7 +278,7 @@ def upload():
             # directory = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
             # filename = data["data"][0]["title"].replace(" ", "") + ".gif"
             # session["filename_giph"] = filename
-            return render_template('upload.html', urldata = urldata)
+            return render_template('upload.html', urldata = urldata, url = url)
 
         if request.json['id'] == "send_giphy":
             print("send_giphy")
