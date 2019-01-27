@@ -336,7 +336,7 @@ def mijn_fotos():
     data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id = session["user_id"])
     for item in data:
         print(item["filename"])
-    return render_template("mijn_fotos.html", filename = item["filename"], data = data)
+    return render_template("mijn_fotos.html", data = data)
 
 @app.route('/<path:filename>')
 def download_file(filename):
@@ -368,10 +368,14 @@ def feedcontent():
     """feed van de gebruiker"""
 
     if feedgenerator() == False:
-        return apology("je bent door de stack heen")
-
+        return render_template("apologyfeed.html")
     else:
         print(session["filename"])
         print("dit is feedcontent")
 
         return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
+
+@app.route("/apologyfeed")
+@login_required
+def apologyfeed():
+    return apology("je bent door de stack heen")
