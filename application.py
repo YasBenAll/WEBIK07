@@ -267,9 +267,9 @@ def upload():
             upload_photo(filename, description, theme_id)
             return redirect(url_for("feed"))
 
-        if request.form.get("giphy") and not urldata:
+        if request.form.get("giphy"):
             print("55555555555555555555555555555")
-            print("request.form.get giphy")
+            session["giphdescription"] = request.form.get("description")
             keyword = request.form.get("giphy")
             # Download the file from `url` and save it locally under `file_name`:
             data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
@@ -283,13 +283,13 @@ def upload():
         if request.json['id'] == "send_giphy":
             print("send_giphy")
             print("999999999999999999999999999999999")
-            print(request.json['id'])
+            print(request.json['description'])
             url = request.json['name']
             filename = url.replace("https://","").replace("/","")
             directory = "pictures/" + filename
             urllib.request.urlretrieve(url, directory)
 
-            description = request.form.get("description")
+            description = session["giphdescription"]
             if not description:
                 description = ""
             theme_id = 0
