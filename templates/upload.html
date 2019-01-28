@@ -21,13 +21,13 @@
     }
 
     function sendData(giphname, description) {
-        var giphData = { name: giphname, id: "send_giphy", description: description}
+        var giphData = { name: giphname, id: "send_giphy", description: description};
         $.ajax({type : "POST",
             url : "{{ url_for('upload') }}",
             data: JSON.stringify(giphData),
             contentType: 'application/json;charset=UTF-8'
         });
-        window.location.replace(" {{ url_for('feed') }}")
+        window.location.replace(" {{ url_for('feed') }}");
     }
 </script>
 
