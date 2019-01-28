@@ -215,7 +215,7 @@ def feed():
         if request.json == 'dislike':
             marked = 2
         if request.json == 'ongepast':
-            marked = 3
+            db.execute("DELETE from pictures WHERE id=:id", id=session["photo_id"])
         if request.json == 'volg':
             followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
             picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=session["picture_user_id"])
