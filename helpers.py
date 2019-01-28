@@ -9,17 +9,7 @@ db = SQL("sqlite:///likestack.db")
 
 def apology(message, code=400):
     """Renders message as an apology to user."""
-    def escape(s):
-        """
-        Escape special characters.
-
-        https://github.com/jacebrowning/memegen#special-characters
-        """
-        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
-                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
-            s = s.replace(old, new)
-        return s
-    return render_template("apology.html", top=code, bottom=escape(message)), code
+    return render_template("apology.html", top=code, bottom=message)
 
 
 def login_required(f):
@@ -56,7 +46,7 @@ def feedgenerator():
     print("seenlist=", seenlist)
     seenset = set(seenlist)
     set_all = set()
-    amount = db.execute("SELECT id FROM pictures")
+    amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id =: user_id", user_id = session["user_id"])
 
     # mijn idee van hoe je alleen foto's van mensen die je volgt kan laten zien. Dit werkt alleen nog niet :'(
     # amount_friends = db.execute("SELECT id FROM pictures WHERE id in friendlist", friendlist = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])[0]["following"])
