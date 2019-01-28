@@ -199,7 +199,7 @@ def forgot():
 @login_required
 def feed():
     if request.method == "GET":
-        if feedgenerator() == False:
+        if feedgenerator(friends = False) == False:
             return apology("je bent door de stack heen")
 
         else:
@@ -343,7 +343,7 @@ def likelist():
 def feedcontent():
     """feed van de gebruiker"""
 
-    if feedgenerator() == False:
+    if feedgenerator(friends = False) == False:
         return render_template("apologyfeed.html")
     else:
         print(session["filename"])
@@ -355,3 +355,29 @@ def feedcontent():
 @login_required
 def apologyfeed():
     return apology("je bent door de stack heen")
+
+@app.route("/friendfeed", methods=["GET", "POST"])
+@login_required
+def friendfeed():
+
+    if request.method == "GET":
+        if feedgenerator(friends = True) == False:
+            return apology("je bent door de friendstack heen")
+
+        else:
+            print(session["filename"])
+            print("dit is friendfeed")
+            return render_template("friendfeed.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
+
+@app.route("/friendfeedcontent", methods=["GET", "POST"])
+@login_required
+def friendfeedcontent():
+    """feed van de gebruiker"""
+
+    if feedgenerator(friends = True) == False:
+        return render_template("apologyfeed.html")
+    else:
+        print(session["filename"])
+        print("dit is friendfeedcontent")
+
+        return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
