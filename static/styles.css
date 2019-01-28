@@ -207,7 +207,8 @@ main td
 input[type=file] {
     margin: 0 auto;
 }
-/*#navbar_annelie*/
-/*{*/
-/*    background-color:#dbdbdb;*/
-/*}*/
+
+#navbar_annelie
+{
+   background-color:#dbdbdb;
+}
