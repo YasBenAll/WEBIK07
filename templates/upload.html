@@ -6,23 +6,34 @@
 {% endblock %}
 
 {% block main %}
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
     function myFunction(giphname) {
         var test = { name: giphname, id: "send_giphy" };
-
-        document.getElementById("demo").innerHTML = test['name'];
-            $(document).ready(function(){
-            $("#send_giphy").on("click", function(){
-                $.ajax({type : "POST",
-                    url : "{{ url_for('upload') }}",
-                    data: JSON.stringify(test),
-                    contentType: 'application/json;charset=UTF-8',
-                });
-            });
-        });
-    }
     </script>
+
+<script>
+    function bigImg(img) {
+      img.style.height = 1.5*img.naturalHeight.toString() + "px";
+      img.style.width = 1.5*img.naturalWidth.toString() + "px";
+    };
+
+    function normalImg(img) {
+      img.style.height = img.naturalHeight.toString() + "px";
+      img.style.width = img.naturalWidth.toString() + "px";
+    };
+
+    function sendData(giphname, description) {
+        var giphData = { name: giphname, id: "send_giphy", description: description}
+        $.ajax({type : "POST",
+            url : "{{ url_for('upload') }}",
+            data: JSON.stringify(giphData),
+            contentType: 'application/json;charset=UTF-8'
+        });
+        window.location.replace(" {{ url_for('feed') }}")
+    };
+</script>
 
 
     <h4>Upload a picture to the stack</h4>
@@ -30,10 +41,15 @@
     <form method="post" enctype="multipart/form-data" action="{{url_for('upload')}}">
         <input type="description" placeholder="description" name="description" id="description">
         <br/>
-        <input type="file" name="photo" class="button" id="choosefile">
-
-        <input type="submit" class="button" id="uploadbutton">
+        <br/>
+        <input type="file" name="photo" class="button" id="choosefile" align="right">
+        <br/>
+        <button class = "btn btn-default animate" id = "uploadbutton" type="submit">Submit</button>
+        <br/>
+        <br/>
+    <h4>Type in a keyword to recieve gifs!</h4>
         <input type="description" placeholder="gif keyword" name="giphy" id="giphy">
+        <br/>
         <br/>
         <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
     </form>
@@ -64,10 +80,10 @@
 
     <div>
 
-    {% for i in urldata %}
-        <img src={{ i }} id = "send_giphy" name = {{ i }} onclick ="myFunction(name, id)" >
-    {% endfor %}
 
-    </div>
+    {% for i in urldata %}
+            <img src={{ i }} id = "send_giphy" onmouseover="bigImg(this)" onmouseout="normalImg(this)" onclick ="sendData(src, description)" >
+            <br>
+    {% endfor %}
 
 {% endblock %}

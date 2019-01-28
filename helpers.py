@@ -38,6 +38,7 @@ def login_required(f):
 
 def upload_photo(filename, description, theme_id):
     # store the picture into the database
+    print("uploaded something")
     return db.execute("INSERT INTO pictures(user_id, filename, description, theme_id) VALUES(:user_id, :filename, :description, :theme_id)", user_id = session["user_id"] , filename = filename, description = description, theme_id = theme_id)
 
 def add_friend():
@@ -48,6 +49,7 @@ def giphy():
     return data["data"][0]['images']['downsized']['url']
 
 def feedgenerator():
+
     seendb = db.execute("SELECT seen_list from users WHERE id=:id", id=session["user_id"])
     seenlist = json.loads(seendb[0]["seen_list"])
     print("seendb=", seendb)
@@ -55,6 +57,10 @@ def feedgenerator():
     seenset = set(seenlist)
     set_all = set()
     amount = db.execute("SELECT id FROM pictures")
+
+    # mijn idee van hoe je alleen foto's van mensen die je volgt kan laten zien. Dit werkt alleen nog niet :'(
+    # amount_friends = db.execute("SELECT id FROM pictures WHERE id in friendlist", friendlist = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])[0]["following"])
+
     for item in amount:
         set_all.add(item['id'])
     notseen = set()

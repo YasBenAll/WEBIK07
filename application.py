@@ -45,18 +45,17 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """Log user in."""
+    """
+    Log user in.
+    """
 
     # forget any user_id
     session.clear()
 
-    # if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        # ensure username was submitted
+        # ensure user input is correct
         if not request.form.get("username"):
             return apology("must provide username")
-
-        # ensure password was submitted
         elif not request.form.get("password"):
             return apology("must provide password")
 
@@ -199,7 +198,6 @@ def forgot():
 @app.route("/feed", methods=["GET", "POST"])
 @login_required
 def feed():
-    """feed van de gebruiker"""
 
     if request.method == "GET":
         if feedgenerator() == False:
@@ -258,8 +256,10 @@ def upload():
     configure_uploads(app, photos)
 
     if request.method == 'POST':
+
+        # upload een foto of gif met beschrijving naar de site
         if 'photo' in request.files:
-            print("00000000000000000000000000000000000000000")
+            print("if photo in request.files")
             filename= photos.save(request.files['photo'])
             description = request.form.get("description")
             if not description:
@@ -267,51 +267,31 @@ def upload():
             theme_id = 0
             upload_photo(filename, description, theme_id)
             return redirect(url_for("feed"))
-
         if request.form.get("giphy"):
+            print("request.form.get(giphy)")
+            session["giphdescription"] = request.form.get("description")
             keyword = request.form.get("giphy")
             # Download the file from `url` and save it locally under `file_name`:
             data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
             url = data["data"][0]['images']['downsized']['url']
             urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
-            directory = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
-            urllib.request.urlretrieve(url, directory)
-            filename = data["data"][0]["title"].replace(" ", "") + ".gif"
-            session["filename_giph"] = filename
-            return render_template('upload.html', urldata = urldata)
-
+            return render_template('upload.html', urldata = urldata, url = url)
         if request.json['id'] == "send_giphy":
-            print(request.json['id'])
-            url = request.json['name']
+            print("if request.json[id] == send giphy")
             filename = url.replace("https://","").replace("/","")
             directory = "pictures/" + filename
             urllib.request.urlretrieve(url, directory)
-
-            description = request.form.get("description")
+            description = session["giphdescription"]
             if not description:
                 description = ""
             theme_id = 0
             upload_photo(filename, description, theme_id)
-
-            return render_template('upload.html', urldata = urldata)
+            print("uploaded!")
+            return redirect(url_for("upload"))
 
     else:
+        print("else render_template")
         return render_template('upload.html')
-
-    # if urldata == list():
-    #     urldata = ["test", "foo", "bar"]
-
-# TEST
-
-    # data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + "mario" +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
-    # url = data["data"][0]['images']['downsized']['url']
-    # urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
-    # directory = "pictures/" + data["data"][0]["title"].replace(" ", "") + ".gif"
-    # urllib.request.urlretrieve(url, directory)
-    # filename = data["data"][0]["title"].replace(" ", "") + ".gif"
-
-# TEST
-
 
 @app.route("/friend", methods=["GET", "POST"])
 @login_required
@@ -332,7 +312,7 @@ def mijn_fotos():
     data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id = session["user_id"])
     for item in data:
         print(item["filename"])
-    return render_template("mijn_fotos.html", filename = item["filename"], data = data)
+    return render_template("mijn_fotos.html", data = data)
 
 @app.route('/<path:filename>')
 def download_file(filename):
@@ -364,20 +344,14 @@ def feedcontent():
     """feed van de gebruiker"""
 
     if feedgenerator() == False:
-            return apology("je bent door de stack heen")
-
+        return render_template("apologyfeed.html")
     else:
         print(session["filename"])
         print("dit is feedcontent")
 
         return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
 
-
-@app.route("/giphy_choose", methods=["GET", "POST"])
-def giphy_choose():
-    return render_template("giphychoice.html")
-
-@app.route('/postmethod', methods = ['POST'])
-def get_post_javascript_data():
-    jsdata = request.form['javascript_data']
-    return redirect(url_for("upload"))
+@app.route("/apologyfeed")
+@login_required
+def apologyfeed():
+    return apology("je bent door de stack heen")
