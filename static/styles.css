@@ -1,6 +1,6 @@
 body, html
 {
-    background: url("/static/achtergrond1.jpg");
+    background: url("/static/Abstract-Background-White.jpg");
     background-repeat: no-repeat;
     background-color: #29303a;
 }
@@ -206,4 +206,8 @@ main td
 
 input[type=file] {
     margin: 0 auto;
+}
+#navbar_annelie
+{
+    background-color:#dbdbdb;
 }
