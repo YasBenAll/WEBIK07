@@ -1,4 +1,3 @@
-
 {% extends "layout.html" %}
 
 {% block title %}
@@ -8,21 +7,18 @@
 {% block main %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-    function myFunction(giphname) {
-        var test = { name: giphname, id: "send_giphy" };
-    </script>
+    <script src="scripts.js"></script>
 
 <script>
     function bigImg(img) {
       img.style.height = 1.5*img.naturalHeight.toString() + "px";
       img.style.width = 1.5*img.naturalWidth.toString() + "px";
-    };
+    }
 
     function normalImg(img) {
       img.style.height = img.naturalHeight.toString() + "px";
       img.style.width = img.naturalWidth.toString() + "px";
-    };
+    }
 
     function sendData(giphname, description) {
         var giphData = { name: giphname, id: "send_giphy", description: description}
@@ -32,9 +28,8 @@
             contentType: 'application/json;charset=UTF-8'
         });
         window.location.replace(" {{ url_for('feed') }}")
-    };
+    }
 </script>
-
 
     <h4>Upload a picture to the stack</h4>
         <p id="demo"></p>
@@ -53,33 +48,6 @@
         <br/>
         <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
     </form>
-
-
-    <div id="regel">
-        <div class="kevin blue"><h2>Upload a picture to the stack</h2></div>
-    </div>
-    <form method="post" enctype="multipart/form-data" action="{{url_for('upload')}}">
-        <div id="regel">
-            <div class="btn btn-default">
-                <input type="file" name="photo" class="button" id="choosefile">
-            </div>
-        </div>
-        <div class="form-group" style="margin-top: 5px">
-            <input class="form-control animate" autofocus type="description" placeholder="description" name="description" id="description">
-        </div>
-        <div id="regel">
-            <input type="submit" class="form-control animate" placeholder="Stack het!" name="submit" id="uploadbutton">
-        </div>
-
-        <input type="description" placeholder="gif keyword" name="giphy" id="giphy">
-        <br/>
-        <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
-    </form>
-
-
-
-    <div>
-
 
     {% for i in urldata %}
             <img src={{ i }} id = "send_giphy" onmouseover="bigImg(this)" onmouseout="normalImg(this)" onclick ="sendData(src, description)" >
