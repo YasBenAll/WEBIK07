@@ -199,23 +199,21 @@ def forgot():
 @login_required
 def feed():
     if request.method == "GET":
-        if feedgenerator() == False:
+        if feedgenerator(friends = False) == False:
             return apology("je bent door de stack heen")
 
-        else:
-            print(session["filename"])
-            print("dit is feed")
-            return render_template("feed.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
+        print(session["filename"])
+        print("dit is feed")
+        return render_template("feed.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
 
     if request.method == "POST":
         marked = 0
-
         if request.json == 'like':
             marked = 1
         if request.json == 'dislike':
             marked = 2
         if request.json == 'ongepast':
-            marked = 3
+            db.execute("DELETE from pictures WHERE id=:id", id=session["photo_id"])
         if request.json == 'volg':
             followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
             picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=session["picture_user_id"])
@@ -226,13 +224,12 @@ def feed():
             followjson = json.dumps(followlist)
             db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
 
-        print(marked)
+        # update seen_list in database
         seendb = db.execute("SELECT seen_list from users WHERE id=:id", id=session["user_id"])
         seenlist = json.loads(seendb[0]["seen_list"])
         seen_set = set(seenlist)
         seen_set.add(session["photo_id"])
         seen_list = list(seen_set)
-        print("print seen_list", seen_list)
         seenjson = json.dumps(seen_list)
         db.execute("UPDATE users SET seen_list = :seen_list WHERE id=:id", seen_list = seenjson, id=session["user_id"])
 
@@ -346,15 +343,38 @@ def likelist():
 def feedcontent():
     """feed van de gebruiker"""
 
-    if feedgenerator() == False:
+    if feedgenerator(friends = False) == False:
         return render_template("apologyfeed.html")
-    else:
-        print(session["filename"])
-        print("dit is feedcontent")
 
-        return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
+    print(session["filename"])
+    print("dit is feedcontent")
+    return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
 
 @app.route("/apologyfeed")
 @login_required
 def apologyfeed():
     return apology("je bent door de stack heen")
+
+@app.route("/friendfeed", methods=["GET", "POST"])
+@login_required
+def friendfeed():
+
+    if request.method == "GET":
+        if feedgenerator(friends = True) == False:
+            return apology("je bent door de friendstack heen")
+
+        print(session["filename"])
+        print("dit is friendfeed")
+        return render_template("friendfeed.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
+
+@app.route("/friendfeedcontent", methods=["GET", "POST"])
+@login_required
+def friendfeedcontent():
+    """feed van de gebruiker"""
+
+    if feedgenerator(friends = True) == False:
+        return render_template("apologyfeed.html")
+
+    print(session["filename"])
+    print("dit is friendfeedcontent")
+    return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])

@@ -38,7 +38,7 @@ def giphy():
     data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=hamburger&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
     return data["data"][0]['images']['downsized']['url']
 
-def feedgenerator():
+def feedgenerator(friends):
 
     seendb = db.execute("SELECT seen_list from users WHERE id=:id", id=session["user_id"])
     seenlist = json.loads(seendb[0]["seen_list"])
@@ -48,6 +48,19 @@ def feedgenerator():
     set_all = set()
     amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id = session["user_id"])
 
+
+    if friends == False:
+        amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id=session["user_id"])
+    else:
+        frienddb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
+        friendlist = json.loads(frienddb[0]["following"])
+        friendtuple = tuple(friendlist)
+        print(friendlist)
+        if friendlist == list():
+            return False
+        query = "SELECT id FROM pictures WHERE user_id IN {}".format(friendtuple)
+        # amount = db.execute("SELECT id FROM pictures WHERE :user_id=user_id", user_id=4)
+        amount = db.execute(query)
     # mijn idee van hoe je alleen foto's van mensen die je volgt kan laten zien. Dit werkt alleen nog niet :'(
     # amount_friends = db.execute("SELECT id FROM pictures WHERE id in friendlist", friendlist = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])[0]["following"])
 
