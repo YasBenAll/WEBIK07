@@ -8,7 +8,7 @@
     <div>
         <h1>Likelist</h1>
             {% for item in likelist %}
-                <img src="{{ url_for('download_file', filename=item) }}"WIDTH="140" HEIGHT=auto>
+                <img src="{{ url_for('download_file', filename=item) }}" HEIGHT="140" WIDTH=auto>
             {% endfor %}
     </div>
 {% endblock %}
