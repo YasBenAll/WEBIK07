@@ -10,7 +10,7 @@
     <div>
         <h1>Mijn foto's</h1>
                 {% for item in data %}
-                    <img src="{{ url_for('download_file', filename=item.filename) }}" onmouseover="bigImg(this)" onmouseout="normalImg(this)" WIDTH="140" HEIGHT=auto>
+                    <img src="{{ url_for('download_file', filename=item.filename) }}" onmouseover="bigImg(this)" onmouseout="normalImg(this)" HEIGHT="140" WIDTH=auto>
                 {% endfor %}
     </div>
 {% endblock %}
