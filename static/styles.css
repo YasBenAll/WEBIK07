@@ -82,6 +82,12 @@ main td
     margin-bottom: 5px;
 }
 
+.form_group_twee
+{
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
 #regel
 {
     width: 100%;
@@ -190,6 +196,12 @@ main td
 {
     width: 100px;
     float:right;
+}
+
+#kevin_upload
+{
+    padding-top:5px;
+    padding-bottom:5px;
 }
 
 input[type=file] {

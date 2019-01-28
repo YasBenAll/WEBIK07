@@ -198,7 +198,6 @@ def forgot():
 @app.route("/feed", methods=["GET", "POST"])
 @login_required
 def feed():
-
     if request.method == "GET":
         if feedgenerator(friends = False) == False:
             return apology("je bent door de stack heen")
@@ -278,6 +277,7 @@ def upload():
             return render_template('upload.html', urldata = urldata, url = url)
         if request.json['id'] == "send_giphy":
             print("if request.json[id] == send giphy")
+            url = request.json['name']
             filename = url.replace("https://","").replace("/","")
             directory = "pictures/" + filename
             urllib.request.urlretrieve(url, directory)
