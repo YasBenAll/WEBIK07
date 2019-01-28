@@ -5,10 +5,12 @@
 {% endblock %}
 
 {% block main %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="scripts.js"></script>
     <div>
         <h1>Mijn foto's</h1>
                 {% for item in data %}
-                    <img src="{{ url_for('download_file', filename=item.filename) }}"WIDTH="140" HEIGHT=auto>
+                    <img src="{{ url_for('download_file', filename=item.filename) }}" onmouseover="bigImg(this)" onmouseout="normalImg(this)" WIDTH="140" HEIGHT=auto>
                 {% endfor %}
     </div>
 {% endblock %}
