@@ -75,7 +75,44 @@
             <button id="volg" class="btn btn-default" >Volgen</button>
         </div>
     </div>
+    <script>
+        document.onkeyup = checkKey;
 
+        function checkKey(e) {
+
+            e = e || window.event;
+
+            $(document).ready(function(){
+                if (e.keyCode == '37'){
+                    console.log("left");
+                    $("#like").on("keyup", function(){
+                        $.ajax({type : "POST",
+                            url : "{{ url_for('feed') }}",
+                            data: JSON.stringify("like"),
+                            contentType: 'application/json;charset=UTF-8',
+                        });
+                        $.get("/feedcontent", function(picture) {
+                            $("#content").html(picture);
+                        });
+                    });
+                }
+                if (e.keyCode == '39'){
+                    console.log("right");
+                    $("#dislike").on("keyup", function(){
+                        $.ajax({type : "POST",
+                            url : "{{ url_for('feed') }}",
+                            data: JSON.stringify("dislike"),
+                            contentType: 'application/json;charset=UTF-8',
+                        });
+                        console.log("hallo");
+                        $.get("/feedcontent", function(picture) {
+                            $("#content").html(picture);
+                        });
+                    });
+                }
+            });
+        }
+    </script>
 
 
 {% endblock %}
