@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
     function myFunction(giphname) {
-        var test = { name: giphname, id: "send_giphy" }
+        var test = { name: giphname, id: "send_giphy" };
 
         document.getElementById("demo").innerHTML = test['name'];
             $(document).ready(function(){
@@ -24,20 +24,6 @@
     }
     </script>
 
-    <script>
-    var giphyInput = document.getElementById("giphy");
-
-    // When the user clicks on the password field, show the message box
-    giphyInput.onfocus = function() {
-        document.getElementById("message").style.display = "block";
-    };
-
-    // When the user clicks outside of the password field, hide the message box
-    giphyInput.onblur = function() {
-      document.getElementById("message").style.display = "none";
-    };
-    </script>
-
 
     <h4>Upload a picture to the stack</h4>
         <p id="demo"></p>
@@ -47,6 +33,28 @@
         <input type="file" name="photo" class="button" id="choosefile">
 
         <input type="submit" class="button" id="uploadbutton">
+        <input type="description" placeholder="gif keyword" name="giphy" id="giphy">
+        <br/>
+        <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
+    </form>
+
+
+    <div id="regel">
+        <div class="kevin blue"><h2>Upload a picture to the stack</h2></div>
+    </div>
+    <form method="post" enctype="multipart/form-data" action="{{url_for('upload')}}">
+        <div id="regel">
+            <div class="btn btn-default">
+                <input type="file" name="photo" class="button" id="choosefile">
+            </div>
+        </div>
+        <div class="form-group" style="margin-top: 5px">
+            <input class="form-control animate" autofocus type="description" placeholder="description" name="description" id="description">
+        </div>
+        <div id="regel">
+            <input type="submit" class="form-control animate" placeholder="Stack het!" name="submit" id="uploadbutton">
+        </div>
+
         <input type="description" placeholder="gif keyword" name="giphy" id="giphy">
         <br/>
         <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
