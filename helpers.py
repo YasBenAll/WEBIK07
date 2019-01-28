@@ -48,7 +48,7 @@ def feedgenerator(friends):
     set_all = set()
 
     if friends == False:
-        amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id =: user_id", user_id=session["user_id"])
+        amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id=session["user_id"])
     else:
         frienddb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
         friendlist = json.loads(frienddb[0]["following"])

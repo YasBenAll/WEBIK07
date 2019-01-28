@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    friendfeed
+
+{% endblock %}
+
+{% block main %}
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#like").on("click", function(){
+                $.ajax({type : "POST",
+                    url : "{{ url_for('feed') }}",
+                    data: JSON.stringify("like"),
+                    contentType: 'application/json;charset=UTF-8',
+                });
+                $.get("/friendfeedcontent", function(picture) {
+                    $("#content").html(picture);
+                });
+            });
+            $("#dislike").on("click", function(){
+                $.ajax({type : "POST",
+                    url : "{{ url_for('feed') }}",
+                    data: JSON.stringify("dislike"),
+                    contentType: 'application/json;charset=UTF-8',
+                });
+                $.get("/friendfeedcontent", function(picture) {
+                    $("#content").html(picture);
+                });
+            });
+            $("#ongepast").on("click", function(){
+                $.ajax({type : "POST",
+                    url : "{{ url_for('feed') }}",
+                    data: JSON.stringify("ongepast"),
+                    contentType: 'application/json;charset=UTF-8',
+                });
+
+                $.get("/friendfeedcontent", function(picture) {
+                    $("#content").html(picture);
+                });
+            });
+            $("#volg").on("click", function(){
+                $.ajax({type : "POST",
+                    url : "{{ url_for('feed') }}",
+                    data: JSON.stringify("volg"),
+                    contentType: 'application/json;charset=UTF-8',
+                });
+                $.get("/friendfeedcontent", function(picture) {
+                    $("#content").html(picture);
+                });
+            });
+        });
+    </script>
+
+    <div id="row">
+        <div class="col-md-3" style="margin-top: 200px">
+            <a class="left" href="#" role="button" id="dislike" aria-haspopup="true" aria-expanded="false">
+            <img src="https://img.icons8.com/material/24/000000/circled-left.png" width="100" height="100" >
+            </a>
+        </div>
+        <div class="col-md-6" id = "content" style="margin:0px">
+            <img src="{{ url_for('download_file', filename=picture) }}", alt="{{description}}", id="img1">
+            <p>{{description}}</p>
+            <p>van: {{user_id}}</p>
+        </div>
+        <div class="col-md-3" style="margin-top:200px">
+            <a class="right" href="#" role="button" id="like" aria-haspopup="true" aria-expanded="false">
+            <img src="https://img.icons8.com/material/24/000000/circled-right.png"width="100" height="100" >
+            </a>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-md-12" style="margin:0px">
+            <button id="ongepast" class="btn btn-default" >Ongepast</button>
+            <button id="volg" class="btn btn-default" >Volgen</button>
+        </div>
+    </div>
+    <script>
+        document.onkeyup = checkKey;
+
+        function checkKey(e) {
+
+            e = e || window.event;
+
+            $(document).ready(function(){
+                if (e.keyCode == '37'){
+                    console.log("left");
+                    $("#like").on("keyup", function(){
+                        $.ajax({type : "POST",
+                            url : "{{ url_for('feed') }}",
+                            data: JSON.stringify("like"),
+                            contentType: 'application/json;charset=UTF-8',
+                        });
+                        $.get("/friendfeedcontent", function(picture) {
+                            $("#content").html(picture);
+                        });
+                    });
+                }
+                if (e.keyCode == '39'){
+                    console.log("right");
+                    $("#dislike").on("keyup", function(){
+                        $.ajax({type : "POST",
+                            url : "{{ url_for('feed') }}",
+                            data: JSON.stringify("dislike"),
+                            contentType: 'application/json;charset=UTF-8',
+                        });
+                        console.log("hallo");
+                        $.get("/friendfeedcontent", function(picture) {
+                            $("#content").html(picture);
+                        });
+                    });
+                }
+            });
+        }
+    </script>
+
+
+{% endblock %}
