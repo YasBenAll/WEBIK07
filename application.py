@@ -297,13 +297,16 @@ def upload():
 @login_required
 def friend():
     # add someone to user's followlist
-    if request.method == 'POST':
-        followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
-        followlist = json.loads(followdb[0]["following"])
-        followlist.append(request.form.get("name"))
-        followjson = json.dumps(followlist)
-        db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
-    return render_template('friend.html')
+
+    followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
+    followlist = json.loads(followdb[0]["following"])
+    for item in followlist:
+        print(item)
+        follower = db.execute("SELECT username from users WHERE id=:id", id=session["user_id"])
+        for item in follower:
+            print(item["username"])
+
+    return render_template('friend.html', followlist=followlist)
 
 @app.route("/uitleg", methods=["GET", "POST"])
 @login_required
