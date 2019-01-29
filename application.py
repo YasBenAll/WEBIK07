@@ -220,7 +220,6 @@ def feed():
             followlist = json.loads(followdb[0]["following"])
             if picturedb[0]["user_id"] not in followlist:
                 followlist.append(session["picture_user_id"])
-
             followjson = json.dumps(followlist)
             db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
 
@@ -235,7 +234,6 @@ def feed():
 
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=session["photo_id"], marked=marked)
-
         return "saved"
 
 @app.route("/upload", methods=["GET", "POST"])
