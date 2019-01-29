@@ -213,14 +213,13 @@ def feed():
         if request.json == 'dislike':
             marked = 2
         if request.json == 'ongepast':
-            db.execute("DELETE from pictures WHERE id=:id", id=session["photo_id"])
+            marked = 3
         if request.json == 'volg':
             followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
             picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=session["picture_user_id"])
             followlist = json.loads(followdb[0]["following"])
             if picturedb[0]["user_id"] not in followlist:
                 followlist.append(session["picture_user_id"])
-            print(picturedb[0]["user_id"])
             followjson = json.dumps(followlist)
             db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
 
@@ -235,7 +234,6 @@ def feed():
 
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=session["photo_id"], marked=marked)
-
         return "saved"
 
 @app.route("/upload", methods=["GET", "POST"])
