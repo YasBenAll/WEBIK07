@@ -300,11 +300,12 @@ def friend():
     followlist = json.loads(followdb[0]["following"])
     for item in followlist:
         print(item)
-        follower = db.execute("SELECT username from users WHERE id=:id", id=session["user_id"])
+        follower = db.execute("SELECT username from users WHERE id=:id", id=item)
+        print(follower)
         for item in follower:
-            print(item["username"])
+            friend = item["username"]
 
-    return render_template('friend.html', followlist=followlist)
+    return render_template('friend.html', follower = follower, friend=friend)
 
 @app.route("/uitleg", methods=["GET", "POST"])
 @login_required
