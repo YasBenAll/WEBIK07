@@ -308,7 +308,8 @@ def friend():
 @app.route("/uitleg", methods=["GET", "POST"])
 @login_required
 def uitleg():
-    return render_template('uitleg.html')
+    username = db.execute("SELECT username FROM users WHERE id=:id", id=session["user_id"])
+    return render_template('uitleg.html', username=username[0]["username"])
 
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
