@@ -42,16 +42,6 @@
                     $("#content").html(picture);
                 });
             });
-            $("#volg").on("click", function(){
-                $.ajax({type : "POST",
-                    url : "{{ url_for('feed') }}",
-                    data: JSON.stringify("volg"),
-                    contentType: 'application/json;charset=UTF-8',
-                });
-                $.get("/friendfeedcontent", function(picture) {
-                    $("#content").html(picture);
-                });
-            });
         });
     </script>
 
@@ -74,7 +64,7 @@
         <div class="w-100"></div>
         <div class="col-md-12" style="margin:0px">
             <button id="ongepast" class="btn btn-default" >Ongepast</button>
-            <button id="volg" class="btn btn-default" >Volgen</button>
+
         </div>
     </div>
     <script>
