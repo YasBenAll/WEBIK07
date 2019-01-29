@@ -306,7 +306,6 @@ def friend():
     return render_template('friend.html')
 
 @app.route("/uitleg", methods=["GET", "POST"])
-@login_required
 def uitleg():
     return render_template('uitleg.html')
 
