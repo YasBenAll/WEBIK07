@@ -5,9 +5,15 @@
 {% endblock %}
 
 {% block main %}
-    <form method="post" enctype="multipart/form-data" action="{{url_for('friend')}}">
-        <input type="name" placeholder="name" name="name" id="name">
-        <br/>
-        <input type="submit" class="button" id="uploadbutton">
-    </form>
+    <h1>Mijn vrienden</h1>
+    <div id="friends">
+                {% for item in follower %}
+                    {{ friend }}
+                {% endfor %}
+    </div>
+    </br>
+    </br>
+    <div class="form-group animate">
+        <button class="btn btn-default animate" type="submit"><a href="{{ url_for('friendfeed') }}">Bekijk de foto's van vrienden in de friendfeed!</a></button>
+    </div>
 {% endblock %}

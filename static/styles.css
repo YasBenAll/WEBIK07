@@ -250,3 +250,8 @@ input[type=file] {
     margin: 0px;
 }
 
+#friends
+{
+    font-size: large;
+    color: #3d6c9f;
+}

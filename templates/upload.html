@@ -30,23 +30,23 @@
         window.location.replace(" {{ url_for('feed') }}");
     }
 </script>
-
-    <h4>Upload a picture to the stack</h4>
         <p id="demo"></p>
     <form method="post" enctype="multipart/form-data" action="{{url_for('upload')}}">
-        <input type="description" placeholder="description" name="description" id="description">
-        <br/>
-        <br/>
-        <input type="file" name="photo" class="button" id="choosefile" align="right">
-        <br/>
-        <button class = "btn btn-default animate" id = "uploadbutton" type="submit">Submit</button>
-        <br/>
-        <br/>
-    <h4>Type in a keyword to recieve gifs!</h4>
-        <input type="description" placeholder="gif keyword" name="giphy" id="giphy">
-        <br/>
-        <br/>
-        <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
+        <h2 style="padding-bottom: 15px">Upload a picture or a gif to the stack</h2>
+        <div class="uitleg">
+            <h4>Upload a picture to the stack</h4>
+            <input type="file" name="photo" class="button" id="choosefile" align="right">
+        </div>
+        <div class="uitleg">
+            <h4>Upload a gif to the stack </h4>
+            <input class="form-control animate" type="description" placeholder="gif keyword" name="giphy" id="giphy">
+            <button class = "btn btn-default animate" name ="giphysubmit" id = "giphysubmit" type="submit">Gimme giphy's!</button>
+        </div>
+        <div class="uitleg">
+            <h3>Don't forget to add a description!</h3>
+            <input class="form-control animate" type="description" placeholder="description" name="description" id="description"><br/>
+            <button class = "btn btn-default animate" id = "uploadbutton" type="submit" style="margin-top: 10px">Submit</button>
+        </div>
     </form>
 
     {% for i in urldata %}
