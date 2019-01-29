@@ -15,15 +15,34 @@
             <b>Feed</b><br/>
             When you log in, you see your personal feed. The feed shows you pictures that other users uploaded to the stack. For every photo in the stack you have a few options:
         </p>
-            <ul class="uitleg_left">
-                <li>If you like the picture, click the <b>like button</b> or use the <b>right arrow</b> on your keyboard.</li>
-                <li>If you don’t like the picture, click the <b>dislike button</b> or use the <b>left arrow</b> on your keyboard.</li>
-                <li>If you think that the picture is inappropriate, click <b>Inappropriate</b></li>
-            </ul>
+        <ul class="uitleg_left">
+            <li>If you like the picture, click the <b>like button</b> or use the <b>right arrow</b> on your keyboard.</li>
+            <li>If you don’t like the picture, click the <b>dislike button</b> or use the <b>left arrow</b> on your keyboard.</li>
+            <li>If you think that the picture is inappropriate, click <b>Inappropriate</b></li>
+        </ul>
         <p class="uitleg_left">
             If you want to follow the user that uploaded the photo, click <b>follow</b>. After you’ve added some friends by clicking on the follow button. You can choose to go to the friendfeed. This feed will only show you the new pictures of the users that you marked as friend.
         </p>
     </div>
-    <div><img src="{{ url_for('download_file', filename='static/gif1.gif') }}" alt="Image"></div>
-    <p class ="uitleg"></p>
+    <div class="uitleg" style="padding-top: 25px">
+        <p class="uitleg_left">
+            <img src="{{ url_for('download_file', filename='static/Upload.png') }}" alt="Image" style="float: right; width: 50%; padding-top: 15px">
+            <b>Upload</b><br/>
+            Before you can upload something to the stack, you need to determine if you want to upload a gif from the Giphy database or a picture from your own device.<br/>
+        </p>
+        <ul class="uitleg_left">
+            <li>If you want to use a picture from your own device, click the button at <b>Upload a picture to the stack</b></li>
+            <li>If you want to search the Giphy database for a gif, enter a </b>keyword</b> in the <i>gif keyword field</i> and click <b>Gimme giphy’s</b>. </li>
+        </ul>
+        <p class="uitleg_left">
+            Next enter a description to your picture and click submit. You’ve added something to the stack!
+        </p>
+
+    </div>
+    <p class ="uitleg" style="padding_top: 25px">
+        Now that you know the most important functions of LikeStack, <a href="{{ url_for('feed') }}">have fun stacking!</a><br/>
+        <br/>
+        The LikeStack Team!
+    </p>
+
 {% endblock %}
