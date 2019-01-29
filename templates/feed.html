@@ -76,16 +76,19 @@
         </div>
     </div>
     <script>
-        document.onkeyup = checkKey;
+        $(document).ready(function(){
+            document.onkeyup = checkKey;
 
-        function checkKey(e) {
+            function checkKey(e) {
 
-            e = e || window.event;
+                console.log("a")
 
-            $(document).ready(function(){
-                if (e.keyCode == '37'){
-                    console.log("left");
-                    $("#like").on("keyup", function(){
+                e = e || window.event;
+
+
+                    if (e.keyCode == '37'){
+
+                        console.log('test')
                         $.ajax({type : "POST",
                             url : "{{ url_for('feed') }}",
                             data: JSON.stringify("like"),
@@ -94,24 +97,23 @@
                         $.get("/feedcontent", function(picture) {
                             $("#content").html(picture);
                         });
-                    });
-                }
-                if (e.keyCode == '39'){
-                    console.log("right");
-                    $("#dislike").on("keyup", function(){
-                        $.ajax({type : "POST",
-                            url : "{{ url_for('feed') }}",
-                            data: JSON.stringify("dislike"),
-                            contentType: 'application/json;charset=UTF-8',
+                    }
+                    if (e.keyCode == '39'){
+                        console.log("right");
+                        $("#dislike").on("keyup", function(){
+                            $.ajax({type : "POST",
+                                url : "{{ url_for('feed') }}",
+                                data: JSON.stringify("dislike"),
+                                contentType: 'application/json;charset=UTF-8',
+                            });
+                            console.log("hallo");
+                            $.get("/feedcontent", function(picture) {
+                                $("#content").html(picture);
+                            });
                         });
-                        console.log("hallo");
-                        $.get("/feedcontent", function(picture) {
-                            $("#content").html(picture);
-                        });
-                    });
+                    }
                 }
             });
-        }
     </script>
 
 
