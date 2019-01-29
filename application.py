@@ -137,7 +137,7 @@ def register():
         # remember which user has logged in
         session["user_id"] = rows[0]["id"]
 
-        return redirect(url_for("feed"))
+        return redirect(url_for("uitleg"))
 
     else:
         return render_template("register.html")
@@ -308,17 +308,17 @@ def friend():
     followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
     followlist = json.loads(followdb[0]["following"])
     for item in followlist:
-        print(item)
         follower = db.execute("SELECT username from users WHERE id=:id", id=item)
-        print(follower)
         for item in follower:
             friend = item["username"]
 
     return render_template('friend.html', follower = follower, friend=friend)
 
 @app.route("/uitleg", methods=["GET", "POST"])
+@login_required
 def uitleg():
-    return render_template('uitleg.html')
+    username = db.execute("SELECT username FROM users WHERE id=:id", id=session["user_id"])
+    return render_template('uitleg.html', username=username[0]["username"])
 
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
