@@ -100,7 +100,7 @@
                     }
                     if (e.keyCode == '39'){
                         console.log("right");
-                        $("#dislike").on("keyup", function(){
+
                             $.ajax({type : "POST",
                                 url : "{{ url_for('feed') }}",
                                 data: JSON.stringify("dislike"),
@@ -110,7 +110,6 @@
                             $.get("/feedcontent", function(picture) {
                                 $("#content").html(picture);
                             });
-                        });
                     }
                 }
             });
