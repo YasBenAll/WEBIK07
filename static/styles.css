@@ -209,3 +209,14 @@ input[type=file] {
     margin: 0 auto;
 }
 
+#likestack
+{
+    color:#3d6c9f;
+    font-size: large;
+}
+#likestack2
+{
+    padding-top:15px;
+    padding-bottom:10px;
+    padding-left:50px;
+}
