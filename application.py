@@ -263,7 +263,7 @@ def upload():
             theme_id = 0
             upload_photo(filename, description, theme_id)
             return redirect(url_for("feed"))
-        if request.form.get("giphy"):
+        if request.form.get("giphy") and not 'photo' in request.files:
             print("request.form.get(giphy)")
             session["giphdescription"] = request.form.get("description")
             keyword = request.form.get("giphy")
@@ -272,19 +272,22 @@ def upload():
             url = data["data"][0]['images']['downsized']['url']
             urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
             return render_template('upload.html', urldata = urldata, url = url)
-        if request.json['id'] == "send_giphy":
-            print("if request.json[id] == send giphy")
-            url = request.json['name']
-            filename = url.replace("https://","").replace("/","")
-            directory = "pictures/" + filename
-            urllib.request.urlretrieve(url, directory)
-            description = session["giphdescription"]
-            if not description:
-                description = ""
-            theme_id = 0
-            upload_photo(filename, description, theme_id)
-            print("uploaded!")
-            return redirect(url_for("upload"))
+        try:
+            if request.json['id'] == "send_giphy":
+                print("if request.json[id] == send giphy")
+                url = request.json['name']
+                filename = url.replace("https://","").replace("/","")
+                directory = "pictures/" + filename
+                urllib.request.urlretrieve(url, directory)
+                description = session["giphdescription"]
+                if not description:
+                    description = ""
+                theme_id = 0
+                upload_photo(filename, description, theme_id)
+                print("uploaded!")
+                return redirect(url_for("upload"))
+        except:
+            return apology("Input keyword")
 
     else:
         print("else render_template")
@@ -358,7 +361,7 @@ def friendfeed():
 
     if request.method == "GET":
         if feedgenerator(friends = True) == False:
-            return apology("je bent door de friendstack heen")
+            return apology("je bent door de friendstack heen of volgt geen vrienden")
 
         print(session["filename"])
         print("dit is friendfeed")

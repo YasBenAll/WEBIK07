@@ -59,6 +59,8 @@ def feedgenerator(friends):
         if friendlist == list():
             return False
         query = "SELECT id FROM pictures WHERE user_id IN {}".format(friendtuple)
+        if len(friendtuple) == 1:
+            query = "SELECT id FROM pictures WHERE user_id IN ({})".format(friendtuple[0])
         # amount = db.execute("SELECT id FROM pictures WHERE :user_id=user_id", user_id=4)
         amount = db.execute(query)
     # mijn idee van hoe je alleen foto's van mensen die je volgt kan laten zien. Dit werkt alleen nog niet :'(
