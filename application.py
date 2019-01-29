@@ -137,7 +137,7 @@ def register():
         # remember which user has logged in
         session["user_id"] = rows[0]["id"]
 
-        return redirect(url_for("feed"))
+        return redirect(url_for("uitleg"))
 
     else:
         return render_template("register.html")
@@ -308,6 +308,7 @@ def friend():
     return render_template('friend.html', follower = follower, friend=friend)
 
 @app.route("/uitleg", methods=["GET", "POST"])
+@login_required
 def uitleg():
     return render_template('uitleg.html')
 
