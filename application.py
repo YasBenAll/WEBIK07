@@ -361,7 +361,7 @@ def friendfeed():
 
     if request.method == "GET":
         if feedgenerator(friends = True) == False:
-            return apology("je bent door de friendstack heen")
+            return apology("je bent door de friendstack heen of volgt geen vrienden")
 
         print(session["filename"])
         print("dit is friendfeed")

@@ -58,6 +58,8 @@ def feedgenerator(friends):
         print(friendlist)
         if friendlist == list():
             return False
+        if len(friendlist) == 1:
+            friendtuple = friendlist
         query = "SELECT id FROM pictures WHERE user_id IN {}".format(friendtuple)
         # amount = db.execute("SELECT id FROM pictures WHERE :user_id=user_id", user_id=4)
         amount = db.execute(query)
