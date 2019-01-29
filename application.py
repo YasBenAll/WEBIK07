@@ -265,21 +265,30 @@ def upload():
             print("request.form.get(giphy)")
             session["giphdescription"] = request.form.get("description")
             keyword = request.form.get("giphy")
-            # Download the file from `url` and save it locally under `file_name`:
-            data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
-            url = data["data"][0]['images']['downsized']['url']
-            urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
+            try:
+                data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
+            except:
+                return apology("Insert only one word please.")
+            try:
+                url = data["data"][0]['images']['downsized']['url']
+            except:
+                return apology("Bad request. Please fill in another keyword.")
+            try:
+                urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
+            except:
+                return apology("Bad request. Please fill in another keyword.")
             return render_template('upload.html', urldata = urldata, url = url)
         try:
             if request.json['id'] == "send_giphy":
                 print("if request.json[id] == send giphy")
+                print()
                 url = request.json['name']
                 filename = url.replace("https://","").replace("/","")
                 directory = "pictures/" + filename
                 urllib.request.urlretrieve(url, directory)
                 description = request.json['description']
                 if not description:
-                    description = "weird...."
+                    description = ""
                 theme_id = 0
                 upload_photo(filename, description, theme_id)
                 print("uploaded!")

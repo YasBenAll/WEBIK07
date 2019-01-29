@@ -20,7 +20,8 @@
       img.style.width = img.naturalWidth.toString() + "px";
     }
 
-    function sendData(giphname, description) {
+    function sendData(giphname) {
+        var description = document.getElementsByName("description")[0].value;
         var giphData = { name: giphname, id: "send_giphy", description: description};
         $.ajax({type : "POST",
             url : "{{ url_for('upload') }}",
@@ -44,13 +45,14 @@
         </div>
         <div class="uitleg">
             <h3>Don't forget to add a description!</h3>
-            <input class="form-control animate" type="description" placeholder="description" name="description" id="description"><br/>
+            <input class="form-control animate" type="description" placeholder="description" name="description" id="description"br/>
             <button class = "btn btn-default animate" id = "uploadbutton" type="submit" style="margin-top: 10px">Submit</button>
         </div>
     </form>
 
     {% for i in urldata %}
-            <img src={{ i }} id = "send_giphy" onmouseover="bigImg(this)" onmouseout="normalImg(this)" onclick ="sendData(src, description)" >
+            <br>
+            <img src={{ i }} id = "send_giphy" onmouseover="bigImg(this)" onmouseout="normalImg(this)" onclick ="sendData(src)" >
             <br>
     {% endfor %}
 
