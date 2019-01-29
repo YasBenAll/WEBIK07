@@ -279,9 +279,9 @@ def upload():
                 filename = url.replace("https://","").replace("/","")
                 directory = "pictures/" + filename
                 urllib.request.urlretrieve(url, directory)
-                description = session["giphdescription"]
+                description = request.json['description']
                 if not description:
-                    description = ""
+                    description = "weird...."
                 theme_id = 0
                 upload_photo(filename, description, theme_id)
                 print("uploaded!")
