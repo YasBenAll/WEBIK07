@@ -12,13 +12,13 @@
         <fieldset>
             <div id="wrapper">
                 <div id="eerste_blok">
-                    Gebruikersnaam
+                    Username
                 </div>
                 <div id="tweede_blok">
                     <div class="form-group"><input autocomplete="off" autofocus class="form-control animate" name="username" placeholder="Username" type="text" required/></div>
                 </div>
                 <div id="eerste_blok">
-                    Wachtwoord
+                    Password
                 </div>
                 <div id="tweede_blok">
                     <div class="form-group"><input class="form-control animate" name="password" placeholder="Password" type="password" required/></div>
@@ -32,10 +32,10 @@
         </fieldset>
     </form>
     <div id="regel" class="animate">
-        <a href="{{ url_for('register') }}">Ik behoor nog niet tot de stack</a>
+        <a href="{{ url_for('register') }}">I don't belong to the stack yet</a>
     </div>
     <div id="regel" class="animate">
-        <a href="{{ url_for('forgot') }}">Wachtwoord vergeten</a>
+        <a href="{{ url_for('forgot') }}">Forgot password</a>
     </div>
 
 {% endblock %}

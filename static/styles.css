@@ -213,6 +213,7 @@ input[type=file] {
 .uitleg
 {
     font-size: 15px;
+    padding-bottom: 25px;
 }
 
 .uitleg_h2
@@ -220,6 +221,14 @@ input[type=file] {
     padding-top: 30px;
     padding-bottom: 20px;
 }
+
+.uitleg_left
+{
+    font-size: 15px;
+    text-align: left;
+}
+
+
 
 #likestack
 {
