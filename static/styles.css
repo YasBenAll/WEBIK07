@@ -127,7 +127,7 @@ main td
 .left
 {
     float: left;
-    border: 1px
+    border: 0px
     solid #999;
     clear: left;
 
@@ -135,7 +135,7 @@ main td
 .right
 {
     float: right;
-    border: 1px
+    border: 0px
     solid #999;
     clear: right;
 }
@@ -219,4 +219,12 @@ input[type=file] {
     padding-top:15px;
     padding-bottom:10px;
     padding-left:50px;
+}
+#pijl_kolom
+{
+    margin-top:200px;
+}
+#content
+{
+    margin: 0px;
 }
