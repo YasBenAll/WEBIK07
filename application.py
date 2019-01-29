@@ -305,6 +305,11 @@ def friend():
         db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
     return render_template('friend.html')
 
+@app.route("/uitleg", methods=["GET", "POST"])
+@login_required
+def uitleg():
+    return render_template('uitleg.html')
+
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
 def mijn_fotos():

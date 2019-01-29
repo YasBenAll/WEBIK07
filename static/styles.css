@@ -209,6 +209,18 @@ input[type=file] {
     margin: 0 auto;
 }
 
+
+.uitleg
+{
+    font-size: 15px;
+}
+
+.uitleg_h2
+{
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
 #likestack
 {
     color:#3d6c9f;
@@ -228,3 +240,4 @@ input[type=file] {
 {
     margin: 0px;
 }
+
