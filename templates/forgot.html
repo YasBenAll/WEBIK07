@@ -12,19 +12,19 @@
         <fieldset>
             <div id="wrapper">
                 <div id="eerste_blok">
-                    Gebruikersnaam
+                    Username
                 </div>
                 <div id="tweede_blok">
                     <div class="form-group"><input autocomplete="off" autofocus class="form-control animate" name="username" id="usrname" placeholder="Username" type="text" required/></div>
                 </div>
                 <div id="eerste_blok">
-                    Wachtwoord
+                    Password
                 </div>
                 <div id="tweede_blok">
                     <div class="form-group"><input class="form-control animate" name="password" id="psw" placeholder="New password" type="password" required/></div>
                 </div>
                 <div id="eerste_blok">
-                    Bevestig wachtwoord
+                    Confirm password
                 </div>
                 <div id="tweede_blok">
                     <div class="form-group"><input class="form-control animate" name="confirmation" id="confir" placeholder="Password confirmation" type="password" onkeyup='check();' required/></div>
@@ -48,7 +48,7 @@
         </fieldset>
     </form>
     <div id="regel" class="animate">
-        <a href="{{ url_for('login') }}">Terug naar de login pagina</a>
+        <a href="{{ url_for('login') }}">Back to the login page</a>
     </div>
     <div id="message">
         <h6>Het wachtwoord moet ten minste bevatten:</h6>

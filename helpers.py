@@ -42,12 +42,10 @@ def feedgenerator(friends):
 
     seendb = db.execute("SELECT seen_list from users WHERE id=:id", id=session["user_id"])
     seenlist = json.loads(seendb[0]["seen_list"])
-    print("seendb=", seendb)
-    print("seenlist=", seenlist)
     seenset = set(seenlist)
     set_all = set()
+    notseen = set()
     amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id = session["user_id"])
-
 
     if friends == False:
         amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id=session["user_id"])
@@ -55,22 +53,16 @@ def feedgenerator(friends):
         frienddb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
         friendlist = json.loads(frienddb[0]["following"])
         friendtuple = tuple(friendlist)
-        print(friendlist)
         if friendlist == list():
             return False
         query = "SELECT id FROM pictures WHERE user_id IN {}".format(friendtuple)
         if len(friendtuple) == 1:
             query = "SELECT id FROM pictures WHERE user_id IN ({})".format(friendtuple[0])
-        # amount = db.execute("SELECT id FROM pictures WHERE :user_id=user_id", user_id=4)
         amount = db.execute(query)
-    # mijn idee van hoe je alleen foto's van mensen die je volgt kan laten zien. Dit werkt alleen nog niet :'(
-    # amount_friends = db.execute("SELECT id FROM pictures WHERE id in friendlist", friendlist = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])[0]["following"])
 
     for item in amount:
         set_all.add(item['id'])
-    notseen = set()
     notseen = set_all - seenset
-    print("notseen= ", notseen)
     if notseen == set():
         return False
     else:

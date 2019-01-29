@@ -127,7 +127,7 @@ main td
 .left
 {
     float: left;
-    border: 1px
+    border: 0px
     solid #999;
     clear: left;
 
@@ -135,7 +135,7 @@ main td
 .right
 {
     float: right;
-    border: 1px
+    border: 0px
     solid #999;
     clear: right;
 }
@@ -207,5 +207,46 @@ main td
 
 input[type=file] {
     margin: 0 auto;
+}
+
+
+.uitleg
+{
+    font-size: 15px;
+    padding-bottom: 25px;
+}
+
+.uitleg_h2
+{
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.uitleg_left
+{
+    font-size: 15px;
+    text-align: left;
+}
+
+
+
+#likestack
+{
+    color:#3d6c9f;
+    font-size: large;
+}
+#likestack2
+{
+    padding-top:15px;
+    padding-bottom:10px;
+    padding-left:50px;
+}
+#pijl_kolom
+{
+    margin-top:200px;
+}
+#content
+{
+    margin: 0px;
 }
 
