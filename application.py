@@ -299,9 +299,7 @@ def friend():
     followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
     followlist = json.loads(followdb[0]["following"])
     for item in followlist:
-        print(item)
         follower = db.execute("SELECT username from users WHERE id=:id", id=item)
-        print(follower)
         for item in follower:
             friend = item["username"]
 
