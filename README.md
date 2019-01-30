@@ -32,12 +32,18 @@ GET: friendfeed.html Een random foto uit de database die de gebruiker nog niet h
 POST: Foto wordt geplaatst in history met username en gemarkeerd of deze hem heeft geliket, disliket of als ongepast.
 
 /upload
-GET: upload.html
+GET: upload.html De gebruiker kiest een Giph uit de zoekresultaten die naar aanleiding van zijn zoekwoord.
 POST: Foto die de gebruiker heeft geupload wordt in de database van alle foto’s geplaatst.
 
 /likelist
 likelist.html
 Selecteerd alle fotos uit History die de user heeft geliket en zet deze op de pagina.
+
+/friend
+friend.html Zie een lijst van de gebruikers die je volgt. 
+
+/mijn_foto's 
+mijn_fotos.html Zie alle foto's die je geupload hebt.
 
 ### Views: html-pagina’s
 1.      register.html
@@ -65,12 +71,12 @@ In helpers.py hebben we een fucntie voor upload en feed.
 
 
 ### Plugins en frameworks:
-Flask
-Flask-uploads
-Bootstrap
-Jinja
-Giphy
-Ajax
+- Flask
+- Flask-uploads
+- Bootstrap
+- Jinja
+- Giphy
+- Ajax
 
 
 ### Schetsen van alle pagina's:
