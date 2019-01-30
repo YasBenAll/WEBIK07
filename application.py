@@ -236,9 +236,12 @@ def feed():
                    user_id=session["user_id"], photo_id=session["photo_id"], marked=marked)
         return "saved"
 
-@app.route("/upload", methods=["GET", "POST"])
+@app.route("/upload_file", methods=["GET", "POST"])
 @login_required
-def upload():
+def upload_file():
+    """
+    Upload a photo or select a GIF.
+    """
 
     urldata = []
 
@@ -250,55 +253,76 @@ def upload():
     configure_uploads(app, photos)
 
     if request.method == 'POST':
-
         # upload een foto of gif met beschrijving naar de site
         if 'photo' in request.files:
-            print("if photo in request.files")
-            filename= photos.save(request.files['photo'])
+            filename = photos.save(request.files['photo'])
             description = request.form.get("description")
             if not description:
                 description = ""
             theme_id = 0
             upload_photo(filename, description, theme_id)
             return redirect(url_for("feed"))
-        if request.form.get("giphy") and not 'photo' in request.files:
+        else:
+            return apology("Bad request.")
+    else:
+        print("else render_template")
+        return render_template('upload_file.html')
+
+
+@app.route("/upload_gif", methods=["GET", "POST"])
+@login_required
+def upload_gif():
+
+    urldata = []
+
+    if request.method == 'POST':
+        # upload een foto of gif met beschrijving naar de site
+        if request.json['submit'] == "giphysubmit":
             print("request.form.get(giphy)")
-            session["giphdescription"] = request.form.get("description")
-            keyword = request.form.get("giphy")
-            try:
-                data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
-            except:
-                return apology("Insert only one word please.")
+            # session["giphdescription"] = request.form.get("description")
+
+            keyword = request.json.get("keyword")
+            print("request.form.get(giphy)")
+
+            data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
             try:
                 url = data["data"][0]['images']['downsized']['url']
             except:
-                return apology("Bad request. Please fill in another keyword.")
-            try:
-                urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
-            except:
-                return apology("Bad request. Please fill in another keyword.")
-            return render_template('upload.html', urldata = urldata, url = url)
-        try:
-            if request.json['id'] == "send_giphy":
-                print("if request.json[id] == send giphy")
-                print()
-                url = request.json['name']
-                filename = url.replace("https://","").replace("/","")
-                directory = "pictures/" + filename
-                urllib.request.urlretrieve(url, directory)
-                description = request.json['description']
-                if not description:
-                    description = ""
-                theme_id = 0
-                upload_photo(filename, description, theme_id)
-                print("uploaded!")
-                return redirect(url_for("upload"))
-        except:
-            return apology("Input keyword")
+                return apology("Bad request. Please try again.")
+            urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
 
+            response = {
+                'success': True,
+                'urldata': urldata,
+                'url': url
+            }
+            return json.dumps(response), 200, {'ContentType':'application/json'}
+
+        if request.json['id'] == "send_giphy":
+            print("if request.json[id] == send giphy")
+            url = request.json['name']
+            filename = url.replace("https://","").replace("/","")
+            directory = "pictures/" + filename
+            urllib.request.urlretrieve(url, directory)
+            description = request.json['description']
+            if not description:
+                description = ""
+            theme_id = 0
+            session["giphydata"] = filename
+            print(session["giphydata"])
+            return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+        if request.json['submit'] == "submit_giphy":
+            description = request.json['description']
+            theme_id = 0
+            try:
+                upload_photo(session["giphydata"], description, theme_id)
+                return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+            except:
+                return json.dumps({'success': False}), 404, {'ContentType':'application/json'}
     else:
         print("else render_template")
-        return render_template('upload.html')
+        return render_template('upload_gif.html')
+
 
 @app.route("/friend", methods=["GET", "POST"])
 @login_required
