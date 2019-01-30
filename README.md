@@ -1,5 +1,3 @@
-# Technisch ontwerp
-
 ### Controller: application.py
 
 /register
@@ -25,6 +23,10 @@ redirect naar feed (login required)
 GET: feed.html een random foto uit de database die de gebruiker nog niet heeft gezien door te checken in history.
 POST: foto wordt geplaatst in history met username en gemarkeerd of deze hem heeft geliket, disliket of als ongepast.
 
+/friendfeed
+GET: friendfeed.html een random foto uit de database die de gebruiker nog niet heeft gezien en een is van de gebruiker die hij of zij volgt.
+POST: foto wordt geplaatst in history met username en gemarkeerd of deze hem heeft geliket, disliket of als ongepast.
+
 /upload
 GET: upload.html
 POST: foto die de gebruiker heeft geupload wordt in de database van alle foto’s geplaatst.
@@ -33,25 +35,29 @@ POST: foto die de gebruiker heeft geupload wordt in de database van alle foto’
 Likelist.html
 Selecteerd alle fotos uit History die de user heeft geliket en zet deze op de pagina
 
-/settings
-GET: settings.html
-POST: update de users database met zijn nieuwe settings
 ### Views: html-pagina’s
-1.      Register.html
-2.      Login.html
-3.      Feed.html
-4.      Upload.html
-5.      Likelist.html
-6.      Settings.html
+1.      register.html
+2.      login.html
+3.      feed.html
+4.      upload.html
+5.      likelist.html
+6.      friendfeed.html
+7.      apology.html
+8.      apogolgyfeed.html
+9.      forgot.html
+10.     friend.html
+11.     layout.html
+12.     uitleg.html
+
 
 ### Models/helpers, helpers.py:
-Waarschijnlijk maken we nog helpers.py aan voor een dynamische webpagina van feed
+In helpers.py hebben we een fucntie voor upload en feed. 
 
 
 ### 3 databases:
 - Users: Alle gebruikers in deze database inclusief uniek id per gebruiker -> gebruiker-id en settings
 - Fotos: Alle fotos in de database inclusief uniek id per foto -> foto-id
-- History: Hier wordt de activiteit van de gebruiker bijgehouden. Wanneer een foto door een gebruiker is gezien zal het gebruikers-id samen met het foto-id in deze tabel geplaatst worden. In de derde kolom zal dan een code voor de reactie staan (0 voor dislike, 1 voor like, 9 voor ongepast))
+- History: Hier wordt de activiteit van de gebruiker bijgehouden. Wanneer de gebruiker een foto liked, disliked of markeert als inappropriate wordt deze in de database gezet. 
 
 
 ### Plugins en frameworks:
@@ -60,6 +66,7 @@ Flask-uploads
 Bootstrap
 Jinja
 Giphy
+Ajax
 
 
 ### Schetsen foor technisch ontwerp
