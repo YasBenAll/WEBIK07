@@ -254,11 +254,6 @@ def feed():
 @app.route("/upload_file", methods=["GET", "POST"])
 @login_required
 def upload_file():
-    """
-    Upload a photo or select a GIF.
-    """
-
-    urldata = []
 
     # declare photos as an image uploadset
     photos = UploadSet('photos', IMAGES)
@@ -291,29 +286,18 @@ def upload_gif():
     urldata = []
 
     if request.method == 'POST':
-
-        # upload een foto of gif met beschrijving naar de site
-
         if request.json['submit'] == "giphysubmit":
-            print("request.form.get(giphy)")
-            # session["giphdescription"] = request.form.get("description")
-            print(request.json)
             keyword = request.json.get("keyword")
-            print("request.form.get(giphy)")
             data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
-
             url = data["data"][0]['images']['downsized']['url']
             urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
-
             response = {
                 'success': True,
                 'urldata': urldata,
                 'url': url
             }
             return json.dumps(response), 200, {'ContentType':'application/json'}
-
         if request.json['id'] == "send_giphy":
-            print("if request.json[id] == send giphy")
             url = request.json['name']
             filename = url.replace("https://","").replace("/","")
             directory = "pictures/" + filename
@@ -323,7 +307,6 @@ def upload_gif():
                 description = ""
             theme_id = 0
             session["giphydata"] = filename
-            print(session["giphydata"])
             return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
         if request.json['submit'] == "submit_giphy":
             description = request.json['description']
