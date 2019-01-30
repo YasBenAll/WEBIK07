@@ -10,7 +10,9 @@ db = SQL("sqlite:///likestack.db")
 
 
 def apology(message, code=400):
-    """Renders message as an apology to user."""
+    """
+    Renders message as an apology to user.
+    """
     return render_template("apology.html", top=code, bottom=message)
 
 
