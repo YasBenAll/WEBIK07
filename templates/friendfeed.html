@@ -16,9 +16,13 @@
                     url : "{{ url_for('feed') }}",
                     data: JSON.stringify("like"),
                     contentType: 'application/json;charset=UTF-8',
-                });
-                $.get("/friendfeedcontent", function(picture) {
-                    $("#content").html(picture);
+                    async: false,
+                    cache: false,
+                    success: function () {
+                        $.get("/friendfeedcontent", function(picture) {
+                        $("#content").html(picture);
+                        });
+                    }
                 });
             });
             $("#dislike").on("click", function(){
@@ -26,9 +30,13 @@
                     url : "{{ url_for('feed') }}",
                     data: JSON.stringify("dislike"),
                     contentType: 'application/json;charset=UTF-8',
-                });
-                $.get("/friendfeedcontent", function(picture) {
-                    $("#content").html(picture);
+                    async: false,
+                    cache: false,
+                    success: function () {
+                        $.get("/friendfeedcontent", function(picture) {
+                        $("#content").html(picture);
+                        });
+                    }
                 });
             });
             $("#ongepast").on("click", function(){
@@ -36,10 +44,13 @@
                     url : "{{ url_for('feed') }}",
                     data: JSON.stringify("ongepast"),
                     contentType: 'application/json;charset=UTF-8',
-                });
-
-                $.get("/friendfeedcontent", function(picture) {
-                    $("#content").html(picture);
+                    async: false,
+                    cache: false,
+                    success: function () {
+                        $.get("/friendfeedcontent", function(picture) {
+                        $("#content").html(picture);
+                        });
+                    }
                 });
             });
         });
@@ -82,9 +93,13 @@
                             url : "{{ url_for('feed') }}",
                             data: JSON.stringify("like"),
                             contentType: 'application/json;charset=UTF-8',
-                        });
-                        $.get("/friendfeedcontent", function(picture) {
-                            $("#content").html(picture);
+                            async: false,
+                            cache: false,
+                            success: function () {
+                                $.get("/friendfeedcontent", function(picture) {
+                                $("#content").html(picture);
+                                });
+                            }
                         });
                     });
                 }
@@ -95,11 +110,15 @@
                             url : "{{ url_for('feed') }}",
                             data: JSON.stringify("dislike"),
                             contentType: 'application/json;charset=UTF-8',
+                            async: false,
+                            cache: false,
+                            success: function () {
+                                $.get("/friendfeedcontent", function(picture) {
+                                $("#content").html(picture);
+                                });
+                            }
                         });
                         console.log("hallo");
-                        $.get("/friendfeedcontent", function(picture) {
-                            $("#content").html(picture);
-                        });
                     });
                 }
             });
