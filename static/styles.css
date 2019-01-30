@@ -14,23 +14,6 @@ body, html
     text-align: center;
 }
 
-/* colors for navbar */
-.navbar-default .navbar-brand .blue
-{
-    color: #537fbe;
-}
-.navbar-default .navbar-brand .red
-{
-    color: #ea433b;
-}
-.navbar-default .navbar-brand .yellow
-{
-    color: #f5b82e;
-}
-.navbar-default .navbar-brand .green
-{
-    color: #2e944b;
-}
 
 main .form-control
 {
@@ -176,27 +159,6 @@ main td
 .invalid:before {
   position: relative;
   left: -35px;
-}
-#wrapper_feed
-{
-    width: 80%;
-    overflow: hidden;
-    padding-left: 10%;
-}
-#blok_dislike
-{
-    width: 100px;
-    float:left;
-    text-align: left;
-}
-#blok_feed
-{
-    overflow: hidden;
-}
-#blok_like
-{
-    width: 100px;
-    float:right;
 }
 
 #kevin_upload
