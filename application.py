@@ -200,7 +200,7 @@ def forgot():
 def feed():
     if request.method == "GET":
         if feedgenerator(friends = False) == False:
-            return apology("je bent door de stack heen")
+            return apology("You've finished your stack")
 
         print(session["filename"])
         print("dit is feed")
@@ -373,7 +373,7 @@ def feedcontent():
 @app.route("/apologyfeed")
 @login_required
 def apologyfeed():
-    return apology("je bent door de stack heen")
+    return apology("You've finished your stack")
 
 @app.route("/friendfeed", methods=["GET", "POST"])
 @login_required
@@ -381,7 +381,7 @@ def friendfeed():
 
     if request.method == "GET":
         if feedgenerator(friends = True) == False:
-            return apology("je bent door de friendstack heen of volgt geen vrienden")
+            return apology("You've finished your friend feed or don't follow any users")
 
         print(session["filename"])
         print("dit is friendfeed")
