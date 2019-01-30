@@ -1,43 +1,53 @@
 ### Controller: application.py
 
-/register
+##### /register
 GET:     register.html
 POST:    invoer om te registreren op onze site. Nagaan of gebruiker al in database staat, en valide gegevens heeft ingevoerd. Indien alles juist is dan wordt de gebruiker toegevoegd aan de database.
 
-/login
+##### /login
 GET:    login.html
 POST: Pagina om in te loggen op de website. Hierbij moet een gebruikersnaam en wachtwoord ingevoerd worden.  Wanneer gebruiker nog geen account heeft kan deze klikken op de registreer knop en wordt de gebruiker redirect naar /register.
 
-/logout
+##### /logout
 GET:    logout.html
-POST:    Wanneer er op logout wordt geklikt zal de gebruiker uitgelogd worden door middel van session clear().
+POST:   Wanneer er op logout wordt geklikt zal de gebruiker uitgelogd worden door middel van session clear().
 
-/forgot
+##### /forgot
 GET:    forgot.html
 POST:   Slaat nieuw wachtwoord op wanneer het antwoord juist is op de security question. 
 
-/friends
-Friends.html
+##### /friends
+friends.html
 Geeft een tabel met alle vrienden die je volgt en hun like score.
 
-/
+##### /
 redirect naar feed (login required)
 
-/feed
+##### /feed
 GET: feed.html een random foto uit de database die de gebruiker nog niet heeft gezien door te checken in history.
 POST: Foto wordt geplaatst in history met username en gemarkeerd of deze hem heeft geliket, disliket of als ongepast.
 
-/friendfeed
-GET: friendfeed.html Een random foto uit de database die de gebruiker nog niet heeft gezien en een is van de gebruiker die hij of zij volgt.
+##### /friendfeed
+GET: friendfeed.html 
+Een random foto uit de database die de gebruiker nog niet heeft gezien en een is van de gebruiker die hij of zij volgt.
 POST: Foto wordt geplaatst in history met username en gemarkeerd of deze hem heeft geliket, disliket of als ongepast.
 
-/upload
-GET: upload.html
+##### /upload
+GET: upload.html 
+De gebruiker kiest een Giph uit de zoekresultaten die naar aanleiding van zijn zoekwoord.
 POST: Foto die de gebruiker heeft geupload wordt in de database van alle foto’s geplaatst.
 
-/likelist
+##### /likelist
 likelist.html
 Selecteerd alle fotos uit History die de user heeft geliket en zet deze op de pagina.
+
+##### /friend
+friend.html 
+Zie een lijst van de gebruikers die je volgt. 
+
+##### /mijn_foto's 
+mijn_fotos.html 
+Zie alle foto's die je geupload hebt.
 
 ### Views: html-pagina’s
 1.      register.html
@@ -65,12 +75,12 @@ In helpers.py hebben we een fucntie voor upload en feed.
 
 
 ### Plugins en frameworks:
-Flask
-Flask-uploads
-Bootstrap
-Jinja
-Giphy
-Ajax
+- Flask
+- Flask-uploads
+- Bootstrap
+- Jinja
+- Giphy
+- Ajax
 
 
 ### Schetsen van alle pagina's:
