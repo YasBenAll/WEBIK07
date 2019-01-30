@@ -9,7 +9,6 @@
 <script>
     $(document).ready(function(){
         $("#like").on("click", function(){
-            alert("start");
             $.ajax({type : "POST",
                 url : "{{ url_for('feed') }}",
                 data: JSON.stringify("like"),
@@ -22,7 +21,6 @@
                     });
                 }
             });
-
         });
         $("#dislike").on("click", function(){
             $.ajax({type : "POST",
