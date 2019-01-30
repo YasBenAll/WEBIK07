@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Mijn vrienden</h1>
+    <h1>Friends</h1>
     <div id="friends">
         {% for item in follower %}
             {{ friend }}
@@ -14,6 +14,6 @@
     </br>
     </br>
     <div class="form-group animate">
-        <button class="btn btn-default animate" type="submit"><a href="{{ url_for('friendfeed') }}">Bekijk de foto's van vrienden in de friendfeed!</a></button>
+        <button class="btn btn-default animate" type="submit"><a href="{{ url_for('friendfeed') }}">View the photos of friends in the friendfeed! </a></button>
     </div>
 {% endblock %}
