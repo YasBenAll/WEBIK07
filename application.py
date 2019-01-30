@@ -202,8 +202,6 @@ def feed():
         if feedgenerator(friends = False) == False:
             return apology("You've finished your stack")
 
-        print(session["filename"])
-        print("dit is feed")
         return render_template("feed.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
 
     if request.method == "POST":
@@ -217,7 +215,6 @@ def feed():
         if request.json == 'volg':
             followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
             picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=session["photo_id"])
-            print(picturedb)
             followlist = json.loads(followdb[0]["following"])
             if picturedb[0]["user_id"] not in followlist:
                 followlist.append(session["picture_user_id"])
@@ -366,8 +363,6 @@ def feedcontent():
     if feedgenerator(friends = False) == False:
         return render_template("apologyfeed.html")
 
-    print(session["filename"])
-    print("dit is feedcontent")
     return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
 
 @app.route("/apologyfeed")
@@ -383,8 +378,6 @@ def friendfeed():
         if feedgenerator(friends = True) == False:
             return apology("You've finished your friend feed or don't follow any users")
 
-        print(session["filename"])
-        print("dit is friendfeed")
         return render_template("friendfeed.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
 
 @app.route("/friendfeedcontent", methods=["GET", "POST"])
@@ -395,6 +388,4 @@ def friendfeedcontent():
     if feedgenerator(friends = True) == False:
         return render_template("apologyfeed.html")
 
-    print(session["filename"])
-    print("dit is friendfeedcontent")
     return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
