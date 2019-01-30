@@ -40,7 +40,9 @@ db = SQL("sqlite:///likestack.db")
 @app.route("/")
 @login_required
 def index():
-    """Give dashboard of user."""
+    """
+    Feed is the homepage.
+    """
     return redirect(url_for("feed"))
 
 
@@ -79,7 +81,9 @@ def login():
 
 @app.route("/logout")
 def logout():
-    """Log user out."""
+    """
+    Log user out.
+    """
 
     # forget any user_id
     session.clear()
@@ -90,7 +94,9 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    """Register user."""
+    """
+    Register user.
+    """
 
     session.clear()
 
@@ -147,7 +153,9 @@ def register():
 
 @app.route("/forgot", methods=["GET", "POST"])
 def forgot():
-    """ change user password """
+    """
+    Change user's password.
+    """
 
     session.clear()
 
@@ -202,6 +210,10 @@ def forgot():
 @app.route("/feed", methods=["GET", "POST"])
 @login_required
 def feed():
+    """
+    Page with photo stack.
+    """
+
     if request.method == "GET":
         if feedgenerator(friends=False) == False:
             return apology("You've finished your stack")
@@ -242,6 +254,9 @@ def feed():
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():
+    """
+    Upload a photo or select a GIF.
+    """
 
     urldata = []
 
@@ -308,7 +323,9 @@ def upload():
 @app.route("/friend", methods=["GET", "POST"])
 @login_required
 def friend():
-    # add someone to user's followlist
+    """
+    See which users you follow.
+    """
 
     followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
     followlist = json.loads(followdb[0]["following"])
@@ -327,6 +344,10 @@ def friend():
 @app.route("/uitleg", methods=["GET", "POST"])
 @login_required
 def uitleg():
+    """
+    Uitleg pagina.
+    """
+
     username = db.execute("SELECT username FROM users WHERE id=:id", id=session["user_id"])
     return render_template('uitleg.html', username=username[0]["username"])
 
@@ -334,6 +355,10 @@ def uitleg():
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
 def mijn_fotos():
+    """
+    Pagina met mijn foto's.
+    """
+
     filenames = dict()
     data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id=session["user_id"])
     for item in data:
@@ -343,22 +368,20 @@ def mijn_fotos():
 
 @app.route('/<path:filename>')
 def download_file(filename):
+    """
+    Get pictures with all rights.
+    """
+
     return send_from_directory(MEDIA_FOLDER, filename, as_attachment=True)
-
-
-@app.route('/background_process')
-def background_process(user_id):
-    followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
-    followlist = json.loads(followdb[0]["following"])
-    followlist.append(user_id)
-    followjson = json.dumps(followlist)
-    db.execute("UPDATE users SET following = :following WHERE id=:id", following=followjson, id=session["user_id"])
-    return True
 
 
 @app.route("/likelist", methods=["GET", "POST"])
 @login_required
 def likelist():
+    """
+    See all the photos you liked.
+    """
+
     datas = db.execute("SELECT photo_id, marked FROM history WHERE user_id = :user_id", user_id=session["user_id"])
     likelist = list()
     for item in datas:
@@ -371,7 +394,9 @@ def likelist():
 @app.route("/feedcontent", methods=["GET", "POST"])
 @login_required
 def feedcontent():
-    """feed van de gebruiker"""
+    """
+    Generates a new photo for feed.
+    """
 
     if feedgenerator(friends=False) == False:
         return render_template("apologyfeed.html")
@@ -382,12 +407,19 @@ def feedcontent():
 @app.route("/apologyfeed")
 @login_required
 def apologyfeed():
+    """
+    For when there are no more photos.
+    """
+
     return apology("You've finished your stack")
 
 
 @app.route("/friendfeed", methods=["GET", "POST"])
 @login_required
 def friendfeed():
+    """
+    Feed with users you follow.
+    """
 
     if request.method == "GET":
         if feedgenerator(friends=True) == False:
@@ -399,7 +431,9 @@ def friendfeed():
 @app.route("/friendfeedcontent", methods=["GET", "POST"])
 @login_required
 def friendfeedcontent():
-    """feed van de gebruiker"""
+    """
+    Generates new photo for friendfeed.
+    """
 
     if feedgenerator(friends=True) == False:
         return render_template("apologyfeed.html")
