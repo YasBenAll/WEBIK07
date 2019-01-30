@@ -10,14 +10,14 @@ POST: Pagina om in te loggen op de website. Hierbij moet een gebruikersnaam en w
 
 /logout
 GET:    logout.html
-POST:    Wanneer er op logout wordt geklikt zal de gebruiker uitgelogd worden door middel van session clear().
+POST:   Wanneer er op logout wordt geklikt zal de gebruiker uitgelogd worden door middel van session clear().
 
 /forgot
 GET:    forgot.html
 POST:   Slaat nieuw wachtwoord op wanneer het antwoord juist is op de security question. 
 
 /friends
-Friends.html
+friends.html
 Geeft een tabel met alle vrienden die je volgt en hun like score.
 
 /
@@ -28,11 +28,13 @@ GET: feed.html een random foto uit de database die de gebruiker nog niet heeft g
 POST: Foto wordt geplaatst in history met username en gemarkeerd of deze hem heeft geliket, disliket of als ongepast.
 
 /friendfeed
-GET: friendfeed.html Een random foto uit de database die de gebruiker nog niet heeft gezien en een is van de gebruiker die hij of zij volgt.
+GET: friendfeed.html 
+Een random foto uit de database die de gebruiker nog niet heeft gezien en een is van de gebruiker die hij of zij volgt.
 POST: Foto wordt geplaatst in history met username en gemarkeerd of deze hem heeft geliket, disliket of als ongepast.
 
 /upload
-GET: upload.html De gebruiker kiest een Giph uit de zoekresultaten die naar aanleiding van zijn zoekwoord.
+GET: upload.html 
+De gebruiker kiest een Giph uit de zoekresultaten die naar aanleiding van zijn zoekwoord.
 POST: Foto die de gebruiker heeft geupload wordt in de database van alle foto’s geplaatst.
 
 /likelist
@@ -40,10 +42,12 @@ likelist.html
 Selecteerd alle fotos uit History die de user heeft geliket en zet deze op de pagina.
 
 /friend
-friend.html Zie een lijst van de gebruikers die je volgt. 
+friend.html 
+Zie een lijst van de gebruikers die je volgt. 
 
 /mijn_foto's 
-mijn_fotos.html Zie alle foto's die je geupload hebt.
+mijn_fotos.html 
+Zie alle foto's die je geupload hebt.
 
 ### Views: html-pagina’s
 1.      register.html
