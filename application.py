@@ -308,6 +308,7 @@ def friend():
     followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
     followlist = json.loads(followdb[0]["following"])
     if len(followlist) == 0:
+        friend = None
         return render_template('friend.html', friend=friend)
     else:
         for item in followlist:
