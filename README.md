@@ -69,7 +69,7 @@ Giphy
 Ajax
 
 
-### Schetsen foor technisch ontwerp
+### Schetsen van alle pagina's
 ![feed](fotos_technisch_ontwerp/feed3.png)
 ![likelist](fotos_technisch_ontwerp/likelist2.png)
 ![loginpage](fotos_technisch_ontwerp/loginpage.png)
