@@ -288,7 +288,8 @@ def upload_gif():
     if request.method == 'POST':
         if request.json['submit'] == "giphysubmit":
             keyword = request.json.get("keyword")
-            data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
+            data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" +
+                                                     keyword + "&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
             url = data["data"][0]['images']['downsized']['url']
             urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
             response = {
@@ -296,10 +297,10 @@ def upload_gif():
                 'urldata': urldata,
                 'url': url
             }
-            return json.dumps(response), 200, {'ContentType':'application/json'}
+            return json.dumps(response), 200, {'ContentType': 'application/json'}
         if request.json['id'] == "send_giphy":
             url = request.json['name']
-            filename = url.replace("https://","").replace("/","")
+            filename = url.replace("https://", "").replace("/", "")
             directory = "pictures/" + filename
             urllib.request.urlretrieve(url, directory)
             description = request.json['description']
@@ -307,19 +308,18 @@ def upload_gif():
                 description = ""
             theme_id = 0
             session["giphydata"] = filename
-            return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+            return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
         if request.json['submit'] == "submit_giphy":
             description = request.json['description']
             theme_id = 0
             try:
                 upload_photo(session["giphydata"], description, theme_id)
-                return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+                return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
             except:
-                return json.dumps({'success': False, 'message': "Please type in word"}), 404, {'ContentType':'application/json'}
+                return json.dumps({'success': False, 'message': "Please type in word"}), 404, {'ContentType': 'application/json'}
     else:
         print("else render_template")
         return render_template('upload_gif.html')
-
 
 
 @app.route("/friend", methods=["GET", "POST"])
