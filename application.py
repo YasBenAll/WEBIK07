@@ -4,7 +4,8 @@ from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
 from flask_uploads import UploadSet, configure_uploads, IMAGES
-import urllib,json
+import urllib
+import json
 import os
 
 MEDIA_FOLDER = os.path.join(os.getcwd(), 'pictures')
@@ -39,7 +40,9 @@ db = SQL("sqlite:///likestack.db")
 @app.route("/")
 @login_required
 def index():
-    """Give dashboard of user."""
+    """
+    Feed is the homepage.
+    """
     return redirect(url_for("feed"))
 
 
@@ -78,7 +81,9 @@ def login():
 
 @app.route("/logout")
 def logout():
-    """Log user out."""
+    """
+    Log user out.
+    """
 
     # forget any user_id
     session.clear()
@@ -89,7 +94,9 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    """Register user."""
+    """
+    Register user.
+    """
 
     session.clear()
 
@@ -125,7 +132,8 @@ def register():
         hash = pwd_context.hash(request.form.get("password"))
 
         # inserting the user into the database
-        result = db.execute("INSERT INTO users (username, hash, question) VALUES(:username, :hash, :question)", username=request.form.get("username"), hash=hash, question=request.form.get("question"))
+        result = db.execute("INSERT INTO users (username, hash, question) VALUES(:username, :hash, :question)",
+                            username=request.form.get("username"), hash=hash, question=request.form.get("question"))
 
         # error when username already exists
         if not result:
@@ -142,9 +150,12 @@ def register():
     else:
         return render_template("register.html")
 
+
 @app.route("/forgot", methods=["GET", "POST"])
 def forgot():
-    """ change user password """
+    """
+    Change user's password.
+    """
 
     session.clear()
 
@@ -195,15 +206,18 @@ def forgot():
     else:
         return render_template("forgot.html")
 
+
 @app.route("/feed", methods=["GET", "POST"])
 @login_required
 def feed():
-    if request.method == "GET":
-        if feedgenerator(friends = False) == False:
-            return apology("je bent door de stack heen")
+    """
+    Page with photo stack.
+    """
 
-        print(session["filename"])
-        print("dit is feed")
+    if request.method == "GET":
+        if feedgenerator(friends=False) == False:
+            return apology("You've finished your stack")
+
         return render_template("feed.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
 
     if request.method == "POST":
@@ -216,12 +230,12 @@ def feed():
             marked = 3
         if request.json == 'volg':
             followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
-            picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=session["picture_user_id"])
+            picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=session["photo_id"])
             followlist = json.loads(followdb[0]["following"])
             if picturedb[0]["user_id"] not in followlist:
-                followlist.append(session["picture_user_id"])
+                followlist.append(picturedb[0]["user_id"])
             followjson = json.dumps(followlist)
-            db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
+            db.execute("UPDATE users SET following = :following WHERE id=:id", following=followjson, id=session["user_id"])
 
         # update seen_list in database
         seendb = db.execute("SELECT seen_list from users WHERE id=:id", id=session["user_id"])
@@ -230,11 +244,12 @@ def feed():
         seen_set.add(session["photo_id"])
         seen_list = list(seen_set)
         seenjson = json.dumps(seen_list)
-        db.execute("UPDATE users SET seen_list = :seen_list WHERE id=:id", seen_list = seenjson, id=session["user_id"])
+        db.execute("UPDATE users SET seen_list = :seen_list WHERE id=:id", seen_list=seenjson, id=session["user_id"])
 
         db.execute("INSERT INTO history (user_id, photo_id, marked) VALUES(:user_id, :photo_id, :marked)",
                    user_id=session["user_id"], photo_id=session["photo_id"], marked=marked)
         return "saved"
+
 
 @app.route("/upload_file", methods=["GET", "POST"])
 @login_required
@@ -276,19 +291,18 @@ def upload_gif():
     urldata = []
 
     if request.method == 'POST':
+
         # upload een foto of gif met beschrijving naar de site
+
         if request.json['submit'] == "giphysubmit":
             print("request.form.get(giphy)")
             # session["giphdescription"] = request.form.get("description")
-
+            print(request.json)
             keyword = request.json.get("keyword")
             print("request.form.get(giphy)")
-
             data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=" + keyword +"&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
-            try:
-                url = data["data"][0]['images']['downsized']['url']
-            except:
-                return apology("Bad request. Please try again.")
+
+            url = data["data"][0]['images']['downsized']['url']
             urldata = [data["data"][i]['images']['downsized']['url'] for i in range(5)]
 
             response = {
@@ -318,20 +332,24 @@ def upload_gif():
                 upload_photo(session["giphydata"], description, theme_id)
                 return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
             except:
-                return json.dumps({'success': False}), 404, {'ContentType':'application/json'}
+                return json.dumps({'success': False, 'message': "Please type in word"}), 404, {'ContentType':'application/json'}
     else:
         print("else render_template")
         return render_template('upload_gif.html')
 
 
+
 @app.route("/friend", methods=["GET", "POST"])
 @login_required
 def friend():
-    # add someone to user's followlist
+    """
+    See which users you follow.
+    """
 
     followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
     followlist = json.loads(followdb[0]["following"])
     if len(followlist) == 0:
+        friend = None
         return render_template('friend.html', friend=friend)
     else:
         for item in followlist:
@@ -339,84 +357,104 @@ def friend():
             for item in follower:
                 friend = item["username"]
 
-        return render_template('friend.html', follower = follower, friend=friend)
+        return render_template('friend.html', follower=follower, friend=friend)
+
 
 @app.route("/uitleg", methods=["GET", "POST"])
 @login_required
 def uitleg():
+    """
+    Uitleg pagina.
+    """
+
     username = db.execute("SELECT username FROM users WHERE id=:id", id=session["user_id"])
     return render_template('uitleg.html', username=username[0]["username"])
+
 
 @app.route("/mijn_fotos", methods=["GET", "POST"])
 @login_required
 def mijn_fotos():
+    """
+    Pagina met mijn foto's.
+    """
+
     filenames = dict()
-    data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id = session["user_id"])
+    data = db.execute("SELECT filename FROM pictures WHERE user_id = :user_id", user_id=session["user_id"])
     for item in data:
         print(item["filename"])
-    return render_template("mijn_fotos.html", data = data)
+    return render_template("mijn_fotos.html", data=data)
+
 
 @app.route('/<path:filename>')
 def download_file(filename):
+    """
+    Get pictures with all rights.
+    """
+
     return send_from_directory(MEDIA_FOLDER, filename, as_attachment=True)
 
-@app.route('/background_process')
-def background_process(user_id):
-    followdb = db.execute("SELECT following from users WHERE id=:id", id=session["user_id"])
-    followlist = json.loads(followdb[0]["following"])
-    followlist.append(user_id)
-    followjson = json.dumps(followlist)
-    db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
-    return True
 
 @app.route("/likelist", methods=["GET", "POST"])
 @login_required
 def likelist():
-    datas = db.execute("SELECT photo_id, marked FROM history WHERE user_id = :user_id", user_id = session["user_id"])
+    """
+    See all the photos you liked.
+    """
+
+    datas = db.execute("SELECT photo_id, marked FROM history WHERE user_id = :user_id", user_id=session["user_id"])
     likelist = list()
     for item in datas:
         if item["marked"] == 1:
-            liked_foto = db.execute("SELECT filename FROM pictures WHERE id = :photo_id", photo_id = item["photo_id"])
+            liked_foto = db.execute("SELECT filename FROM pictures WHERE id = :photo_id", photo_id=item["photo_id"])
             likelist.append(liked_foto[0]['filename'])
-    return render_template("likelist.html", likelist = likelist)
+    return render_template("likelist.html", likelist=likelist)
+
 
 @app.route("/feedcontent", methods=["GET", "POST"])
 @login_required
 def feedcontent():
-    """feed van de gebruiker"""
+    """
+    Generates a new photo for feed.
+    """
 
-    if feedgenerator(friends = False) == False:
+    if feedgenerator(friends=False) == False:
         return render_template("apologyfeed.html")
 
-    print(session["filename"])
-    print("dit is feedcontent")
     return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
+
 
 @app.route("/apologyfeed")
 @login_required
 def apologyfeed():
-    return apology("je bent door de stack heen")
+    """
+    For when there are no more photos.
+    """
+
+    return apology("You've finished your stack")
+
 
 @app.route("/friendfeed", methods=["GET", "POST"])
 @login_required
 def friendfeed():
+    """
+    Feed with users you follow.
+    """
 
     if request.method == "GET":
-        if feedgenerator(friends = True) == False:
-            return apology("je bent door de friendstack heen of volgt geen vrienden")
+        if feedgenerator(friends=True) == False:
+            return apology("You've finished your friend feed or don't follow any users")
 
-        print(session["filename"])
-        print("dit is friendfeed")
         return render_template("friendfeed.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])
+
 
 @app.route("/friendfeedcontent", methods=["GET", "POST"])
 @login_required
 def friendfeedcontent():
-    """feed van de gebruiker"""
+    """
+    Generates new photo for friendfeed.
+    """
 
-    if feedgenerator(friends = True) == False:
+    if feedgenerator(friends=True) == False:
         return render_template("apologyfeed.html")
 
-    print(session["filename"])
-    print("dit is friendfeedcontent")
     return render_template("feedcontent.html", picture=session["filename"], description=session["description"], user_id=session["username_picture"])

@@ -6,9 +6,9 @@
 
 {% block main %}
     <div>
-        <h1>Mijn foto's</h1>
-                {% for item in data %}
-                    <img src="{{ url_for('download_file', filename=item.filename) }}" HEIGHT="140" WIDTH="auto">
-                {% endfor %}
+        <h1>My pictures</h1>
+            {% for item in data %}
+                <img src="{{ url_for('download_file', filename=item.filename) }}" HEIGHT="140" WIDTH="auto">
+            {% endfor %}
     </div>
 {% endblock %}

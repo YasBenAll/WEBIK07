@@ -2,7 +2,7 @@ body, html
 {
     background: url("/static/Abstract-Background-White.jpg");
     background-repeat: no-repeat;
-    background-color: #29303a;
+    background-color: #dadde2;
     font-family: Helvetica, Arial, sans-serif;
 }
 
@@ -13,23 +13,9 @@ body, html
     margin-right: auto;
     text-align: center;
 }
-
-/* colors for navbar */
 .navbar-default .navbar-brand .blue
 {
     color: #537fbe;
-}
-.navbar-default .navbar-brand .red
-{
-    color: #ea433b;
-}
-.navbar-default .navbar-brand .yellow
-{
-    color: #f5b82e;
-}
-.navbar-default .navbar-brand .green
-{
-    color: #2e944b;
 }
 
 main .form-control
@@ -52,6 +38,16 @@ main td
     /* left-align tables' cells */
     text-align: left;
 }
+.form-group
+{
+    margin-bottom: 5px;
+}
+
+.form_group_twee
+{
+    padding-top:5px;
+    padding-bottom:5px;
+}
 
 /* Add Zoom Animation */
 .animate
@@ -72,28 +68,33 @@ main td
  to {transform: scale(1)}
 }
 
+/* navbar */
+#likestack
+{
+    color:#3d6c9f;
+    font-size: large;
+}
+#likestack2
+{
+    padding-top:15px;
+    padding-bottom:10px;
+    padding-left:50px;
+}
+
+
+
+
+/* login & register & forgot password */
+
 .kevin
 {
     margin-top: 60px;
     margin-bottom: 60px;
 }
-
-.form-group
-{
-    margin-bottom: 5px;
-}
-
-.form_group_twee
-{
-    padding-top:5px;
-    padding-bottom:5px;
-}
-
 #regel
 {
     width: 100%;
 }
-
 #wrapper
 {
     width: 30%;
@@ -113,7 +114,63 @@ main td
     overflow: visible;
 }
 
+/* green color for password check*/
+.valid
+{
+  color: green;
+}
 
+.valid:before {
+  position: relative;
+  left: -35px;
+}
+
+/* red color for password check*/
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+}
+
+#message
+{
+  display:none;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+/* uitleg & upload */
+.uitleg
+{
+    font-size: 15px;
+    padding-bottom: 25px;
+}
+
+.uitleg_h2
+{
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.uitleg_left
+{
+    font-size: 15px;
+    text-align: left;
+}
+
+input[type=file] {
+    margin: 0 auto;
+}
+
+
+
+
+/* feed & friendfeed*/
 #dislike
 {
     float: left;
@@ -146,101 +203,6 @@ main td
     margin-left: 300px;
     margin-right: 300px;
 }
-
-
-#message
-{
-  display:none;
-  color: #000;
-  position: relative;
-  padding: 20px;
-  margin-top: 10px;
-}
-
-/* green color for password check*/
-.valid
-{
-  color: green;
-}
-
-.valid:before {
-  position: relative;
-  left: -35px;
-}
-
-/* red color for password check*/
-.invalid {
-  color: red;
-}
-
-.invalid:before {
-  position: relative;
-  left: -35px;
-}
-#wrapper_feed
-{
-    width: 80%;
-    overflow: hidden;
-    padding-left: 10%;
-}
-#blok_dislike
-{
-    width: 100px;
-    float:left;
-    text-align: left;
-}
-#blok_feed
-{
-    overflow: hidden;
-}
-#blok_like
-{
-    width: 100px;
-    float:right;
-}
-
-#kevin_upload
-{
-    padding-top:5px;
-    padding-bottom:5px;
-}
-
-input[type=file] {
-    margin: 0 auto;
-}
-
-
-.uitleg
-{
-    font-size: 15px;
-    padding-bottom: 25px;
-}
-
-.uitleg_h2
-{
-    padding-top: 30px;
-    padding-bottom: 20px;
-}
-
-.uitleg_left
-{
-    font-size: 15px;
-    text-align: left;
-}
-
-
-
-#likestack
-{
-    color:#3d6c9f;
-    font-size: large;
-}
-#likestack2
-{
-    padding-top:15px;
-    padding-bottom:10px;
-    padding-left:50px;
-}
 #pijl_kolom
 {
     margin-top:200px;
@@ -250,8 +212,32 @@ input[type=file] {
     margin: 0px;
 }
 
+/* friend */
+
 #friends
 {
     font-size: large;
     color: #3d6c9f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

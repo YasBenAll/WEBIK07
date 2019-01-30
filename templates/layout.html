@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
 
     <head>
         <link rel="SHORTCUT ICON" href="static/favicon.ico" type="image/x-icon" />
@@ -55,8 +55,7 @@
                                         <li><a href="{{ url_for('friend') }}">Friends</a></li>
                                         <li><a href="{{ url_for('upload_file') }}">Upload</a></li>
                                         <li><a href="{{ url_for('uitleg') }}">How it works</a></li>
-                                        <div class="dropdown-divider"></div>
-                                         <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                                        <li><a href="{{ url_for('logout') }}">Log Out</a></li>
                                     </div>
                                 </div>
 

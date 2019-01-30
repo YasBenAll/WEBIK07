@@ -7,95 +7,13 @@
 
 {% block main %}
 <script>
-    $(document).ready(function(){
-        $("#like").on("click", function(){
-            $.ajax({type : "POST",
-                url : "{{ url_for('feed') }}",
-                data: JSON.stringify("like"),
-                contentType: 'application/json;charset=UTF-8',
-            });
-            $.get("/feedcontent", function(picture) {
-                $("#content").html(picture);
-            });
-        });
-        $("#dislike").on("click", function(){
-            $.ajax({type : "POST",
-                url : "{{ url_for('feed') }}",
-                data: JSON.stringify("dislike"),
-                contentType: 'application/json;charset=UTF-8',
-            });
-            $.get("/feedcontent", function(picture) {
-                $("#content").html(picture);
-            });
-        });
-        $("#ongepast").on("click", function(){
-            $.ajax({type : "POST",
-                url : "{{ url_for('feed') }}",
-                data: JSON.stringify("ongepast"),
-                contentType: 'application/json;charset=UTF-8',
-            });
-            $.get("/feedcontent", function(picture) {
-                $("#content").html(picture);
-            });
-        });
-        $("#volg").on("click", function(){
-            $.ajax({type : "POST",
-                url : "{{ url_for('feed') }}",
-                data: JSON.stringify("volg"),
-                contentType: 'application/json;charset=UTF-8',
-            });
-            $.get("/feedcontent", function(picture) {
-                $("#content").html(picture);
-            });
-        });
-    });
-
-    $(document).ready(function(){
-        document.onkeyup = checkKey;
-
-        function checkKey(e) {
-
-            console.log("a")
-
-            e = e || window.event;
-
-
-                if (e.keyCode == '37'){
-
-                    console.log('test')
-                     $.ajax({type : "POST",
-                            url : "{{ url_for('feed') }}",
-                            data: JSON.stringify("dislike"),
-                            contentType: 'application/json;charset=UTF-8',
-                        });
-                        console.log("hallo");
-                        $.get("/feedcontent", function(picture) {
-                            $("#content").html(picture);
-                        });
-                }
-
-                if (e.keyCode == '39'){
-                    console.log("right");
-                    $.ajax({type : "POST",
-                        url : "{{ url_for('feed') }}",
-                        data: JSON.stringify("like"),
-                        contentType: 'application/json;charset=UTF-8',
-                    });
-                    $.get("/feedcontent", function(picture) {
-                        $("#content").html(picture);
-                    });
-                }
-
-
-            }
-        });
+    {% include "feed.js" %}
 </script>
-
 
     <div id="row">
         <div class="col-md-3" id="pijl_kolom">
             <a class="left" href="#" role="button" id="dislike" aria-haspopup="true" aria-expanded="false">
-            <img src="static/likeleft.png" width="100" height="100" >
+            <img src="static/dislike_pijl.png" width="100" height="100" >
             </a>
         </div>
         <div class="col-md-6" id = "content">
@@ -105,13 +23,13 @@
         </div>
         <div class="col-md-3" id = "pijl_kolom">
             <a class="right" href="#" role="button" id="like" aria-haspopup="true" aria-expanded="false">
-            <img src="static/likeright.png"width="100" height="100" >
+            <img src="static/like_pijl.png"width="100" height="100" >
             </a>
         </div>
         <div class="w-100"></div>
         <div class="col-md-12">
-            <button id="ongepast" class="btn btn-default" >Ongepast</button>
-            <button id="volg" class="btn btn-default" >Volgen</button>
+            <button id="ongepast" class="btn btn-default" >Inappropriate</button>
+            <button id="volg" class="btn btn-default" >Follow user</button>
         </div>
     </div>
 {% endblock %}

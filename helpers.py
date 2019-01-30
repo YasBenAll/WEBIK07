@@ -1,6 +1,7 @@
 from cs50 import SQL
 import csv
-import urllib.request, json
+import urllib.request
+import json
 import random
 
 from flask import redirect, render_template, request, session
@@ -9,7 +10,9 @@ db = SQL("sqlite:///likestack.db")
 
 
 def apology(message, code=400):
-    """Renders message as an apology to user."""
+    """
+    Renders message as an apology to user.
+    """
     return render_template("apology.html", top=code, bottom=message)
 
 
@@ -30,24 +33,34 @@ def login_required(f):
 def upload_photo(filename, description, theme_id):
     # store the picture into the database
     print("uploaded something")
-    return db.execute("INSERT INTO pictures(user_id, filename, description, theme_id) VALUES(:user_id, :filename, :description, :theme_id)", user_id = session["user_id"] , filename = filename, description = description, theme_id = theme_id)
+    return db.execute("INSERT INTO pictures(user_id, filename, description, theme_id) VALUES(:user_id, :filename, :description, :theme_id)", user_id=session["user_id"], filename=filename, description=description, theme_id=theme_id)
+
 
 def add_friend():
     pass
 
+
 def giphy():
-    data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=hamburger&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
+    data = json.loads(urllib.request.urlopen(
+        "http://api.giphy.com/v1/gifs/search?q=hamburger&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
     return data["data"][0]['images']['downsized']['url']
 
-def feedgenerator(friends):
 
+def feedgenerator(friends):
+    """
+    generates a photo for feed or friendfeed
+
+    """
+
+    # set seen list
     seendb = db.execute("SELECT seen_list from users WHERE id=:id", id=session["user_id"])
     seenlist = json.loads(seendb[0]["seen_list"])
     seenset = set(seenlist)
     set_all = set()
     notseen = set()
-    amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id = session["user_id"])
 
+    # generate a set with all photos for feed or friend feed
+    amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id=session["user_id"])
     if friends == False:
         amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id=session["user_id"])
     else:
@@ -60,9 +73,10 @@ def feedgenerator(friends):
         if len(friendtuple) == 1:
             query = "SELECT id FROM pictures WHERE user_id IN ({})".format(friendtuple[0])
         amount = db.execute(query)
-
     for item in amount:
         set_all.add(item['id'])
+
+    # pick a random photo which the user hasn't seen yet or return false
     notseen = set_all - seenset
     if notseen == set():
         return False
