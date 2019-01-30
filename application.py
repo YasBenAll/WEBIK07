@@ -217,7 +217,7 @@ def feed():
             picturedb = db.execute("SELECT user_id from pictures WHERE id=:id", id=session["photo_id"])
             followlist = json.loads(followdb[0]["following"])
             if picturedb[0]["user_id"] not in followlist:
-                followlist.append(session["picture_user_id"])
+                followlist.append(picturedb[0]["user_id"])
             followjson = json.dumps(followlist)
             db.execute("UPDATE users SET following = :following WHERE id=:id", following = followjson, id=session["user_id"])
 
