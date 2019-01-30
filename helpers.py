@@ -1,11 +1,13 @@
 from cs50 import SQL
 import csv
-import urllib.request, json
+import urllib.request
+import json
 import random
 
 from flask import redirect, render_template, request, session
 from functools import wraps
 db = SQL("sqlite:///likestack.db")
+
 
 def apology(message, code=400):
     """Renders message as an apology to user."""
@@ -29,14 +31,18 @@ def login_required(f):
 def upload_photo(filename, description, theme_id):
     # store the picture into the database
     print("uploaded something")
-    return db.execute("INSERT INTO pictures(user_id, filename, description, theme_id) VALUES(:user_id, :filename, :description, :theme_id)", user_id = session["user_id"] , filename = filename, description = description, theme_id = theme_id)
+    return db.execute("INSERT INTO pictures(user_id, filename, description, theme_id) VALUES(:user_id, :filename, :description, :theme_id)", user_id=session["user_id"], filename=filename, description=description, theme_id=theme_id)
+
 
 def add_friend():
     pass
 
+
 def giphy():
-    data = json.loads(urllib.request.urlopen("http://api.giphy.com/v1/gifs/search?q=hamburger&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
+    data = json.loads(urllib.request.urlopen(
+        "http://api.giphy.com/v1/gifs/search?q=hamburger&api_key=inu8Jx5h7HWgFC2qHVrS4IzzCZOvVRvr&limit=5").read())
     return data["data"][0]['images']['downsized']['url']
+
 
 def feedgenerator(friends):
 
@@ -45,7 +51,7 @@ def feedgenerator(friends):
     seenset = set(seenlist)
     set_all = set()
     notseen = set()
-    amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id = session["user_id"])
+    amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id=session["user_id"])
 
     if friends == False:
         amount = db.execute("SELECT id FROM pictures WHERE NOT :user_id = user_id", user_id=session["user_id"])
