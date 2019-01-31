@@ -1,3 +1,7 @@
+###Introductie Likestack:
+
+https://www.youtube.com/watch?v=WkzlbQSQS4M
+
 ### Controller: application.py
 
 ##### /register
